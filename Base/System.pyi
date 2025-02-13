@@ -1,6 +1,9 @@
 import typing
 
-# Represents an angle in degrees or radians
+"""
+This module provides bindings for SFML's system, including classes
+for angle, time, clock and more.
+"""
 class Angle:
     def __init__(self) -> None: 
         """
@@ -18,20 +21,28 @@ class Angle:
 
     @staticmethod
     def degrees(degrees: float) -> "Angle":
-        """Construct an angle value from a number of degrees."""
+        """
+        Construct an angle value from a number of degrees.
+        """
         pass
 
     @staticmethod
     def radians(radians: float) -> "Angle":
-        """Overload of operator!= to compare two angle values."""
+        """
+        Overload of operator!= to compare two angle values.
+        """
         pass
 
     def as_degrees(self) -> float:
-        """Return the angle's value in degrees."""
+        """
+        Return the angle's value in degrees.
+        """
         pass
 
     def as_radians(self) -> float:
-        """Return the angle's value in radians."""
+        """
+        Return the angle's value in radians.
+        """
         pass
 
     def wrap_signed(self) -> "Angle":
@@ -57,23 +68,33 @@ class Angle:
 # Represents a time duration
 class Time:
     def as_seconds(self) -> float:
-        """Returns the time as seconds."""
+        """
+        Returns the time as seconds.
+        """
         pass
 
     def as_milliseconds(self) -> int:
-        """Returns the time as milliseconds."""
+        """
+        Returns the time as milliseconds.
+        """
         pass
 
     def as_microseconds(self) -> int:
-        """Returns the time as microseconds."""
+        """
+        Returns the time as microseconds.
+        """
         pass
 
     def to_duration(self) -> typing.Any:
-        """Converts the time to a duration object."""
+        """
+        Converts the time to a duration object.
+        """
         pass
 
     def __repr__(self) -> str:
-        """Returns a string representation of the time in seconds."""
+        """
+        Returns a string representation of the time in seconds.
+        """
         pass
 
 # Clock for measuring elapsed time
@@ -91,11 +112,15 @@ class Clock:
         pass
 
     def start(self) -> None:
-        """"Start the clock."""
+        """"
+        Start the clock.
+        """
         pass
 
     def stop(self) -> None:
-        """Stops the clock."""
+        """
+        Stops the clock.
+        """
         pass
 
     def restart(self) -> None:
@@ -125,97 +150,167 @@ class Clock:
 # Base class for Vector2f
 class Vector2f:
     def __init__(self, x: float = 0.0, y: float = 0.0) -> None:
-        """Initializes a Vector2f object."""
+        """
+        Initializes a Vector2f object.
+
+        Parameters:
+        - x: The x component of the vector.
+        - y: The y component of the vector.
+        """
         pass
 
     def x(self) -> float:
-        """Returns the x component of the vector."""
+        """
+        Returns the x component of the vector.
+        """
         pass
 
     def y(self) -> float:
-        """Returns the y component of the vector."""
+        """
+        Returns the y component of the vector.
+        """
         pass
 
 # Base class for Vector2i
 class Vector2i:
     def __init__(self, x: int = 0, y: int = 0) -> None:
-        """Initializes a Vector2i object."""
+        """
+        Initializes a Vector2i object.
+
+        Parameters:
+        - x: The x component of the vector.
+        - y: The y component of the vector.
+        """
         pass
 
     def x(self) -> int:
-        """Returns the x component of the vector."""
+        """
+        Returns the x component of the vector.
+        """
         pass
 
     def y(self) -> int:
-        """Returns the y component of the vector."""
+        """
+        Returns the y component of the vector.
+        """
         pass
 
 # Base class for Vector2u
 class Vector2u:
     def __init__(self, x: int = 0, y: int = 0) -> None:
-        """Initializes a Vector2u object."""
+        """
+        Initializes a Vector2u object.
+
+        Parameters:
+        - x: The x component of the vector.
+        - y: The y component of the vector.
+        """
         pass
 
     def x(self) -> int:
-        """Returns the x component of the vector."""
+        """
+        Returns the x component of the vector.
+        """
         pass
 
     def y(self) -> int:
-        """Returns the y component of the vector."""
+        """
+        Returns the y component of the vector.
+        """
         pass
 
 # Base class for Vector3f
 class Vector3f:
     def __init__(self, x: float = 0.0, y: float = 0.0, z: float = 0.0) -> None:
-        """Initializes a Vector3f object."""
+        """
+        Initializes a Vector3f object.
+
+        Parameters:
+        - x: The x component of the vector.
+        - y: The y component of the vector.
+        - z: The z component of the vector.
+        """
         pass
 
     def x(self) -> float:
-        """Returns the x component of the vector."""
+        """
+        Returns the x component of the vector.
+        """
         pass
 
     def y(self) -> float:
-        """Returns the y component of the vector."""
+        """
+        Returns the y component of the vector.
+        """
         pass
 
     def z(self) -> float:
-        """Returns the z component of the vector."""
+        """
+        Returns the z component of the vector.
+        """
         pass
 
 # Base class for Vector3i
 class Vector3i:
     def __init__(self, x: int = 0, y: int = 0, z: int = 0) -> None:
-        """Initializes a Vector3i object."""
+        """
+        Initializes a Vector3i object.
+
+        Parameters:
+        - x: The x component of the vector.
+        - y: The y component of the vector.
+        - z: The z component of the vector.
+        """
         pass
 
     def x(self) -> int:
-        """Returns the x component of the vector."""
+        """
+        Returns the x component of the vector.
+        """
         pass
 
     def y(self) -> int:
-        """Returns the y component of the vector."""
+        """
+        Returns the y component of the vector.
+        """
         pass
 
     def z(self) -> int:
-        """Returns the z component of the vector."""
+        """
+        Returns the z component of the vector.
+        """
         pass
 
 # Base class for Vector3u
+
 class Vector3u:
     def __init__(self, x: int = 0, y: int = 0, z: int = 0) -> None:
-        """Initializes a Vector3u object."""
+        """
+        Initializes a Vector3u object.
+
+        Parameters:
+        - x: The x component of the vector.
+        - y: The y component of the vector.
+        - z: The z component of the vector.
+        """
         pass
 
     def x(self) -> int:
-        """Returns the x component of the vector."""
+        """
+        Returns the x component of the vector.
+        """
         pass
 
     def y(self) -> int:
-        """Returns the y component of the vector."""
+        """
+        Returns the y component of the vector.
+        """
         pass
 
     def z(self) -> int:
-        """Returns the z component of the vector."""
+        """
+        Returns the z component of the vector.
+        """
         pass
 
 # Base class for input streams
@@ -232,20 +327,45 @@ class InputStream:
         Read data from the stream.
 
         After reading, the stream's reading position must be advanced by the amount of bytes read.
+
+        Parameters
+        - data: Buffer where to copy the read data
+        - size: Desired number of bytes to read
+
+        Returns
+        - The number of bytes actually read, or std::nullopt on error
         """
         pass
 
     def seek(self, position: int) -> None:
-        """Change the current reading position."""
+        """
+        Change the current reading position.
+
+        Parameters
+        - position	The position to seek to, from the beginning
+
+        Returns
+        - The position actually sought to, or std::nullopt on error
+        """
         pass
 
     def tell(self) -> int:
-        """Get the current reading position in the stream."""
+        """
+        Get the current reading position in the stream.
+
+        Returns
+        - The current position, or std::nullopt on error.
+        """
         pass
 
     @property
     def size(self) -> int:
-        """Returns the size of the input stream."""
+        """
+        Returns the size of the input stream.
+
+        Returns
+        - The total number of bytes available in the stream, or std::nullopt on error
+        """
         pass
 
 # Represents a file input stream
@@ -265,5 +385,13 @@ class FileInputStream(InputStream):
         pass
 
     def open(self, filename: str) -> bool:
-        """Open the stream from a file path."""
+        """
+        Open the stream from a file path.
+
+        Parameters
+        - filename: Name of the file to open
+
+        Returns
+        - true on success, false on error
+        """
         pass

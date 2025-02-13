@@ -12,6 +12,24 @@ from .System import (
     FileInputStream
 )
 
+from .Window import (
+    Style,
+    State,
+    Context, 
+    ContextSettings,
+    Cursor,
+    Event,
+    VideoMode,
+    WindowBase,
+    Window,
+    Clipboard,
+    Joystick,
+    Keyboard,
+    Mouse,
+    Sensor,
+    Touch
+)
+
 __all__ = [
     'Angle',
     'Time',
@@ -24,4 +42,19 @@ __all__ = [
     'Vector3u',
     'InputStream',
     'FileInputStream',
+    'Style',
+    'State',
+    'Context',
+    'ContextSettings'
+    'Cursor',
+    'Event',
+    'VideoMode',
+    'WindowBase',
+    'Window',
+    'Clipboard',
+    'Joystick',
+    'Keyboard',
+    'Mouse',
+    'Sensor',
+    'Touch'
 ]
