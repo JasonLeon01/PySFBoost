@@ -30,6 +30,20 @@ from .Window import (
     Touch
 )
 
+from .Graphics import (
+    CoordinateType,
+    PrimitiveType,
+    Drawable, 
+    IntRect,
+    FloatRect,
+    BlendMode,
+    Transform,
+    Transformable,
+    Vertex,
+    VertexArray,
+    VertexBuffer
+)
+
 __all__ = [
     'Angle',
     'Time',
@@ -56,5 +70,16 @@ __all__ = [
     'Keyboard',
     'Mouse',
     'Sensor',
-    'Touch'
+    'Touch',
+    'CoordinateType',
+    'PrimitiveType',
+    'Drawable',
+    'IntRect',
+    'FloatRect',
+    'BlendMode',
+    'Transform',
+    'Transformable',
+    'Vertex',
+    'VertexArray',
+    'VertexBuffer'
 ]
