@@ -44,7 +44,7 @@ class Context:
 
     To use a Context instance, just construct it and let it live as long as you need a valid context. No explicit activation is needed, all it has to do is to exist. Its destructor will take care of deactivating and freeing all the attached resources.
     """
-    def __init__(self, context_settings: ContextSettings, size: System.Vector2u) -> None:
+    def __init__(self, settings: ContextSettings, size: System.Vector2u) -> None:
         """
         Construct a in-memory context.
 
@@ -242,7 +242,7 @@ class Cursor:
         Help = 19
         NotAllowed = 20
 
-    def __init__(self, cursor_type: Type) -> None:
+    def __init__(self, type: Type) -> None:
         """
         Create a native system cursor.
 
@@ -458,7 +458,7 @@ class VideoMode:
     size: System.Vector2u
     bits_per_pixel: int
 
-    def __init__(self, size: System.Vector2u, bits_per_pixel: int = 32) -> None:
+    def __init__(self, modeSize: System.Vector2u, modeBitsPerPixel: int = 32) -> None:
         """
         Construct the video mode with its attributes.
 
@@ -513,7 +513,7 @@ class WindowBase:
     The sf::WindowBase class provides a simple interface for manipulating the window: move, resize, show/hide, control mouse cursor, etc. It also provides event handling through its pollEvent() and waitEvent() functions.
     """
 
-    def __init__(self, video_mode: VideoMode, title: str, style: int = Style.Default, state: State = State.Windowed):
+    def __init__(self, mode: VideoMode, title: str, style: int = Style.Default, state: State = State.Windowed):
         """
         Construct a new window.
 
@@ -588,7 +588,7 @@ class WindowBase:
         """
         pass
 
-    def wait_event(self) -> Event:
+    def wait_event(self, timeout: System.Time = 0) -> Event:
         """
         Wait for an event and return it.
 
@@ -645,7 +645,7 @@ class WindowBase:
         """
         pass
 
-    def set_minimum_size(self, size: System.Vector2u | None) -> None:
+    def set_minimum_size(self, minimumSize: System.Vector2u | None) -> None:
         """
         Set the minimum window rendering region size.
 
@@ -657,7 +657,7 @@ class WindowBase:
         """
         pass
 
-    def set_maximum_size(self, size: System.Vector2u | None) -> None:
+    def set_maximum_size(self, maximumSize: System.Vector2u | None) -> None:
         """
         Set the maximum window rendering region size.
 
@@ -678,7 +678,7 @@ class WindowBase:
         """
         pass
 
-    def set_icon(self, width: int, height: int, pixels: bytes) -> None:
+    def set_icon(self, size: System.Vector2u, pixels: bytes) -> None:
         """
         Change the window's icon.
 
@@ -715,7 +715,6 @@ class WindowBase:
         On Windows, this function needs to be called from the thread that created the window.
 
         Parameters
-
         - visible	true to show the mouse cursor, false to hide it
 
         """
@@ -745,7 +744,6 @@ class WindowBase:
         Features related to Cursor are not supported on iOS and Android.
 
         Parameters
-
         - cursor	Native system cursor type to display
         """
         pass
@@ -857,8 +855,8 @@ class Window(WindowBase):
         Parameters
         - mode	Video mode to use (defines the width, height and depth of the rendering area of the window)
         - title	Title of the window
+        - style	Window style, a bitwise OR combination of sf::Style enumerators
         - state	Window state
-        - settings	Additional settings for the underlying OpenGL context
         """
         pass
 

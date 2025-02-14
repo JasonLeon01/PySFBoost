@@ -327,7 +327,9 @@ class Transform:
         This function returns a pointer to an array of 16 floats containing the transform elements as a 4x4 matrix, which is directly compatible with OpenGL functions.
 
         ```
-        sf::Transform transform = ...;
+        sf::Transform transform = 
+
+pass;
         glLoadMatrixf(transform.getMatrix());
         ```
 
@@ -563,7 +565,7 @@ class Transformable:
         """
         pass
 
-    def set_scale(self, scale: System.Vector2f) -> None: 
+    def set_scale(self, factors: System.Vector2f) -> None: 
         """
         set the scale factors of the object
 
@@ -653,7 +655,7 @@ class Transformable:
         """
         pass
 
-    def scale(self, factors: System.Vector2f) -> None: 
+    def scale(self, factor: System.Vector2f) -> None: 
         """
         Scale the object.
 
@@ -697,7 +699,9 @@ class Vertex:
 
     It has a position and other extra attributes that will be used for drawing: in SFML, vertices also have a color and a pair of texture coordinates.
 
-    The vertex is the building block of drawing. Everything which is visible on screen is made of vertices. They are grouped as 2D primitives (lines, triangles, ...), and these primitives are grouped to create even more complex 2D entities such as sprites, texts, etc.
+    The vertex is the building block of drawing. Everything which is visible on screen is made of vertices. They are grouped as 2D primitives (lines, triangles, 
+
+pass), and these primitives are grouped to create even more complex 2D entities such as sprites, texts, etc.
 
     If you use the graphical entities of SFML (sprite, text, shape) you won't have to deal with vertices directly. But if you want to define your own 2D entities, such as tiled maps or particle systems, using vertices will allow you to get maximum performances.
 
@@ -735,7 +739,7 @@ class VertexArray(Drawable):
         """
         pass
 
-    def __init__(self, primitiveType: PrimitiveType, vertexCount: int) -> None: 
+    def __init__(self, type: PrimitiveType, vertexCount: int) -> None: 
         """
         Construct the vertex array with a type and an initial number of vertices.
 
@@ -880,7 +884,7 @@ class VertexBuffer(Drawable):
         - usage	Usage specifier
         """
         pass
-    def __init__(self, primitiveType: PrimitiveType, usage: Usage) -> None: 
+    def __init__(self, type: PrimitiveType, usage: Usage) -> None: 
         """
         Construct a VertexBuffer with a specific PrimitiveType and usage specifier.
 
@@ -961,7 +965,7 @@ class VertexBuffer(Drawable):
         """
         pass
 
-    def update(self, other: VertexBuffer) -> bool: 
+    def update(self, vertexBuffer: VertexBuffer) -> bool: 
         """
         Copy the contents of another buffer into this buffer.
 
@@ -1031,7 +1035,7 @@ class VertexBuffer(Drawable):
         pass
 
     @staticmethod
-    def bind(buffer: VertexBuffer) -> None: 
+    def bind(vertexBuffer: VertexBuffer) -> None: 
         """
         Bind a vertex buffer for rendering.
 
@@ -1041,11 +1045,14 @@ class VertexBuffer(Drawable):
         sf::VertexBuffer vb1, vb2;
         ...
         sf::VertexBuffer::bind(&vb1);
-        // draw OpenGL stuff that use vb1...
+        // draw OpenGL stuff that use vb1
+        ...
         sf::VertexBuffer::bind(&vb2);
-        // draw OpenGL stuff that use vb2...
+        // draw OpenGL stuff that use vb2
+        ...
         sf::VertexBuffer::bind(nullptr);
-        // draw OpenGL stuff that use no vertex buffer...
+        // draw OpenGL stuff that use no vertex buffer
+        ...
         ```
 
         Parameters
@@ -1071,7 +1078,9 @@ class Shape(Transformable, Drawable):
 
     sf::Shape is a drawable class that allows to define and display a custom convex shape on a render target.
 
-    It's only an abstract base, it needs to be specialized for concrete types of shapes (circle, rectangle, convex polygon, star, ...).
+    It's only an abstract base, it needs to be specialized for concrete types of shapes (circle, rectangle, convex polygon, star, 
+
+pass).
 
     In addition to the attributes provided by the specialized shape classes, a shape always has the following attributes:
 
@@ -1233,7 +1242,9 @@ class Shape(Transformable, Drawable):
         """
         Get the local bounding rectangle of the entity.
 
-        The returned rectangle is in local coordinates, which means that it ignores the transformations (translation, rotation, scale, ...) that are applied to the entity. In other words, this function returns the bounds of the entity in the entity's coordinate system.
+        The returned rectangle is in local coordinates, which means that it ignores the transformations (translation, rotation, scale, 
+
+pass) that are applied to the entity. In other words, this function returns the bounds of the entity in the entity's coordinate system.
 
         Returns
         - Local bounding rectangle of the entity
@@ -1244,7 +1255,9 @@ class Shape(Transformable, Drawable):
         """
         Get the global (non-minimal) bounding rectangle of the entity.
 
-        The returned rectangle is in global coordinates, which means that it takes into account the transformations (translation, rotation, scale, ...) that are applied to the entity. In other words, this function returns the bounds of the shape in the global 2D world's coordinate system.
+        The returned rectangle is in global coordinates, which means that it takes into account the transformations (translation, rotation, scale, 
+
+pass) that are applied to the entity. In other words, this function returns the bounds of the shape in the global 2D world's coordinate system.
 
         This function does not necessarily return the minimal bounding rectangle. It merely ensures that the returned rectangle covers all the vertices (but possibly more). This allows for a fast approximation of the bounds as a first check; you may want to use more precise checks on top of that.
 
@@ -1394,7 +1407,7 @@ class Font:
         """
         pass
     
-    def __init__(self, data: Any, size: int) -> None: 
+    def __init__(self, data: Any, sizeInBytes: bytes) -> None: 
         """
         Construct the font from a file in memory.
 
@@ -1463,7 +1476,7 @@ class Font:
         """
         pass
 
-    def open_from_memory(self, data: Any, size: int) -> bool: 
+    def open_from_memory(self, data: Any, sizeInBytes: bytes) -> bool: 
         """
         Open the font from a file in memory.
 
@@ -1687,7 +1700,7 @@ class Image:
         """
         pass
 
-    def __init__(self, data: Any, size: int) -> None: 
+    def __init__(self, data: Any, size: bytes) -> None: 
         """
         Construct the image from a file in memory.
 
@@ -1702,7 +1715,7 @@ class Image:
         """
         pass
 
-    def __init__(self, stream: Any) -> None: 
+    def __init__(self, stream: System.InputStream) -> None: 
         """
         Construct the image from a custom stream.
 
@@ -1731,7 +1744,7 @@ class Image:
         Resize the image and fill it with a unique color.
 
         Parameters
-        - ize	Width and height of the image
+        - size	Width and height of the image
         - color	Fill color
         """
         pass
@@ -1759,7 +1772,7 @@ class Image:
         """
         pass
 
-    def load_from_memory(self, data: Any, size: int) -> bool: 
+    def load_from_memory(self, data: Any, size: bytes) -> bool: 
         """
         Load the image from a file in memory.
 
@@ -1914,9 +1927,15 @@ class ConvexShape(Shape):
     """
     Specialized shape representing a convex polygon.
 
-    This class inherits all the functions of sf::Transformable (position, rotation, scale, bounds, ...) as well as the functions of sf::Shape (outline, color, texture, ...).
+    This class inherits all the functions of sf::Transformable (position, rotation, scale, bounds, 
 
-    It is important to keep in mind that a convex shape must always be... convex, otherwise it may not be drawn correctly. Moreover, the points must be defined in order; using a random order would result in an incorrect shape.
+pass) as well as the functions of sf::Shape (outline, color, texture, 
+
+pass).
+
+    It is important to keep in mind that a convex shape must always be
+
+pass convex, otherwise it may not be drawn correctly. Moreover, the points must be defined in order; using a random order would result in an incorrect shape.
     """
 
     def __init__(self, pointCount: int = 0) -> None: 
@@ -1980,14 +1999,20 @@ class CircleShape(Shape):
     """
     Specialized shape representing a circle.
 
-    This class inherits all the functions of sf::Transformable (position, rotation, scale, bounds, ...) as well as the functions of sf::Shape (outline, color, texture, ...).
+    This class inherits all the functions of sf::Transformable (position, rotation, scale, bounds, 
+
+pass) as well as the functions of sf::Shape (outline, color, texture, 
+
+pass).
 
     Since the graphics card can't draw perfect circles, we have to fake them with multiple triangles connected to each other. The "points count" property of sf::CircleShape defines how many of these triangles to use, and therefore defines the quality of the circle.
 
-    The number of points can also be used for another purpose; with small numbers you can create any regular polygon shape: equilateral triangle, square, pentagon, hexagon, ...
+    The number of points can also be used for another purpose; with small numbers you can create any regular polygon shape: equilateral triangle, square, pentagon, hexagon, 
+
+pass
     """
 
-    def __init__(self, radius: float = 0, point_count: int = 30) -> None: 
+    def __init__(self, radius: float = 0, pointCount: int = 30) -> None: 
         """
         Default constructor.
 
@@ -2061,7 +2086,11 @@ class RectangleShape(Shape):
     """
     Specialized shape representing a rectangle.
 
-    This class inherits all the functions of sf::Transformable (position, rotation, scale, bounds, ...) as well as the functions of sf::Shape (outline, color, texture, ...).
+    This class inherits all the functions of sf::Transformable (position, rotation, scale, bounds, 
+
+pass) as well as the functions of sf::Shape (outline, color, texture, 
+
+pass).
     """
 
     def __init__(self, size: System.Vector2f = System.Vector2f()) -> None: 
@@ -2125,4 +2154,371 @@ class RectangleShape(Shape):
         """
         pass
 
-    
+class RenderStates:
+    """
+    Define the states used for drawing to a RenderTarget
+
+    There are six global states that can be applied to the drawn objects:
+
+    - the blend mode: how pixels of the object are blended with the background
+    - the stencil mode: how pixels of the object interact with the stencil buffer
+    - the transform: how the object is positioned/rotated/scaled
+    - the texture coordinate type: how texture coordinates are interpreted
+    - the texture: what image is mapped to the object
+    - the shader: what custom effect is applied to the object
+
+    High-level objects such as sprites or text force some of these states when they are drawn. For example, a sprite will set its own texture, so that you don't have to care about it when drawing the sprite.
+
+    The transform is a special case: sprites, texts and shapes (and it's a good idea to do it with your own drawable classes too) combine their transform with the one that is passed in the RenderStates structure. So that you can use a "global" transform on top of each object's transform.
+
+    Most objects, especially high-level drawables, can be drawn directly without defining render states explicitly – the default set of states is ok in most cases.
+
+    ```
+    window.draw(sprite);
+    ```
+
+    If you want to use a single specific render state, for example a shader, you can pass it directly to the Draw function: sf::RenderStates has an implicit one-argument constructor for each state.
+
+    ```
+    window.draw(sprite, shader);
+    ```
+
+    When you're inside the Draw function of a drawable object (inherited from sf::Drawable), you can either pass the render states unmodified, or change some of them. For example, a transformable object will combine the current transform with its own transform. A sprite will set its texture. Etc.
+    """
+
+    blend_mode: BlendMode
+    stencil_mode: StencilMode
+    transform: Transform
+    coordinate_type: CoordinateType
+    texture: Texture
+    shader: Shader
+
+    def __init__(self) -> None: 
+        """
+        Default constructor.
+
+        Constructing a default set of render states is equivalent to using sf::RenderStates::Default. The default set defines:
+
+        - the BlendAlpha blend mode
+        - the default StencilMode (no stencil)
+        - the identity transform
+        - a nullptr texture
+        - a nullptr shader
+        """
+        pass
+
+    def __init__(self, theBlendMode: BlendMode) -> None: 
+        """
+        Construct a default set of render states with a custom blend mode.
+
+        Parameters
+        - theBlendMode	Blend mode to use
+        """
+        pass
+
+    def __init__(self, theStencilMode: StencilMode) -> None: 
+        """
+        Construct a default set of render states with a custom stencil mode.
+
+        Parameters
+        - theStencilMode	Stencil mode to use
+        """
+        pass
+
+    def __init__(self, theTransform: Transform) -> None: 
+        """
+        Construct a default set of render states with a custom transform.
+
+        Parameters
+        - theTransform	Transform to use
+        """
+        pass
+
+    def __init__(self, theTexture: Texture) -> None: 
+        """
+        Construct a default set of render states with a custom texture.
+
+        Parameters
+        - theTexture	Texture to use
+        """
+        pass
+
+    def __init__(self, shader: Shader) -> None: 
+        """
+        Construct a default set of render states with a custom shader.
+
+        Parameters
+        - theShader	Shader to use
+        """
+        pass
+
+    def __init__(self, theBlendMode: BlendMode, theStencilMode: StencilMode, theTransform: Transform, theCoordinateType: CoordinateType, theTexture: Texture, theShader: Shader) -> None: 
+        """
+        Construct a set of render states with all its attributes.
+
+        Parameters
+        - theBlendMode	Blend mode to use
+        - theStencilMode	Stencil mode to use
+        - theTransform	Transform to use
+        - theCoordinateType	Texture coordinate type to use
+        - theTexture	Texture to use
+        - theShader	Shader to use
+        """
+        pass
+
+    @staticmethod
+    def default() -> RenderStates: 
+        """
+        Special instance holding the default render states.
+        """
+        pass
+
+class RenderTarget:
+    def clear(self, color: Color) -> None: 
+
+pass
+    def clear_stencil(self) -> None: 
+
+pass
+    def clear(self, color: Color, stencil_value: StencilValue) -> None: 
+
+pass
+    def set_view(self, view: View) -> None: 
+
+pass
+    def get_view(self) -> View: 
+
+pass
+    def get_default_view(self) -> View: 
+
+pass
+    def get_viewport(self) -> IntRect: 
+
+pass
+    def get_scissor(self) -> IntRect: 
+
+pass
+    def map_pixel_to_coords(self, point: Vector2i) -> Vector2f: 
+
+pass
+    def map_coords_to_pixel(self, point: Vector2f) -> Vector2i: 
+
+pass
+    def draw(self, drawable: Drawable, states: RenderStates = 
+
+pass) -> None: 
+
+pass
+    def draw(self, vertices: Vertex, vertex_count: int, type: PrimitiveType, states: RenderStates = 
+
+pass) -> None: 
+
+pass
+    def draw(self, buffer: VertexBuffer, states: RenderStates = 
+
+pass) -> None: 
+
+pass
+    def draw(self, buffer: VertexBuffer, first: int, count: int, states: RenderStates = 
+
+pass) -> None: 
+
+pass
+    def get_size(self) -> Vector2u: 
+
+pass
+    def is_srgb(self) -> bool: 
+
+pass
+    def set_active(self, active: bool) -> bool: 
+
+pass
+    def push_gl_states(self) -> None: 
+
+pass
+    def pop_gl_states(self) -> None: 
+
+pass
+    def reset_gl_states(self) -> None: 
+
+pass
+
+class RenderTexture(RenderTarget):
+    def __init__(self) -> None: 
+
+pass
+    def __init__(self, size: Vector2u, context_settings: ContextSettings) -> None: 
+
+pass
+    def resize(self, size: Vector2u) -> None: 
+
+pass
+    def set_smooth(self, smooth: bool) -> None: 
+
+pass
+    def is_smooth(self) -> bool: 
+
+pass
+    def set_repeated(self, repeated: bool) -> None: 
+
+pass
+    def is_repeated(self) -> bool: 
+
+pass
+    def generate_mipmap(self) -> bool: 
+
+pass
+    def set_active(self, active: bool) -> bool: 
+
+pass
+    def display(self) -> None: 
+
+pass
+    def get_size(self) -> Vector2u: 
+
+pass
+    def is_srgb(self) -> bool: 
+
+pass
+    def get_texture(self) -> Texture: 
+
+pass
+    @staticmethod
+    def get_maximum_anti_aliasing_level() -> int: 
+
+pass
+
+class RenderWindow(Window, RenderTarget):
+    def __init__(self) -> None: 
+
+pass
+    def __init__(self, mode: VideoMode, title: str, style: int = 
+
+pass, state: State = 
+
+pass, context_settings: ContextSettings = 
+
+pass) -> None: 
+
+pass
+    def get_size(self) -> Vector2u: 
+
+pass
+    def set_icon(self, image: Image) -> None: 
+
+pass
+    def set_icon(self, size: Vector2u, pixels: bytes) -> None: 
+
+pass
+    def is_srgb(self) -> bool: 
+
+pass
+    def set_active(self, active: bool) -> bool: 
+
+pass
+
+class Shader:
+    class Type:
+        Vertex: int
+        Geometry: int
+        Fragment: int
+
+    def __init__(self) -> None: 
+
+pass
+    def load_from_file(self, filename: str, type: Type) -> bool: 
+
+pass
+    def load_from_file(self, vertex: str, fragment: str) -> bool: 
+
+pass
+    def load_from_file(self, vertex: str, geometry: str, fragment: str) -> bool: 
+
+pass
+    def load_from_memory(self, source: str, type: Type) -> bool: 
+
+pass
+    def load_from_memory(self, vertex: str, fragment: str) -> bool: 
+
+pass
+    def load_from_memory(self, vertex: str, geometry: str, fragment: str) -> bool: 
+
+pass
+    def set_uniform(self, name: str, x: float) -> None: 
+
+pass
+    def set_uniform(self, name: str, vector: Glsl.Vec2) -> None: 
+
+pass
+    def set_uniform(self, name: str, vector: Glsl.Vec3) -> None: 
+
+pass
+    def set_uniform(self, name: str, vector: Glsl.Vec4) -> None: 
+
+pass
+    def set_uniform(self, name: str, x: int) -> None: 
+
+pass
+    def set_uniform(self, name: str, vector: Glsl.Ivec2) -> None: 
+
+pass
+    def set_uniform(self, name: str, vector: Glsl.Ivec3) -> None: 
+
+pass
+    def set_uniform(self, name: str, vector: Glsl.Ivec4) -> None: 
+
+pass
+    def set_uniform(self, name: str, x: bool) -> None: 
+
+pass
+    def set_uniform(self, name: str, vector: Glsl.Bvec2) -> None: 
+
+pass
+    def set_uniform(self, name: str, vector: Glsl.Bvec3) -> None: 
+
+pass
+    def set_uniform(self, name: str, vector: Glsl.Bvec4) -> None: 
+
+pass
+    def set_uniform(self, name: str, matrix: Glsl.Mat3) -> None: 
+
+pass
+    def set_uniform(self, name: str, matrix: Glsl.Mat4) -> None: 
+
+pass
+    def set_uniform(self, name: str, texture: Texture) -> None: 
+
+pass
+    def set_uniform_array(self, name: str, values: float, count: int) -> None: 
+
+pass
+    def set_uniform_array(self, name: str, values: Glsl.Vec2, count: int) -> None: 
+
+pass
+    def set_uniform_array(self, name: str, values: Glsl.Vec3, count: int) -> None: 
+
+pass
+    def set_uniform_array(self, name: str, values: Glsl.Vec4, count: int) -> None: 
+
+pass
+    def set_uniform_array(self, name: str, matrix_array: Glsl.Mat3, count: int) -> None: 
+
+pass
+    def set_uniform_array(self, name: str, matrix_array: Glsl.Mat4, count: int) -> None: 
+
+pass
+    def get_native_handle(self) -> int: 
+
+pass
+    @staticmethod
+    def bind(shader: Optional['Shader']) -> None: 
+
+pass
+    @staticmethod
+    def is_available() -> bool: 
+
+pass
+    @staticmethod
+    def is_geometry_available() -> bool: 
+
+pass
