@@ -41,7 +41,15 @@ from .Graphics import (
     Transformable,
     Vertex,
     VertexArray,
-    VertexBuffer
+    VertexBuffer,
+    Shape,
+    Color,
+    Font,
+    Glyph,
+    Image,
+    ConvexShape,
+    CircleShape,
+    RectangleShape
 )
 
 __all__ = [
@@ -81,5 +89,13 @@ __all__ = [
     'Transformable',
     'Vertex',
     'VertexArray',
-    'VertexBuffer'
+    'VertexBuffer',
+    'Shape',
+    'Color',
+    'Font',
+    'Glyph',
+    'Image',
+    'ConvexShape',
+    'CircleShape',
+    'RectangleShape'
 ]

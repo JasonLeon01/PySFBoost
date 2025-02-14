@@ -1,5 +1,5 @@
 import enum
-from typing import List
+from typing import Any, List
 from . import System
 
 class CoordinateType(enum.IntEnum):
@@ -1009,6 +1009,7 @@ class VertexBuffer(Drawable):
         - usage	Usage specifier
         """
         pass
+    
     def get_usage(self) -> Usage: 
         """
         Get the usage specifier of this vertex buffer.
@@ -1017,6 +1018,7 @@ class VertexBuffer(Drawable):
         - Usage specifier
         """
         pass
+
     def get_native_handle(self) -> int: 
         """
         Get the underlying OpenGL handle of the vertex buffer.
@@ -1050,6 +1052,7 @@ class VertexBuffer(Drawable):
         - vertexBuffer	Pointer to the vertex buffer to bind, can be null to use no vertex buffer
         """
         pass
+
     @staticmethod
     def is_available() -> bool: 
         """
@@ -1061,3 +1064,1065 @@ class VertexBuffer(Drawable):
         - true if vertex buffers are supported, false otherwise
         """
         pass
+
+class Shape(Transformable, Drawable):
+    """
+    Base class for textured shapes with outline.
+
+    sf::Shape is a drawable class that allows to define and display a custom convex shape on a render target.
+
+    It's only an abstract base, it needs to be specialized for concrete types of shapes (circle, rectangle, convex polygon, star, ...).
+
+    In addition to the attributes provided by the specialized shape classes, a shape always has the following attributes:
+
+    - a texture
+    - a texture rectangle
+    - a fill color
+    - an outline color
+    - an outline thickness
+
+    Each feature is optional, and can be disabled easily:
+
+    - the texture can be null
+    - the fill/outline colors can be sf::Color::Transparent
+    - the outline thickness can be zero
+
+    You can write your own derived shape class, there are only two virtual functions to override:
+
+    - getPointCount must return the number of points of the shape
+    - getPoint must return the points of the shape
+    """
+    def set_texture(self, texture: Texture, resetRect: bool = False) -> None: 
+        """
+        Change the source texture of the shape.
+
+        The texture argument refers to a texture that must exist as long as the shape uses it. Indeed, the shape doesn't store its own copy of the texture, but rather keeps a pointer to the one that you passed to this function. If the source texture is destroyed and the shape tries to use it, the behavior is undefined. texture can be a null pointer to disable texturing. If resetRect is true, the TextureRect property of the shape is automatically adjusted to the size of the new texture. If it is false, the texture rect is left unchanged.
+
+        Parameters
+        - texture	New texture
+        - resetRect	Should the texture rect be reset to the size of the new texture?
+        """
+        pass
+
+    def set_texture_rect(self, rect: IntRect) -> None: 
+        """
+        Set the sub-rectangle of the texture that the shape will display.
+
+        The texture rect is useful when you don't want to display the whole texture, but rather a part of it. By default, the texture rect covers the entire texture.
+
+        Parameters
+        - rect	Rectangle defining the region of the texture to display
+        """
+        pass
+
+    def set_fill_color(self, color: Color) -> None: 
+        """
+        Set the fill color of the shape.
+
+        This color is modulated (multiplied) with the shape's texture if any. It can be used to colorize the shape, or change its global opacity. You can use sf::Color::Transparent to make the inside of the shape transparent, and have the outline alone. By default, the shape's fill color is opaque white.
+
+        Parameters
+        - color	New color of the shape
+        """
+        pass
+
+    def set_outline_color(self, color: Color) -> None: 
+        """
+        Set the outline color of the shape.
+
+        By default, the shape's outline color is opaque white.
+
+        Parameters
+        - color	New outline color of the shape
+        """
+        pass
+
+    def set_outline_thickness(self, thickness: float) -> None: 
+        """
+        Set the thickness of the shape's outline.
+
+        Note that negative values are allowed (so that the outline expands towards the center of the shape), and using zero disables the outline. By default, the outline thickness is 0.
+
+        Parameters
+        - thickness	New outline thickness
+        """
+        pass
+
+    def get_texture(self) -> Texture: 
+        """
+        Get the source texture of the shape.
+
+        If the shape has no source texture, a nullptr is returned. The returned pointer is const, which means that you can't modify the texture when you retrieve it with this function.
+
+        Returns
+        - Pointer to the shape's texture
+        """
+        pass
+
+    def get_texture_rect(self) -> IntRect: 
+        """
+        Get the sub-rectangle of the texture displayed by the shape.
+
+        Returns
+        - Texture rectangle of the shape
+        """
+        pass
+
+    def get_fill_color(self) -> Color: 
+        """
+        Get the fill color of the shape.
+
+        Returns
+        - Fill color of the shape
+        """
+        pass
+
+    def get_outline_color(self) -> Color: 
+        """
+        Get the outline color of the shape.
+
+        Returns
+        - Outline color of the shape
+        """
+        pass
+
+    def get_outline_thickness(self) -> float: 
+        """
+        Get the outline thickness of the shape.
+
+        Returns
+        - Outline thickness of the shape
+        """
+        pass
+
+    def get_point_count(self) -> int: 
+        """
+        Get the total number of points of the shape.
+
+        Returns
+        - Number of points of the shape
+        """
+        pass
+
+    def get_point(self, index: int) -> System.Vector2f: 
+        """
+        Get a point of the shape.
+
+        The returned point is in local coordinates, that is, the shape's transforms (position, rotation, scale) are not taken into account. The result is undefined if index is out of the valid range.
+
+        Parameters
+        - index	Index of the point to get, in range [0 .. getPointCount() - 1]
+
+        Returns
+        - index-th point of the shape
+        """
+        pass
+
+    def get_geometric_center(self) -> System.Vector2f: 
+        """
+        Get the geometric center of the shape.
+
+        The returned point is in local coordinates, that is, the shape's transforms (position, rotation, scale) are not taken into account.
+
+        Returns
+        - The geometric center of the shape
+        """
+        pass
+
+    def get_local_bounds(self) -> FloatRect: 
+        """
+        Get the local bounding rectangle of the entity.
+
+        The returned rectangle is in local coordinates, which means that it ignores the transformations (translation, rotation, scale, ...) that are applied to the entity. In other words, this function returns the bounds of the entity in the entity's coordinate system.
+
+        Returns
+        - Local bounding rectangle of the entity
+        """
+        pass
+    
+    def get_global_bounds(self) -> FloatRect: 
+        """
+        Get the global (non-minimal) bounding rectangle of the entity.
+
+        The returned rectangle is in global coordinates, which means that it takes into account the transformations (translation, rotation, scale, ...) that are applied to the entity. In other words, this function returns the bounds of the shape in the global 2D world's coordinate system.
+
+        This function does not necessarily return the minimal bounding rectangle. It merely ensures that the returned rectangle covers all the vertices (but possibly more). This allows for a fast approximation of the bounds as a first check; you may want to use more precise checks on top of that.
+
+        Returns
+        - Global bounding rectangle of the entity
+        """
+        pass
+
+class Color:
+    """
+    Utility class for manipulating RGBA colors.
+
+    sf::Color is a simple color class composed of 4 components:
+
+    - Red
+    - Green
+    - Blue
+    - Alpha (opacity)
+
+    Each component is a public member, an unsigned integer in the range [0, 255]. Thus, colors can be constructed and manipulated very easily:
+
+    ```
+    sf::Color color(255, 0, 0); // red
+    color.r = 0;                // make it black
+    color.b = 128;              // make it dark blue
+    ```
+
+    The fourth component of colors, named "alpha", represents the opacity of the color. A color with an alpha value of 255 will be fully opaque, while an alpha value of 0 will make a color fully transparent, whatever the value of the other components is.
+
+    The most common colors are already defined as static variables:
+
+    ```
+    sf::Color black       = sf::Color::Black;
+    sf::Color white       = sf::Color::White;
+    sf::Color red         = sf::Color::Red;
+    sf::Color green       = sf::Color::Green;
+    sf::Color blue        = sf::Color::Blue;
+    sf::Color yellow      = sf::Color::Yellow;
+    sf::Color magenta     = sf::Color::Magenta;
+    sf::Color cyan        = sf::Color::Cyan;
+    sf::Color transparent = sf::Color::Transparent;
+    ```
+
+    Colors can also be added and modulated (multiplied) using the overloaded operators + and *.
+    """
+
+    def __init__(self, color: bytes) -> None: 
+        """
+        Construct the color from 32-bit unsigned integer.
+
+        Parameters
+        - color	Number containing the RGBA components (in that order)
+        """
+        pass
+
+    def __init__(self, red: int, green: int, blue: int, alpha: int = 255) -> None: 
+        """
+        Construct the color from its 4 RGBA components.
+
+        Parameters
+        - red	Red component (in the range [0, 255])
+        - green	Green component (in the range [0, 255])
+        - blue	Blue component (in the range [0, 255])
+        - alpha	Alpha (opacity) component (in the range [0, 255])
+        """
+        pass
+
+    def to_integer(self) -> int: 
+        """
+        Retrieve the color as a 32-bit unsigned integer.
+
+        Returns
+        - Color represented as a 32-bit unsigned integer
+        """
+        pass
+
+    r: int
+    g: int
+    b: int
+    a: int
+
+    @staticmethod
+    def black() -> Color: 
+        pass
+    @staticmethod
+    def white() -> Color: 
+        pass
+    @staticmethod
+    def red() -> Color: 
+        pass
+    @staticmethod
+    def green() -> Color: 
+        pass
+    @staticmethod
+    def blue() -> Color: 
+        pass
+    @staticmethod
+    def yellow() -> Color: 
+        pass
+    @staticmethod
+    def magenta() -> Color: 
+        pass
+    @staticmethod
+    def cyan() -> Color: 
+        pass
+    @staticmethod
+    def transparent() -> Color: 
+        pass
+
+class Font:
+    """
+    Class for loading and manipulating character fonts.
+
+    Fonts can be opened from a file, from memory or from a custom stream, and supports the most common types of fonts.
+
+    See the openFromFile function for the complete list of supported formats.
+
+    Once it is opened, a sf::Font instance provides three types of information about the font:
+
+    - Global metrics, such as the line spacing
+    - Per-glyph metrics, such as bounding box or kerning
+    - Pixel representation of glyphs
+
+    Fonts alone are not very useful: they hold the font data but cannot make anything useful of it. To do so you need to use the sf::Text class, which is able to properly output text with several options such as character size, style, color, position, rotation, etc. This separation allows more flexibility and better performances: indeed a sf::Font is a heavy resource, and any operation on it is slow (often too slow for real-time applications). On the other side, a sf::Text is a lightweight object which can combine the glyphs data and metrics of a sf::Font to display any text on a render target. Note that it is also possible to bind several sf::Text instances to the same sf::Font.
+
+    It is important to note that the sf::Text instance doesn't copy the font that it uses, it only keeps a reference to it. Thus, a sf::Font must not be destructed while it is used by a sf::Text (i.e. never write a function that uses a local sf::Font instance for creating a text).
+
+    Apart from opening font files, and passing them to instances of sf::Text, you should normally not have to deal directly with this class. However, it may be useful to access the font metrics or rasterized glyphs for advanced usage.
+
+    Note that if the font is a bitmap font, it is not scalable, thus not all requested sizes will be available to use. This needs to be taken into consideration when using sf::Text. If you need to display text of a certain size, make sure the corresponding bitmap font that supports that size is used.
+    """
+
+    class Info:
+        """
+        Holds various information about a font.
+        """
+        def __init__(self) -> None:
+            pass
+
+        family: str
+
+    def __init__(self) -> None: 
+        """
+        Default constructor.
+
+        Construct an empty font that does not contain any glyphs.
+        """
+        pass
+    
+    def __init__(self, data: Any, size: int) -> None: 
+        """
+        Construct the font from a file in memory.
+
+        The supported font formats are: TrueType, Type 1, CFF, OpenType, SFNT, X11 PCF, Windows FNT, BDF, PFR and Type 42.
+
+        Warning
+        - SFML cannot preload all the font data in this function, so the buffer pointed by data has to remain valid until the sf::Font object opens a new font or is destroyed.
+
+        Parameters
+        - data	Pointer to the file data in memory
+        - sizeInBytes	Size of the data to load, in bytes
+
+        Exceptions
+        - sf::Exception	if loading was unsuccessful
+        """
+        pass
+
+    def __init__(self, stream: System.InputStream) -> None: 
+        """
+        Construct the font from a custom stream.
+
+        The supported font formats are: TrueType, Type 1, CFF, OpenType, SFNT, X11 PCF, Windows FNT, BDF, PFR and Type 42. Warning: SFML cannot preload all the font data in this function, so the contents of stream have to remain valid as long as the font is used.
+
+        Warning
+        - SFML cannot preload all the font data in this function, so the stream has to remain accessible until the sf::Font object opens a new font or is destroyed.
+
+        Parameters
+        - stream	Source stream to read from
+
+        Exceptions
+        - sf::Exception	if loading was unsuccessful
+        """
+        pass
+
+    def __init__(self, filename: str) -> None:
+        """
+        Construct the font from a file.
+
+        The supported font formats are: TrueType, Type 1, CFF, OpenType, SFNT, X11 PCF, Windows FNT, BDF, PFR and Type 42. Note that this function knows nothing about the standard fonts installed on the user's system, thus you can't load them directly.
+
+        Warning
+        - SFML cannot preload all the font data in this function, so the file has to remain accessible until the sf::Font object opens a new font or is destroyed.
+
+        Parameters
+        - filename	Path of the font file to open
+
+        Exceptions
+        - sf::Exception	if opening was unsuccessful
+        """
+        pass
+
+    def open_from_file(self, filename: str) -> bool: 
+        """
+        Open the font from a file.
+
+        The supported font formats are: TrueType, Type 1, CFF, OpenType, SFNT, X11 PCF, Windows FNT, BDF, PFR and Type 42. Note that this function knows nothing about the standard fonts installed on the user's system, thus you can't load them directly.
+
+        Warning
+        - SFML cannot preload all the font data in this function, so the file has to remain accessible until the sf::Font object opens a new font or is destroyed.
+
+        Parameters
+        - filename	Path of the font file to load
+
+        Returns
+        - true if opening succeeded, false if it failed
+        """
+        pass
+
+    def open_from_memory(self, data: Any, size: int) -> bool: 
+        """
+        Open the font from a file in memory.
+
+        The supported font formats are: TrueType, Type 1, CFF, OpenType, SFNT, X11 PCF, Windows FNT, BDF, PFR and Type 42.
+
+        Warning
+        - SFML cannot preload all the font data in this function, so the buffer pointed by data has to remain valid until the sf::Font object opens a new font or is destroyed.
+
+        Parameters
+        - data	Pointer to the file data in memory
+        = sizeInBytes	Size of the data to load, in bytes
+
+        Returns
+        - true if opening succeeded, false if it failed
+        """
+        pass
+
+    def open_from_stream(self, stream: System.InputStream) -> bool: 
+        """
+        Open the font from a custom stream.
+
+        The supported font formats are: TrueType, Type 1, CFF, OpenType, SFNT, X11 PCF, Windows FNT, BDF, PFR and Type 42.
+
+        Warning
+        - SFML cannot preload all the font data in this function, so the stream has to remain accessible until the sf::Font object opens a new font or is destroyed.
+
+        Parameters
+        - stream	Source stream to read from
+
+        Returns
+        - true if opening succeeded, false if it failed
+        """
+        pass
+
+    def get_info(self) -> Info: 
+        """
+        Get the font information.
+
+        Returns
+        - A structure that holds the font information
+        """
+        pass
+
+    def get_glyph(self, codePoint: int, characterSize: int, bold: bool, outline_thickness = 0) -> Glyph: 
+        """
+        Retrieve a glyph of the font.
+
+        If the font is a bitmap font, not all character sizes might be available. If the glyph is not available at the requested size, an empty glyph is returned.
+
+        You may want to use hasGlyph to determine if the glyph exists before requesting it. If the glyph does not exist, a font specific default is returned.
+
+        Be aware that using a negative value for the outline thickness will cause distorted rendering.
+
+        Parameters
+        - codePoint	Unicode code point of the character to get
+        - characterSize	Reference character size
+        - bold	Retrieve the bold version or the regular one?
+        - outlineThickness	Thickness of outline (when != 0 the glyph will not be filled)
+
+        Returns
+        - The glyph corresponding to codePoint and characterSize
+        """
+        pass
+
+    def has_glyph(self, codePoint: int) -> bool: 
+        """
+        Determine if this font has a glyph representing the requested code point.
+
+        Most fonts only include a very limited selection of glyphs from specific Unicode subsets, like Latin, Cyrillic, or Asian characters.
+
+        While code points without representation will return a font specific default character, it might be useful to verify whether specific code points are included to determine whether a font is suited to display text in a specific language.
+
+        Parameters
+        - codePoint	Unicode code point to check
+
+        Returns
+        - true if the codepoint has a glyph representation, false otherwise
+        """
+        pass
+
+    def get_kerning(self, first: int, second: int, characterSize: int, bold: bool = False) -> float: 
+        """
+        Get the kerning offset of two glyphs.
+
+        The kerning is an extra offset (negative) to apply between two glyphs when rendering them, to make the pair look more "natural". For example, the pair "AV" have a special kerning to make them closer than other characters. Most of the glyphs pairs have a kerning offset of zero, though.
+
+        Parameters
+        - first	Unicode code point of the first character
+        - second	Unicode code point of the second character
+        - characterSize	Reference character size
+        - bold	Retrieve the bold version or the regular one?
+
+        Returns
+        - Kerning value for first and second, in pixels
+        """
+        pass
+
+    def get_line_spacing(self, characterSize: int) -> float: 
+        """
+        Get the line spacing.
+
+        Line spacing is the vertical offset to apply between two consecutive lines of text.
+
+        Parameters
+        - characterSize	Reference character size
+
+        Returns
+        - Line spacing, in pixels
+        """
+        pass
+
+    def get_underline_position(self, characterSize: int) -> float: 
+        """
+        Get the position of the underline.
+
+        Underline position is the vertical offset to apply between the baseline and the underline.
+
+        Parameters
+        - characterSize	Reference character size
+
+        Returns
+        - Underline position, in pixels
+        """
+        pass
+
+    def get_underline_thickness(self, characterSize: int) -> float: 
+        """
+        Get the thickness of the underline.
+
+        Underline thickness is the vertical size of the underline.
+
+        Parameters
+        - characterSize	Reference character size
+
+        Returns
+        - Underline thickness, in pixel
+        """
+        pass
+
+    def set_smooth(self, smooth: bool) -> None: 
+        """
+        Enable or disable the smooth filter.
+
+        When the filter is activated, the font appears smoother so that pixels are less noticeable. However if you want the font to look exactly the same as its source file, you should disable it. The smooth filter is enabled by default.
+
+        Parameters
+        - smooth	true to enable smoothing, false to disable it
+        """
+        pass
+
+    def is_smooth(self) -> bool: 
+        """
+        Tell whether the smooth filter is enabled or not.
+
+        Returns
+        - true if smoothing is enabled, false if it is disabled
+        """
+        pass
+    def get_texture(self, characterSize: int) -> Texture: 
+        """
+        Retrieve the texture containing the loaded glyphs of a certain size.
+
+        The contents of the returned texture changes as more glyphs are requested, thus it is not very relevant. It is mainly used internally by sf::Text.
+
+        Parameters
+        - characterSize	Reference character size
+        """
+        pass
+
+class Glyph:
+    """
+    Structure describing a glyph.
+
+    A glyph is the visual representation of a character.
+
+    The sf::Glyph structure provides the information needed to handle the glyph:
+
+    - its coordinates in the font's texture
+    - its bounding rectangle
+    - the offset to apply to get the starting position of the next glyph
+    """
+    def __init__(self) -> None: 
+        pass
+
+    advance: float
+    lsb_delta: int
+    rsb_delta: int
+    bounds: FloatRect
+    texture_rect: IntRect
+
+class Image:
+    """
+    Class for loading, manipulating and saving images.
+
+    sf::Image is an abstraction to manipulate images as bi-dimensional arrays of pixels.
+
+    The class provides functions to load, read, write and save pixels, as well as many other useful functions.
+
+    sf::Image can handle a unique internal representation of pixels, which is RGBA 32 bits. This means that a pixel must be composed of 8 bit red, green, blue and alpha channels – just like a sf::Color. All the functions that return an array of pixels follow this rule, and all parameters that you pass to sf::Image functions (such as loadFromMemory) must use this representation as well.
+
+    A sf::Image can be copied, but it is a heavy resource and if possible you should always use [const] references to pass or return them to avoid useless copies.
+    """
+
+    def __init__(self) -> None: 
+        """
+        Default constructor.
+
+        Constructs an image with width 0 and height 0.
+        """
+        pass
+
+    def __init__(self, size: System.Vector2u, pixels: bytes) -> None: 
+        """
+        Construct the image from an array of pixels.
+
+        The pixel array is assumed to contain 32-bits RGBA pixels, and have the given size. If not, this is an undefined behavior. If pixels is nullptr, an empty image is created.
+
+        Parameters
+        - size	Width and height of the image
+        - pixels	Array of pixels to copy to the image
+        """
+        pass
+
+    def __init__(self, data: Any, size: int) -> None: 
+        """
+        Construct the image from a file in memory.
+
+        The supported image formats are bmp, png, tga, jpg, gif, psd, hdr, pic and pnm. Some format options are not supported, like jpeg with arithmetic coding or ASCII pnm.
+
+        Parameters
+        - data	Pointer to the file data in memory
+        - size	Size of the data to load, in bytes
+
+        Exceptions
+        - sf::Exception	if loading was unsuccessful
+        """
+        pass
+
+    def __init__(self, stream: Any) -> None: 
+        """
+        Construct the image from a custom stream.
+
+        The supported image formats are bmp, png, tga, jpg, gif, psd, hdr, pic and pnm. Some format options are not supported, like jpeg with arithmetic coding or ASCII pnm.
+
+        Parameters
+        - stream	Source stream to read from
+
+        Exceptions
+        - sf::Exception	if loading was unsuccessful
+        """
+        pass
+
+    def __init__(self, size: System.Vector2u, color: Color = Color.black) -> None: 
+        """
+        Construct the image and fill it with a unique color.
+
+        Parameters
+        - size	Width and height of the image
+        - color	Fill color
+        """
+        pass
+
+    def resize(self, size: System.Vector2u, color: Color = Color.black) -> None: 
+        """
+        Resize the image and fill it with a unique color.
+
+        Parameters
+        - ize	Width and height of the image
+        - color	Fill color
+        """
+        pass
+
+    def resize(self, size: System.Vector2u, pixels: bytes) -> None: 
+        """
+        Resize the image from an array of pixels.
+
+        The pixel array is assumed to contain 32-bits RGBA pixels, and have the given size. If not, this is an undefined behavior. If pixels is nullptr, an empty image is created.
+
+        Parameters
+        - size	Width and height of the image
+        - pixels	Array of pixels to copy to the image
+        """
+        pass
+
+    def load_from_file(self, filename: str) -> bool: 
+        """
+        Load the image from a file on disk.
+
+        The supported image formats are bmp, png, tga, jpg, gif, psd, hdr, pic and pnm. Some format options are not supported, like jpeg with arithmetic coding or ASCII pnm. If this function fails, the image is left unchanged.
+
+        Parameters
+        - filename	Path of the image file to load
+        """
+        pass
+
+    def load_from_memory(self, data: Any, size: int) -> bool: 
+        """
+        Load the image from a file in memory.
+
+        The supported image formats are bmp, png, tga, jpg, gif, psd, hdr, pic and pnm. Some format options are not supported, like jpeg with arithmetic coding or ASCII pnm. If this function fails, the image is left unchanged.
+
+        Parameters
+        - data	Pointer to the file data in memory
+        - size	Size of the data to load, in bytes
+
+        Returns
+        - true if loading was successful
+        """
+        pass
+
+    def load_from_stream(self, stream: System.InputStream) -> bool: 
+        """
+        Load the image from a custom stream.
+
+        The supported image formats are bmp, png, tga, jpg, gif, psd, hdr, pic and pnm. Some format options are not supported, like jpeg with arithmetic coding or ASCII pnm. If this function fails, the image is left unchanged.
+
+        Parameters
+        - stream	Source stream to read from
+
+        Returns
+        - true if loading was successful
+        """
+        pass
+
+    def save_to_file(self, filename: str) -> bool: 
+        """
+        Save the image to a file on disk.
+
+        The format of the image is automatically deduced from the extension. The supported image formats are bmp, png, tga and jpg. The destination file is overwritten if it already exists. This function fails if the image is empty.
+
+        Parameters
+        - filename	Path of the file to save
+
+        Returns
+        - true if saving was successful
+        """
+        pass
+
+    def save_to_memory(self, format: str) -> List[bytes] | None: 
+        """
+        Save the image to a buffer in memory.
+
+        The format of the image must be specified. The supported image formats are bmp, png, tga and jpg. This function fails if the image is empty, or if the format was invalid.
+
+        Parameters
+        - format	Encoding format to use
+
+        Returns
+        - Buffer with encoded data if saving was successful, otherwise std::nullopt
+        """
+        pass
+
+    def get_size(self) -> System.Vector2u: 
+        """
+        Return the size (width and height) of the image.
+
+        Returns
+        - Size of the image, in pixels
+        """
+        pass
+
+    def create_mask_from_color(self, color: Color, alpha: int = 0) -> None: 
+        """
+        Create a transparency mask from a specified color-key.
+
+        This function sets the alpha value of every pixel matching the given color to alpha (0 by default), so that they become transparent.
+
+        Parameters
+        - color	Color to make transparent
+        - alpha	Alpha value to assign to transparent pixels
+        """
+        pass
+
+    def copy(self, source: Image, dest: System.Vector2u, source_rect: IntRect = IntRect(), apply_alpha: bool = False) -> None: 
+        """
+        Copy pixels from another image onto this one.
+
+        This function does a slow pixel copy and should not be used intensively. It can be used to prepare a complex static image from several others, but if you need this kind of feature in real-time you'd better use sf::RenderTexture.
+
+        If sourceRect is empty, the whole image is copied. If applyAlpha is set to true, alpha blending is applied from the source pixels to the destination pixels using the over operator. If it is false, the source pixels are copied unchanged with their alpha value.
+
+        See https://en.wikipedia.org/wiki/Alpha_compositing for details on the over operator.
+
+        Note that this function can fail if either image is invalid (i.e. zero-sized width or height), or if sourceRect is not within the boundaries of the source parameter, or if the destination area is out of the boundaries of this image.
+
+        On failure, the destination image is left unchanged.
+
+        Parameters
+        - source	Source image to copy
+        - dest	Coordinates of the destination position
+        - sourceRect	Sub-rectangle of the source image to copy
+        - applyAlpha	Should the copy take into account the source transparency?
+        Returns
+        - true if the operation was successful, false otherwise
+        """
+        pass
+
+    def set_pixel(self, coords: System.Vector2u, color: Color) -> None: 
+        """
+        Change the color of a pixel.
+
+        This function doesn't check the validity of the pixel coordinates, using out-of-range values will result in an undefined behavior.
+
+        Parameters
+        - coords	Coordinates of pixel to change
+        - color	New color of the pixel
+        """
+        pass
+
+    def get_pixel(self, coords: System.Vector2u) -> Image: 
+        """
+        Get the color of a pixel.
+
+        This function doesn't check the validity of the pixel coordinates, using out-of-range values will result in an undefined behavior.
+
+        Parameters
+        - coords	Coordinates of pixel to change
+
+        Returns
+        - Color of the pixel at given coordinates
+        """
+        pass
+
+    def get_pixels_ptr(self) -> bytes: 
+        """
+        Get a read-only pointer to the array of pixels.
+
+        The returned value points to an array of RGBA pixels made of 8 bit integer components. The size of the array is width * height * 4 (getSize().x * getSize().y * 4). Warning: the returned pointer may become invalid if you modify the image, so you should never store it for too long. If the image is empty, a null pointer is returned.
+
+        Returns
+        - Read-only pointer to the array of pixels
+        """
+        pass
+
+    def flip_horizontally(self) -> None: 
+        """
+        Flip the image horizontally (left <-> right)
+        """
+        pass
+
+    def flip_vertically(self) -> None: 
+        """
+        Flip the image vertically (top <-> bottom)
+        """
+        pass
+
+class ConvexShape(Shape):
+    """
+    Specialized shape representing a convex polygon.
+
+    This class inherits all the functions of sf::Transformable (position, rotation, scale, bounds, ...) as well as the functions of sf::Shape (outline, color, texture, ...).
+
+    It is important to keep in mind that a convex shape must always be... convex, otherwise it may not be drawn correctly. Moreover, the points must be defined in order; using a random order would result in an incorrect shape.
+    """
+
+    def __init__(self, pointCount: int = 0) -> None: 
+        """
+        Default constructor.
+
+        Parameters
+        - pointCount	Number of points of the polygon
+        """
+        pass
+
+    def set_point_count(self, count: int) -> None: 
+        """
+        Set the number of points of the polygon.
+
+        For the shape to be rendered as expected, count must be greater or equal to 3.
+
+        Parameters
+        - count	New number of points of the polygon
+        """
+        pass
+
+    def get_point_count(self) -> int: 
+        """
+        Get the number of points of the polygon.
+
+        Returns
+        - Number of points of the polygon
+        """
+        pass
+
+    def set_point(self, index: int, point: System.Vector2f) -> None: 
+        """
+        Set the position of a point.
+
+        Don't forget that the shape must be convex and the order of points matters. Points should not overlap. This applies to rendering; it is explicitly allowed to temporarily have non-convex or degenerate shapes when not drawn (e.g. during shape initialization).
+
+        Point count must be specified beforehand. The behavior is undefined if index is greater than or equal to getPointCount.
+
+        Parameters
+        - index	Index of the point to change, in range [0 .. getPointCount() - 1]
+        - point	New position of the point
+        """
+        pass
+
+    def get_point(self, index: int) -> System.Vector2f: 
+        """
+        Get the position of a point.
+
+        The returned point is in local coordinates, that is, the shape's transforms (position, rotation, scale) are not taken into account. The result is undefined if index is out of the valid range.
+
+        Parameters
+        - index	Index of the point to get, in range [0 .. getPointCount() - 1]
+
+        Returns
+        - Position of the index-th point of the polygon
+        """
+        pass
+
+class CircleShape(Shape):
+    """
+    Specialized shape representing a circle.
+
+    This class inherits all the functions of sf::Transformable (position, rotation, scale, bounds, ...) as well as the functions of sf::Shape (outline, color, texture, ...).
+
+    Since the graphics card can't draw perfect circles, we have to fake them with multiple triangles connected to each other. The "points count" property of sf::CircleShape defines how many of these triangles to use, and therefore defines the quality of the circle.
+
+    The number of points can also be used for another purpose; with small numbers you can create any regular polygon shape: equilateral triangle, square, pentagon, hexagon, ...
+    """
+
+    def __init__(self, radius: float = 0, point_count: int = 30) -> None: 
+        """
+        Default constructor.
+
+        Parameters
+        - radius	Radius of the circle
+        - pointCount	Number of points composing the circle
+        """
+        pass
+
+    def set_radius(self, radius: float) -> None: 
+        """
+        Set the radius of the circle.
+
+        Parameters
+        - radius	New radius of the circle
+        """
+        pass
+
+    def get_radius(self) -> float: 
+        """
+        Get the radius of the circle.
+
+        Returns
+        - Radius of the circle
+        """
+        pass
+
+    def set_point_count(self, count: int) -> None: 
+        """
+        Set the number of points of the circle.
+
+        Parameters
+        - count	New number of points of the circle
+        """
+        pass
+
+    def get_point_count(self) -> int: 
+        """
+        Get the number of points of the circle.
+
+        Returns
+        - Number of points of the circle
+        """
+        pass
+    def get_point(self, index: int) -> System.Vector2f: 
+        """
+        Get a point of the circle.
+
+        The returned point is in local coordinates, that is, the shape's transforms (position, rotation, scale) are not taken into account. The result is undefined if index is out of the valid range.
+
+        Parameters
+        - index	Index of the point to get, in range [0 .. getPointCount() - 1]
+
+        Returns
+        - index-th point of the shape
+        """
+        pass
+
+    def get_geometric_center(self) -> System.Vector2f: 
+        """
+        Get the geometric center of the circle.
+
+        The returned point is in local coordinates, that is, the shape's transforms (position, rotation, scale) are not taken into account.
+
+        Returns
+        - The geometric center of the shape
+        """
+        pass
+
+class RectangleShape(Shape):
+    """
+    Specialized shape representing a rectangle.
+
+    This class inherits all the functions of sf::Transformable (position, rotation, scale, bounds, ...) as well as the functions of sf::Shape (outline, color, texture, ...).
+    """
+
+    def __init__(self, size: System.Vector2f = System.Vector2f()) -> None: 
+        """
+        Default constructor.
+
+        Parameters
+        - size	Size of the rectangle
+        """
+        pass
+
+    def set_size(self, size: System.Vector2f) -> None: 
+        """
+        Set the size of the rectangle.
+
+        Parameters
+        - size	New size of the rectangle
+        """
+        pass
+
+    def get_size(self) -> System.Vector2f: 
+        """
+        Get the size of the rectangle.
+
+        Returns
+        - Size of the rectangle
+        """
+        pass
+
+    def get_point_count(self) -> int: 
+        """
+        Get the number of points defining the shape.
+
+        Returns
+        - Number of points of the shape. For rectangle shapes, this number is always 4.
+        """
+        pass
+
+    def get_point(self, index: int) -> System.Vector2f: 
+        """
+        Get a point of the rectangle.
+
+        The returned point is in local coordinates, that is, the shape's transforms (position, rotation, scale) are not taken into account. The result is undefined if index is out of the valid range.
+
+        Parameters
+        - index	Index of the point to get, in range [0 .. 3]
+
+        Returns
+        - index-th point of the shape
+        """
+        pass
+
+    def get_geometric_center(self) -> System.Vector2f: 
+        """
+        Get the geometric center of the rectangle.
+
+        The returned point is in local coordinates, that is, the shape's transforms (position, rotation, scale) are not taken into account.
+
+        Returns
+        - The geometric center of the shape
+        """
+        pass
+
+    
