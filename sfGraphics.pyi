@@ -1,3 +1,13 @@
+"""
+2D graphics module: sprites, text, shapes, ...
+"""
+
+# pylint: disable=unused-argument
+# pylint: disable=line-too-long
+# pylint: disable=too-many-lines
+# pylint: disable=invalid-name
+
+from __future__ import annotations
 import enum
 from typing import Any, List, overload
 from types import ModuleType
@@ -22,7 +32,8 @@ class Glsl(ModuleType):
         2D float vector (vec2 in GLSL)
         """
         def __init__(self, x: float, y: float):
-            pass
+            ...
+
         x: float
         y: float
 
@@ -31,7 +42,8 @@ class Glsl(ModuleType):
         3D float vector (vec3 in GLSL)
         """
         def __init__(self, x: float, y: float, z: float):
-            pass
+            ...
+
         x: float
         y: float
         z: float
@@ -41,7 +53,8 @@ class Glsl(ModuleType):
         4D float vector (vec4 in GLSL)
         """
         def __init__(self, x: float, y: float, z: float, w: float):
-            pass
+            ...
+
         x: float
         y: float
         z: float
@@ -52,7 +65,8 @@ class Glsl(ModuleType):
         2D integer vector (ivec2 in GLSL)
         """
         def __init__(self, x: int, y: int):
-            pass
+            ...
+
         x: int
         y: int
 
@@ -61,7 +75,7 @@ class Glsl(ModuleType):
         3D integer vector (ivec3 in GLSL)
         """
         def __init__(self, x: int, y: int, z: int):
-            pass
+            ...
         x: int
         y: int
         z: int
@@ -71,7 +85,8 @@ class Glsl(ModuleType):
         4D integer vector (ivec4 in GLSL)
         """
         def __init__(self, x: int, y: int, z: int, w: int):
-            pass
+            ...
+
         x: int
         y: int
         z: int
@@ -82,7 +97,7 @@ class Glsl(ModuleType):
         2D boolean vector (bvec2 in GLSL)
         """
         def __init__(self, x: bool, y: bool):
-            pass
+            ...
         x: bool
         y: bool
 
@@ -91,7 +106,7 @@ class Glsl(ModuleType):
         3D boolean vector (bvec3 in GLSL)
         """
         def __init__(self, x: bool, y: bool, z: bool):
-            pass
+            ...
         x: bool
         y: bool
         z: bool
@@ -101,7 +116,7 @@ class Glsl(ModuleType):
         4D boolean vector (bvec4 in GLSL)
         """
         def __init__(self, x: bool, y: bool, z: bool, w: bool):
-            pass
+            ...
         x: bool
         y: bool
         z: bool
@@ -120,10 +135,10 @@ class Glsl(ModuleType):
             0, 1, 0,
             x, y, 1
         };
-        
+
         sf::Glsl::Mat3 matrix(array);
         ```
-        
+
         Mat3 can also be implicitly converted from sf::Transform:
 
         ```
@@ -132,7 +147,7 @@ class Glsl(ModuleType):
         ```
         """
         def __init__(self, array: List[float]):
-            pass
+            ...
         array: List[float]
 
     class Mat4:
@@ -149,7 +164,7 @@ class Glsl(ModuleType):
             0, 0, 1, 0,
             x, y, z, 1
         };
-        
+
         sf::Glsl::Mat4 matrix(array);
         ```
 
@@ -161,7 +176,7 @@ class Glsl(ModuleType):
         ```
         """
         def __init__(self, array: List[float]):
-            pass
+            ...
         array: List[float]
 
 class CoordinateType(enum.IntEnum):
@@ -195,7 +210,9 @@ class PrimitiveType(enum.IntEnum):
     TrianglesFan = 5
 
 class Drawable:
-    pass
+    """
+    Pure virtual base class for drawable objects.
+    """
 
 class IntRect:
     """
@@ -207,6 +224,15 @@ class IntRect:
     position: sfSystem.Vector2i
     size: sfSystem.Vector2i
 
+    @overload
+    def __init__(self):
+        """
+        Default constructor.
+
+        Creates an empty rectangle (it is equivalent to calling Rect({0, 0}, {0, 0})).
+        """
+
+    @overload
     def __init__(self, position: sfSystem.Vector2i, size: sfSystem.Vector2i):
         """
         Construct the rectangle from its position and size.
@@ -215,14 +241,13 @@ class IntRect:
         - position: Position of the top-left corner of the rectangle.
         - size: Size of the rectangle.
         """
-        pass
 
     def contains(self, point: sfSystem.Vector2i) -> bool:
         """
         Check if a point is inside the rectangle
         """
-        pass
 
+    @overload
     def find_intersection(self, rectangle: IntRect) -> IntRect | None:
         """
         Find the intersection between two rectangles.
@@ -233,8 +258,8 @@ class IntRect:
         Returns:
         - The intersection rectangle, or None if there is no intersection.
         """
-        pass
 
+    @overload
     def find_intersection(self, rectangle: FloatRect) -> IntRect | None:
         """
         Find the intersection between two rectangles.
@@ -245,7 +270,6 @@ class IntRect:
         Returns:
         - The intersection rectangle, or None if there is no intersection.
         """
-        pass
 
     def get_center(self) -> sfSystem.Vector2i:
         """
@@ -254,7 +278,6 @@ class IntRect:
         Returns:
         - The center of the rectangle.
         """
-        pass
 
 class FloatRect:
     """
@@ -266,6 +289,14 @@ class FloatRect:
     position: sfSystem.Vector2f
     size: sfSystem.Vector2f
 
+    @overload
+    def __init__(self):
+        """
+        Default constructor.
+
+        Creates an empty rectangle (it is equivalent to calling Rect({0, 0}, {0, 0})).
+        """
+
     def __init__(self, position: sfSystem.Vector2f, size: sfSystem.Vector2f):
         """
         Construct the rectangle from its position and size.
@@ -274,14 +305,13 @@ class FloatRect:
         - position: Position of the top-left corner of the rectangle.
         - size: Size of the rectangle.
         """
-        pass
 
     def contains(self, point: sfSystem.Vector2f) -> bool:
         """
         Check if a point is inside the rectangle
         """
-        pass
 
+    @overload
     def find_intersection(self, rectangle: IntRect) -> FloatRect | None:
         """
         Find the intersection between two rectangles.
@@ -292,8 +322,8 @@ class FloatRect:
         Returns:
         - The intersection rectangle, or None if there is no intersection.
         """
-        pass
 
+    @overload
     def find_intersection(self, rectangle: FloatRect) -> FloatRect | None:
         """
         Find the intersection between two rectangles.
@@ -304,7 +334,6 @@ class FloatRect:
         Returns:
         - The intersection rectangle, or None if there is no intersection.
         """
-        pass
 
     def get_center(self) -> sfSystem.Vector2f:
         """
@@ -313,7 +342,6 @@ class FloatRect:
         Returns:
         - The center of the rectangle.
         """
-        pass
 
 class BlendMode:
     """
@@ -403,7 +431,7 @@ class BlendMode:
         Max = 4
 
     @overload
-    def __init__(self, sourceFactor: Factor, destinationFactor: Factor, blendEquation: Factor = Equation.Add) -> None: 
+    def __init__(self, sourceFactor: Factor, destinationFactor: Factor, blendEquation: Factor = Equation.Add) -> None:
         """
         Construct the blend mode given the factors and equation.
 
@@ -415,7 +443,6 @@ class BlendMode:
         - blendEquation	Specifies how to combine the source and destination colors and alpha.
 
         """
-        pass
 
     @overload
     def __init__(self, colorSourceFactor: Factor, colorDestinationFactor: Factor, colorBlendEquation: Factor, alphaSourceFactor: Factor, alphaDestinationFactor: Factor, alphaBlendEquation: Factor) -> None:
@@ -430,14 +457,13 @@ class BlendMode:
         - alphaDestinationFactor	Specifies how to compute the destination factor.
         - alphaBlendEquation	Specifies how to combine the source and destination alphas.
         """
-        pass
 
-    color_src_factor: BlendMode.Factor
-    color_dst_factor: BlendMode.Factor
-    color_equation: BlendMode.Equation
-    alpha_src_factor: BlendMode.Factor
-    alpha_dst_factor: BlendMode.Factor
-    alpha_equation: BlendMode.Equation
+    color_src_factor: Factor
+    color_dst_factor: Factor
+    color_equation: Equation
+    alpha_src_factor: Factor
+    alpha_dst_factor: Factor
+    alpha_equation: Equation
 
 blend_alpha: BlendMode
 blend_add: BlendMode
@@ -460,16 +486,15 @@ class Transform:
     """
 
     @overload
-    def __init__(self) -> None: 
+    def __init__(self) -> None:
         """
         Default constructor.
 
         Creates an identity transform (a transform that does nothing).
         """
-        pass
 
     @overload
-    def __init__(self, a00: float, a01: float, a02: float, a10: float, a11: float, a12: float, a20: float, a21: float, a22: float) -> None: 
+    def __init__(self, a00: float, a01: float, a02: float, a10: float, a11: float, a12: float, a20: float, a21: float, a22: float) -> None:
         """
         Construct a transform from a 3x3 matrix.
 
@@ -484,27 +509,23 @@ class Transform:
         - a21	Element (2, 1) of the matrix
         - a22	Element (2, 2) of the matrix
         """
-        pass
 
-    def get_matrix(self) -> List[float]: 
+    def get_matrix(self) -> List[float]:
         """
         Return the transform as a 4x4 matrix.
 
         This function returns a pointer to an array of 16 floats containing the transform elements as a 4x4 matrix, which is directly compatible with OpenGL functions.
 
         ```
-        sf::Transform transform = 
-
-pass;
+        sf::Transform transform = ...;
         glLoadMatrixf(transform.getMatrix());
         ```
 
         Returns
         - Pointer to a 4x4 matrix
         """
-        pass
 
-    def get_inverse(self) -> Transform: 
+    def get_inverse(self) -> Transform:
         """
         Return the inverse of the transform.
 
@@ -513,9 +534,8 @@ pass;
         Returns
         - A new transform which is the inverse of self
         """
-        pass
 
-    def transform_point(self, point: sfSystem.Vector2f) -> sfSystem.Vector2f: 
+    def transform_point(self, point: sfSystem.Vector2f) -> sfSystem.Vector2f:
         """
         Transform a 2D point.
 
@@ -532,9 +552,8 @@ pass;
         Returns
         - Transformed point
         """
-        pass
 
-    def transform_rect(self, rectangle: FloatRect) -> FloatRect: 
+    def transform_rect(self, rectangle: FloatRect) -> FloatRect:
         """
         Transform a rectangle.
 
@@ -546,9 +565,8 @@ pass;
         Returns
         - Transformed rectangle
         """
-        pass
 
-    def combine(self, transform: Transform) -> Transform: 
+    def combine(self, transform: Transform) -> Transform:
         """
         Combine the current transform with another one.
 
@@ -567,9 +585,8 @@ pass;
         Returns
         - Reference to *this
         """
-        pass
 
-    def translate(self, offset: sfSystem.Vector2f) -> Transform: 
+    def translate(self, offset: sfSystem.Vector2f) -> Transform:
         """
         Combine the current transform with a translation.
 
@@ -586,9 +603,9 @@ pass;
         Returns
         - Reference to *this
         """
-        pass
 
-    def rotate(self, angle: float) -> Transform: 
+    @overload
+    def rotate(self, angle: float) -> Transform:
         """
         Combine the current transform with a rotation.
 
@@ -605,9 +622,9 @@ pass;
         Returns
         - Reference to *this
         """
-        pass
 
-    def rotate(self, angle: float, center: sfSystem.Vector2f) -> Transform: 
+    @overload
+    def rotate(self, angle: float, center: sfSystem.Vector2f) -> Transform:
         """
         Combine the current transform with a rotation.
 
@@ -627,9 +644,9 @@ pass;
         Returns
         - Reference to *this
         """
-        pass
 
-    def scale(self, factors: sfSystem.Vector2f) -> Transform: 
+    @overload
+    def scale(self, factors: sfSystem.Vector2f) -> Transform:
         """
         Combine the current transform with a scaling.
 
@@ -646,9 +663,9 @@ pass;
         Returns
         - Reference to *this
         """
-        pass
 
-    def scale(self, factors: sfSystem.Vector2f, center: sfSystem.Vector2f) -> Transform: 
+    @overload
+    def scale(self, factors: sfSystem.Vector2f, center: sfSystem.Vector2f) -> Transform:
         """
         Combine the current transform with a scaling.
 
@@ -668,14 +685,12 @@ pass;
         Returns
         - Reference to *this
         """
-        pass
 
     @staticmethod
-    def identity() -> Transform: 
+    def identity() -> Transform:
         """
         The identity transform (does nothing)
         """
-        pass
 
 class Transformable:
     """
@@ -703,13 +718,12 @@ class Transformable:
     - The object's and the view's rotation are a multiple of 90 degrees
     - The view's center and size have no fractional part
     """
-    def __init__(self) -> None: 
+    def __init__(self) -> None:
         """
         Default constructor.
         """
-        pass
 
-    def set_position(self, position: sfSystem.Vector2f) -> None: 
+    def set_position(self, position: sfSystem.Vector2f) -> None:
         """
         set the position of the object
 
@@ -718,9 +732,8 @@ class Transformable:
         Parameters
         - position	New position
         """
-        pass
 
-    def set_rotation(self, angle: float) -> None: 
+    def set_rotation(self, angle: float) -> None:
         """
         set the orientation of the object
 
@@ -729,9 +742,8 @@ class Transformable:
         Parameters
         - angle	New rotation
         """
-        pass
 
-    def set_scale(self, factors: sfSystem.Vector2f) -> None: 
+    def set_scale(self, factors: sfSystem.Vector2f) -> None:
         """
         set the scale factors of the object
 
@@ -740,9 +752,8 @@ class Transformable:
         Parameters
         - factors	New scale factors
         """
-        pass
 
-    def set_origin(self, origin: sfSystem.Vector2f) -> None: 
+    def set_origin(self, origin: sfSystem.Vector2f) -> None:
         """
         set the local origin of the object
 
@@ -751,18 +762,16 @@ class Transformable:
         Parameters
         - origin	New origin
         """
-        pass
 
-    def get_position(self) -> sfSystem.Vector2f: 
+    def get_position(self) -> sfSystem.Vector2f:
         """
         get the position of the object
 
         Returns
         - Current position
         """
-        pass
 
-    def get_rotation(self) -> float: 
+    def get_rotation(self) -> float:
         """
         get the orientation of the object
 
@@ -771,27 +780,24 @@ class Transformable:
         Returns
         - Current rotation
         """
-        pass
 
-    def get_scale(self) -> sfSystem.Vector2f: 
+    def get_scale(self) -> sfSystem.Vector2f:
         """
         get the current scale of the object
 
         Returns
         - Current scale factor
         """
-        pass
 
-    def get_origin(self) -> sfSystem.Vector2f: 
+    def get_origin(self) -> sfSystem.Vector2f:
         """
         get the local origin of the object
 
         Returns
         - Current origin
         """
-        pass
 
-    def move(self, offset: sfSystem.Vector2f) -> None: 
+    def move(self, offset: sfSystem.Vector2f) -> None:
         """
         Move the object by a given offset.
 
@@ -804,9 +810,8 @@ class Transformable:
         Parameters
         - offset	Offset
         """
-        pass
 
-    def rotate(self, angle: float) -> None: 
+    def rotate(self, angle: float) -> None:
         """
         Rotate the object.
 
@@ -819,9 +824,8 @@ class Transformable:
         Parameters
         - angle	Angle of rotation
         """
-        pass
 
-    def scale(self, factor: sfSystem.Vector2f) -> None: 
+    def scale(self, factor: sfSystem.Vector2f) -> None:
         """
         Scale the object.
 
@@ -835,25 +839,22 @@ class Transformable:
         Parameters
         - factor	Scale factors
         """
-        pass
 
-    def get_transform(self) -> Transform: 
+    def get_transform(self) -> Transform:
         """
         get the combined transform of the object
 
         Returns
         - Transform combining the position/rotation/scale/origin of the object
         """
-        pass
 
-    def get_inverse_transform(self) -> Transform: 
+    def get_inverse_transform(self) -> Transform:
         """
         get the inverse of the combined transform of the object
 
         Returns
         - Inverse of the combined transformations applied to the object
         """
-        pass
 
 class Vertex:
     """
@@ -878,11 +879,11 @@ class Vertex:
 
     @overload
     def __init__(self) -> None:
-        pass
+        ...
 
     @overload
-    def __init__(self, position: sfSystem.Vector2f, color: Color, texCoords: sfSystem.Vector2f) -> None: 
-        pass
+    def __init__(self, position: sfSystem.Vector2f, color: Color, texCoords: sfSystem.Vector2f) -> None:
+        ...
 
     position: sfSystem.Vector2f
     color: Color
@@ -898,43 +899,39 @@ class VertexArray(Drawable):
     """
 
     @overload
-    def __init__(self) -> None: 
+    def __init__(self) -> None:
         """
         Default constructor.
 
         Creates an empty vertex array.
         """
-        pass
 
     @overload
-    def __init__(self, type: PrimitiveType, vertexCount: int) -> None: 
+    def __init__(self, type_: PrimitiveType, vertexCount: int) -> None:
         """
         Construct the vertex array with a type and an initial number of vertices.
 
         Parameters
-        - type	Type of primitives
+        - type_	Type of primitives
         - vertexCount	Initial number of vertices in the array
         """
-        pass
 
-    def get_vertex_count(self) -> int: 
+    def get_vertex_count(self) -> int:
         """
         Return the vertex count.
 
         Returns
         - Number of vertices in the array
         """
-        pass
 
-    def clear(self) -> None: 
+    def clear(self) -> None:
         """
         Clear the vertex array.
 
         This function removes all the vertices from the array. It doesn't deallocate the corresponding memory, so that adding new vertices after clearing doesn't involve reallocating all the memory.
         """
-        pass
 
-    def resize(self, vertexCount: int) -> None: 
+    def resize(self, vertexCount: int) -> None:
         """
         Resize the vertex array.
 
@@ -943,17 +940,16 @@ class VertexArray(Drawable):
         Parameters
         - vertexCount	New size of the array (number of vertices)
         """
-        pass
-    def append(self, vertex: Vertex) -> None: 
+
+    def append(self, vertex: Vertex) -> None:
         """
         Add a vertex to the array.
 
         Parameters
         - vertex	Vertex to add
         """
-        pass
 
-    def set_primitive_type(self, type: PrimitiveType) -> None: 
+    def set_primitive_type(self, type_: PrimitiveType) -> None:
         """
         Set the type of primitives to draw.
 
@@ -964,20 +960,18 @@ class VertexArray(Drawable):
         - As triangles The default primitive type is sf::PrimitiveType::Points.
 
         Parameters
-        - type	Type of primitive
+        - type_	Type of primitive
         """
-        pass
 
-    def get_primitive_type(self) -> PrimitiveType: 
+    def get_primitive_type(self) -> PrimitiveType:
         """
         Get the type of primitives drawn by the vertex array.
 
         Returns
         - Primitive type
         """
-        pass
 
-    def get_bounds(self) -> FloatRect: 
+    def get_bounds(self) -> FloatRect:
         """
         Compute the bounding rectangle of the vertex array.
 
@@ -986,7 +980,6 @@ class VertexArray(Drawable):
         Returns
         - Bounding rectangle of the vertex array
         """
-        pass
 
 class VertexBuffer(Drawable):
     """
@@ -1024,16 +1017,15 @@ class VertexBuffer(Drawable):
         Stream = 2
 
     @overload
-    def __init__(self) -> None: 
+    def __init__(self) -> None:
         """
         Default constructor.
 
         Creates an empty vertex buffer.
         """
-        pass
 
     @overload
-    def __init__(self, primitiveType: PrimitiveType) -> None: 
+    def __init__(self, primitiveType: PrimitiveType) -> None:
         """
         Construct a VertexBuffer with a specific PrimitiveType
 
@@ -1042,10 +1034,9 @@ class VertexBuffer(Drawable):
         Parameters
         - type	Type of primitive
         """
-        pass
 
     @overload
-    def __init__(self, usage: Usage) -> None: 
+    def __init__(self, usage: Usage) -> None:
         """
         Construct a VertexBuffer with a specific usage specifier.
 
@@ -1054,22 +1045,20 @@ class VertexBuffer(Drawable):
         Parameters
         - usage	Usage specifier
         """
-        pass
 
     @overload
-    def __init__(self, type: PrimitiveType, usage: Usage) -> None: 
+    def __init__(self, type_: PrimitiveType, usage: Usage) -> None:
         """
         Construct a VertexBuffer with a specific PrimitiveType and usage specifier.
 
         Creates an empty vertex buffer and sets its primitive type to type and usage to usage.
 
         Parameters
-        - type	Type of primitive
+        - type_	Type of primitive
         - usage	Usage specifier
         """
-        pass
 
-    def create(self, vertexCount: int) -> bool: 
+    def create(self, vertexCount: int) -> bool:
         """
         Create the vertex buffer.
 
@@ -1083,19 +1072,17 @@ class VertexBuffer(Drawable):
         Returns
         - true if creation was successful
         """
-        pass
 
-    def get_vertex_count(self) -> int: 
+    def get_vertex_count(self) -> int:
         """
         Return the vertex count.
 
         Returns
         - Number of vertices in the vertex buffer
         """
-        pass
 
     @overload
-    def update(self, vertices: List[Vertex]) -> bool: 
+    def update(self, vertices: List[Vertex]) -> bool:
         """
         Update the whole buffer from an array of vertices.
 
@@ -1111,10 +1098,9 @@ class VertexBuffer(Drawable):
         Returns
         - true if the update was successful
         """
-        pass
 
     @overload
-    def update(self, vertices: List[Vertex], vertexCount: int, offset: int) -> bool: 
+    def update(self, vertices: List[Vertex], vertexCount: int, offset: int) -> bool:
         """
         Update a part of the buffer from an array of vertices.
 
@@ -1138,10 +1124,9 @@ class VertexBuffer(Drawable):
         Returns
         - true if the update was successful
         """
-        pass
 
     @overload
-    def update(self, vertexBuffer: VertexBuffer) -> bool: 
+    def update(self, vertexBuffer: VertexBuffer) -> bool:
         """
         Copy the contents of another buffer into this buffer.
 
@@ -1151,9 +1136,8 @@ class VertexBuffer(Drawable):
         Returns
         - true if the copy was successful
         """
-        pass
 
-    def set_primitive_type(self, type: PrimitiveType) -> None: 
+    def set_primitive_type(self, type_: PrimitiveType) -> None:
         """
         Set the type of primitives to draw.
 
@@ -1162,20 +1146,18 @@ class VertexBuffer(Drawable):
         The default primitive type is sf::PrimitiveType::Points.
 
         Parameters
-        - type	Type of primitive
+        - type_	Type of primitive
         """
-        pass
 
-    def get_primitive_type(self) -> PrimitiveType: 
+    def get_primitive_type(self) -> PrimitiveType:
         """
         Get the type of primitives drawn by the vertex buffer.
 
         Returns
         - Primitive type
         """
-        pass
 
-    def set_usage(self, usage: Usage) -> None: 
+    def set_usage(self, usage: Usage) -> None:
         """
         Set the usage specifier of this vertex buffer.
 
@@ -1188,18 +1170,16 @@ class VertexBuffer(Drawable):
         Parameters
         - usage	Usage specifier
         """
-        pass
-    
-    def get_usage(self) -> Usage: 
+
+    def get_usage(self) -> Usage:
         """
         Get the usage specifier of this vertex buffer.
 
         Returns
         - Usage specifier
         """
-        pass
 
-    def get_native_handle(self) -> int: 
+    def get_native_handle(self) -> int:
         """
         Get the underlying OpenGL handle of the vertex buffer.
 
@@ -1208,10 +1188,9 @@ class VertexBuffer(Drawable):
         Returns
         - OpenGL handle of the vertex buffer or 0 if not yet created
         """
-        pass
 
     @staticmethod
-    def bind(vertexBuffer: VertexBuffer) -> None: 
+    def bind(vertexBuffer: VertexBuffer) -> None:
         """
         Bind a vertex buffer for rendering.
 
@@ -1234,10 +1213,9 @@ class VertexBuffer(Drawable):
         Parameters
         - vertexBuffer	Pointer to the vertex buffer to bind, can be null to use no vertex buffer
         """
-        pass
 
     @staticmethod
-    def is_available() -> bool: 
+    def is_available() -> bool:
         """
         Tell whether or not the system supports vertex buffers.
 
@@ -1246,7 +1224,6 @@ class VertexBuffer(Drawable):
         Returns
         - true if vertex buffers are supported, false otherwise
         """
-        pass
 
 class Shape(Transformable, Drawable):
     """
@@ -1275,7 +1252,7 @@ class Shape(Transformable, Drawable):
     - getPointCount must return the number of points of the shape
     - getPoint must return the points of the shape
     """
-    def set_texture(self, texture: Texture, resetRect: bool = False) -> None: 
+    def set_texture(self, texture: Texture, resetRect: bool = False) -> None:
         """
         Change the source texture of the shape.
 
@@ -1285,9 +1262,8 @@ class Shape(Transformable, Drawable):
         - texture	New texture
         - resetRect	Should the texture rect be reset to the size of the new texture?
         """
-        pass
 
-    def set_texture_rect(self, rect: IntRect) -> None: 
+    def set_texture_rect(self, rect: IntRect) -> None:
         """
         Set the sub-rectangle of the texture that the shape will display.
 
@@ -1296,9 +1272,8 @@ class Shape(Transformable, Drawable):
         Parameters
         - rect	Rectangle defining the region of the texture to display
         """
-        pass
 
-    def set_fill_color(self, color: Color) -> None: 
+    def set_fill_color(self, color: Color) -> None:
         """
         Set the fill color of the shape.
 
@@ -1307,9 +1282,8 @@ class Shape(Transformable, Drawable):
         Parameters
         - color	New color of the shape
         """
-        pass
 
-    def set_outline_color(self, color: Color) -> None: 
+    def set_outline_color(self, color: Color) -> None:
         """
         Set the outline color of the shape.
 
@@ -1318,9 +1292,8 @@ class Shape(Transformable, Drawable):
         Parameters
         - color	New outline color of the shape
         """
-        pass
 
-    def set_outline_thickness(self, thickness: float) -> None: 
+    def set_outline_thickness(self, thickness: float) -> None:
         """
         Set the thickness of the shape's outline.
 
@@ -1329,9 +1302,8 @@ class Shape(Transformable, Drawable):
         Parameters
         - thickness	New outline thickness
         """
-        pass
 
-    def get_texture(self) -> Texture: 
+    def get_texture(self) -> Texture:
         """
         Get the source texture of the shape.
 
@@ -1340,54 +1312,48 @@ class Shape(Transformable, Drawable):
         Returns
         - Pointer to the shape's texture
         """
-        pass
 
-    def get_texture_rect(self) -> IntRect: 
+    def get_texture_rect(self) -> IntRect:
         """
         Get the sub-rectangle of the texture displayed by the shape.
 
         Returns
         - Texture rectangle of the shape
         """
-        pass
 
-    def get_fill_color(self) -> Color: 
+    def get_fill_color(self) -> Color:
         """
         Get the fill color of the shape.
 
         Returns
         - Fill color of the shape
         """
-        pass
 
-    def get_outline_color(self) -> Color: 
+    def get_outline_color(self) -> Color:
         """
         Get the outline color of the shape.
 
         Returns
         - Outline color of the shape
         """
-        pass
 
-    def get_outline_thickness(self) -> float: 
+    def get_outline_thickness(self) -> float:
         """
         Get the outline thickness of the shape.
 
         Returns
         - Outline thickness of the shape
         """
-        pass
 
-    def get_point_count(self) -> int: 
+    def get_point_count(self) -> int:
         """
         Get the total number of points of the shape.
 
         Returns
         - Number of points of the shape
         """
-        pass
 
-    def get_point(self, index: int) -> sfSystem.Vector2f: 
+    def get_point(self, index: int) -> sfSystem.Vector2f:
         """
         Get a point of the shape.
 
@@ -1399,9 +1365,8 @@ class Shape(Transformable, Drawable):
         Returns
         - index-th point of the shape
         """
-        pass
 
-    def get_geometric_center(self) -> sfSystem.Vector2f: 
+    def get_geometric_center(self) -> sfSystem.Vector2f:
         """
         Get the geometric center of the shape.
 
@@ -1410,9 +1375,8 @@ class Shape(Transformable, Drawable):
         Returns
         - The geometric center of the shape
         """
-        pass
 
-    def get_local_bounds(self) -> FloatRect: 
+    def get_local_bounds(self) -> FloatRect:
         """
         Get the local bounding rectangle of the entity.
 
@@ -1421,9 +1385,8 @@ class Shape(Transformable, Drawable):
         Returns
         - Local bounding rectangle of the entity
         """
-        pass
-    
-    def get_global_bounds(self) -> FloatRect: 
+
+    def get_global_bounds(self) -> FloatRect:
         """
         Get the global (non-minimal) bounding rectangle of the entity.
 
@@ -1434,7 +1397,6 @@ class Shape(Transformable, Drawable):
         Returns
         - Global bounding rectangle of the entity
         """
-        pass
 
 class Color:
     """
@@ -1475,17 +1437,16 @@ class Color:
     """
 
     @overload
-    def __init__(self, color: bytes) -> None: 
+    def __init__(self, color: bytes) -> None:
         """
         Construct the color from 32-bit unsigned integer.
 
         Parameters
         - color	Number containing the RGBA components (in that order)
         """
-        pass
 
     @overload
-    def __init__(self, red: int, green: int, blue: int, alpha: int = 255) -> None: 
+    def __init__(self, red: int, green: int, blue: int, alpha: int = 255) -> None:
         """
         Construct the color from its 4 RGBA components.
 
@@ -1495,16 +1456,14 @@ class Color:
         - blue	Blue component (in the range [0, 255])
         - alpha	Alpha (opacity) component (in the range [0, 255])
         """
-        pass
 
-    def to_integer(self) -> int: 
+    def to_integer(self) -> int:
         """
         Retrieve the color as a 32-bit unsigned integer.
 
         Returns
         - Color represented as a 32-bit unsigned integer
         """
-        pass
 
     r: int
     g: int
@@ -1512,32 +1471,50 @@ class Color:
     a: int
 
     @staticmethod
-    def black() -> Color: 
-        pass
+    def black() -> Color:
+        """
+        Black color.
+        """
     @staticmethod
-    def white() -> Color: 
-        pass
+    def white() -> Color:
+        """
+        White color.
+        """
     @staticmethod
-    def red() -> Color: 
-        pass
+    def red() -> Color:
+        """
+        Red color.
+        """
     @staticmethod
-    def green() -> Color: 
-        pass
+    def green() -> Color:
+        """
+        Green color.
+        """
     @staticmethod
-    def blue() -> Color: 
-        pass
+    def blue() -> Color:
+        """
+        Blue color.
+        """
     @staticmethod
-    def yellow() -> Color: 
-        pass
+    def yellow() -> Color:
+        """
+        Yellow color.
+        """
     @staticmethod
-    def magenta() -> Color: 
-        pass
+    def magenta() -> Color:
+        """
+        Magenta color.
+        """
     @staticmethod
-    def cyan() -> Color: 
-        pass
+    def cyan() -> Color:
+        """
+        Cyan color.
+        """
     @staticmethod
-    def transparent() -> Color: 
-        pass
+    def transparent() -> Color:
+        """
+        Transparent color.
+        """
 
 class Font:
     """
@@ -1566,22 +1543,22 @@ class Font:
         """
         Holds various information about a font.
         """
+
         def __init__(self) -> None:
-            pass
+            ...
 
         family: str
 
     @overload
-    def __init__(self) -> None: 
+    def __init__(self) -> None:
         """
         Default constructor.
 
         Construct an empty font that does not contain any glyphs.
         """
-        pass
 
     @overload
-    def __init__(self, data: Any, sizeInBytes: bytes) -> None: 
+    def __init__(self, data: Any, sizeInBytes: bytes) -> None:
         """
         Construct the font from a file in memory.
 
@@ -1597,10 +1574,9 @@ class Font:
         Exceptions
         - sf::Exception	if loading was unsuccessful
         """
-        pass
 
     @overload
-    def __init__(self, stream: sfSystem.InputStream) -> None: 
+    def __init__(self, stream: sfSystem.InputStream) -> None:
         """
         Construct the font from a custom stream.
 
@@ -1615,7 +1591,6 @@ class Font:
         Exceptions
         - sf::Exception	if loading was unsuccessful
         """
-        pass
 
     @overload
     def __init__(self, filename: str) -> None:
@@ -1633,9 +1608,8 @@ class Font:
         Exceptions
         - sf::Exception	if opening was unsuccessful
         """
-        pass
 
-    def open_from_file(self, filename: str) -> bool: 
+    def open_from_file(self, filename: str) -> bool:
         """
         Open the font from a file.
 
@@ -1650,9 +1624,8 @@ class Font:
         Returns
         - true if opening succeeded, false if it failed
         """
-        pass
 
-    def open_from_memory(self, data: Any, sizeInBytes: bytes) -> bool: 
+    def open_from_memory(self, data: Any, sizeInBytes: bytes) -> bool:
         """
         Open the font from a file in memory.
 
@@ -1668,9 +1641,8 @@ class Font:
         Returns
         - true if opening succeeded, false if it failed
         """
-        pass
 
-    def open_from_stream(self, stream: sfSystem.InputStream) -> bool: 
+    def open_from_stream(self, stream: sfSystem.InputStream) -> bool:
         """
         Open the font from a custom stream.
 
@@ -1685,18 +1657,16 @@ class Font:
         Returns
         - true if opening succeeded, false if it failed
         """
-        pass
 
-    def get_info(self) -> Info: 
+    def get_info(self) -> Info:
         """
         Get the font information.
 
         Returns
         - A structure that holds the font information
         """
-        pass
 
-    def get_glyph(self, codePoint: int, characterSize: int, bold: bool, outline_thickness = 0) -> Glyph: 
+    def get_glyph(self, codePoint: int, characterSize: int, bold: bool, outline_thickness = 0) -> Glyph:
         """
         Retrieve a glyph of the font.
 
@@ -1715,9 +1685,8 @@ class Font:
         Returns
         - The glyph corresponding to codePoint and characterSize
         """
-        pass
 
-    def has_glyph(self, codePoint: int) -> bool: 
+    def has_glyph(self, codePoint: int) -> bool:
         """
         Determine if this font has a glyph representing the requested code point.
 
@@ -1731,9 +1700,8 @@ class Font:
         Returns
         - true if the codepoint has a glyph representation, false otherwise
         """
-        pass
 
-    def get_kerning(self, first: int, second: int, characterSize: int, bold: bool = False) -> float: 
+    def get_kerning(self, first: int, second: int, characterSize: int, bold: bool = False) -> float:
         """
         Get the kerning offset of two glyphs.
 
@@ -1748,9 +1716,8 @@ class Font:
         Returns
         - Kerning value for first and second, in pixels
         """
-        pass
 
-    def get_line_spacing(self, characterSize: int) -> float: 
+    def get_line_spacing(self, characterSize: int) -> float:
         """
         Get the line spacing.
 
@@ -1762,9 +1729,8 @@ class Font:
         Returns
         - Line spacing, in pixels
         """
-        pass
 
-    def get_underline_position(self, characterSize: int) -> float: 
+    def get_underline_position(self, characterSize: int) -> float:
         """
         Get the position of the underline.
 
@@ -1776,9 +1742,8 @@ class Font:
         Returns
         - Underline position, in pixels
         """
-        pass
 
-    def get_underline_thickness(self, characterSize: int) -> float: 
+    def get_underline_thickness(self, characterSize: int) -> float:
         """
         Get the thickness of the underline.
 
@@ -1790,9 +1755,8 @@ class Font:
         Returns
         - Underline thickness, in pixel
         """
-        pass
 
-    def set_smooth(self, smooth: bool) -> None: 
+    def set_smooth(self, smooth: bool) -> None:
         """
         Enable or disable the smooth filter.
 
@@ -1801,17 +1765,16 @@ class Font:
         Parameters
         - smooth	true to enable smoothing, false to disable it
         """
-        pass
 
-    def is_smooth(self) -> bool: 
+    def is_smooth(self) -> bool:
         """
         Tell whether the smooth filter is enabled or not.
 
         Returns
         - true if smoothing is enabled, false if it is disabled
         """
-        pass
-    def get_texture(self, characterSize: int) -> Texture: 
+
+    def get_texture(self, characterSize: int) -> Texture:
         """
         Retrieve the texture containing the loaded glyphs of a certain size.
 
@@ -1820,7 +1783,6 @@ class Font:
         Parameters
         - characterSize	Reference character size
         """
-        pass
 
 class Glyph:
     """
@@ -1834,8 +1796,8 @@ class Glyph:
     - its bounding rectangle
     - the offset to apply to get the starting position of the next glyph
     """
-    def __init__(self) -> None: 
-        pass
+    def __init__(self) -> None:
+        ...
 
     advance: float
     lsb_delta: int
@@ -1857,16 +1819,15 @@ class Image:
     """
 
     @overload
-    def __init__(self) -> None: 
+    def __init__(self) -> None:
         """
         Default constructor.
 
         Constructs an image with width 0 and height 0.
         """
-        pass
 
     @overload
-    def __init__(self, size: sfSystem.Vector2u, pixels: bytes) -> None: 
+    def __init__(self, size: sfSystem.Vector2u, pixels: bytes) -> None:
         """
         Construct the image from an array of pixels.
 
@@ -1876,10 +1837,9 @@ class Image:
         - size	Width and height of the image
         - pixels	Array of pixels to copy to the image
         """
-        pass
 
     @overload
-    def __init__(self, data: Any, size: bytes) -> None: 
+    def __init__(self, data: Any, size: bytes) -> None:
         """
         Construct the image from a file in memory.
 
@@ -1892,10 +1852,9 @@ class Image:
         Exceptions
         - sf::Exception	if loading was unsuccessful
         """
-        pass
 
     @overload
-    def __init__(self, stream: sfSystem.InputStream) -> None: 
+    def __init__(self, stream: sfSystem.InputStream) -> None:
         """
         Construct the image from a custom stream.
 
@@ -1907,10 +1866,9 @@ class Image:
         Exceptions
         - sf::Exception	if loading was unsuccessful
         """
-        pass
 
     @overload
-    def __init__(self, size: sfSystem.Vector2u, color: Color = Color.black) -> None: 
+    def __init__(self, size: sfSystem.Vector2u, color: Color = Color.black) -> None:
         """
         Construct the image and fill it with a unique color.
 
@@ -1918,10 +1876,9 @@ class Image:
         - size	Width and height of the image
         - color	Fill color
         """
-        pass
 
     @overload
-    def resize(self, size: sfSystem.Vector2u, color: Color = Color.black) -> None: 
+    def resize(self, size: sfSystem.Vector2u, color: Color = Color.black) -> None:
         """
         Resize the image and fill it with a unique color.
 
@@ -1929,10 +1886,9 @@ class Image:
         - size	Width and height of the image
         - color	Fill color
         """
-        pass
 
     @overload
-    def resize(self, size: sfSystem.Vector2u, pixels: bytes) -> None: 
+    def resize(self, size: sfSystem.Vector2u, pixels: bytes) -> None:
         """
         Resize the image from an array of pixels.
 
@@ -1942,9 +1898,8 @@ class Image:
         - size	Width and height of the image
         - pixels	Array of pixels to copy to the image
         """
-        pass
 
-    def load_from_file(self, filename: str) -> bool: 
+    def load_from_file(self, filename: str) -> bool:
         """
         Load the image from a file on disk.
 
@@ -1953,9 +1908,8 @@ class Image:
         Parameters
         - filename	Path of the image file to load
         """
-        pass
 
-    def load_from_memory(self, data: Any, size: bytes) -> bool: 
+    def load_from_memory(self, data: Any, size: bytes) -> bool:
         """
         Load the image from a file in memory.
 
@@ -1968,9 +1922,8 @@ class Image:
         Returns
         - true if loading was successful
         """
-        pass
 
-    def load_from_stream(self, stream: sfSystem.InputStream) -> bool: 
+    def load_from_stream(self, stream: sfSystem.InputStream) -> bool:
         """
         Load the image from a custom stream.
 
@@ -1982,9 +1935,8 @@ class Image:
         Returns
         - true if loading was successful
         """
-        pass
 
-    def save_to_file(self, filename: str) -> bool: 
+    def save_to_file(self, filename: str) -> bool:
         """
         Save the image to a file on disk.
 
@@ -1996,32 +1948,29 @@ class Image:
         Returns
         - true if saving was successful
         """
-        pass
 
-    def save_to_memory(self, format: str) -> List[bytes] | None: 
+    def save_to_memory(self, format_: str) -> List[bytes] | None:
         """
         Save the image to a buffer in memory.
 
         The format of the image must be specified. The supported image formats are bmp, png, tga and jpg. This function fails if the image is empty, or if the format was invalid.
 
         Parameters
-        - format	Encoding format to use
+        - format_	Encoding format to use
 
         Returns
         - Buffer with encoded data if saving was successful, otherwise std::nullopt
         """
-        pass
 
-    def get_size(self) -> sfSystem.Vector2u: 
+    def get_size(self) -> sfSystem.Vector2u:
         """
         Return the size (width and height) of the image.
 
         Returns
         - Size of the image, in pixels
         """
-        pass
 
-    def create_mask_from_color(self, color: Color, alpha: int = 0) -> None: 
+    def create_mask_from_color(self, color: Color, alpha: int = 0) -> None:
         """
         Create a transparency mask from a specified color-key.
 
@@ -2031,9 +1980,8 @@ class Image:
         - color	Color to make transparent
         - alpha	Alpha value to assign to transparent pixels
         """
-        pass
 
-    def copy(self, source: Image, dest: sfSystem.Vector2u, source_rect: IntRect = IntRect(), apply_alpha: bool = False) -> None: 
+    def copy(self, source: Image, dest: sfSystem.Vector2u, source_rect: IntRect = IntRect(), apply_alpha: bool = False) -> None:
         """
         Copy pixels from another image onto this one.
 
@@ -2055,9 +2003,8 @@ class Image:
         Returns
         - true if the operation was successful, false otherwise
         """
-        pass
 
-    def set_pixel(self, coords: sfSystem.Vector2u, color: Color) -> None: 
+    def set_pixel(self, coords: sfSystem.Vector2u, color: Color) -> None:
         """
         Change the color of a pixel.
 
@@ -2067,9 +2014,8 @@ class Image:
         - coords	Coordinates of pixel to change
         - color	New color of the pixel
         """
-        pass
 
-    def get_pixel(self, coords: sfSystem.Vector2u) -> Image: 
+    def get_pixel(self, coords: sfSystem.Vector2u) -> Image:
         """
         Get the color of a pixel.
 
@@ -2081,9 +2027,8 @@ class Image:
         Returns
         - Color of the pixel at given coordinates
         """
-        pass
 
-    def get_pixels_ptr(self) -> bytes: 
+    def get_pixels_ptr(self) -> bytes:
         """
         Get a read-only pointer to the array of pixels.
 
@@ -2092,19 +2037,16 @@ class Image:
         Returns
         - Read-only pointer to the array of pixels
         """
-        pass
 
-    def flip_horizontally(self) -> None: 
+    def flip_horizontally(self) -> None:
         """
         Flip the image horizontally (left <-> right)
         """
-        pass
 
-    def flip_vertically(self) -> None: 
+    def flip_vertically(self) -> None:
         """
         Flip the image vertically (top <-> bottom)
         """
-        pass
 
 class ConvexShape(Shape):
     """
@@ -2115,16 +2057,15 @@ class ConvexShape(Shape):
     It is important to keep in mind that a convex shape must always be... convex, otherwise it may not be drawn correctly. Moreover, the points must be defined in order; using a random order would result in an incorrect shape.
     """
 
-    def __init__(self, pointCount: int = 0) -> None: 
+    def __init__(self, pointCount: int = 0) -> None:
         """
         Default constructor.
 
         Parameters
         - pointCount	Number of points of the polygon
         """
-        pass
 
-    def set_point_count(self, count: int) -> None: 
+    def set_point_count(self, count: int) -> None:
         """
         Set the number of points of the polygon.
 
@@ -2133,18 +2074,16 @@ class ConvexShape(Shape):
         Parameters
         - count	New number of points of the polygon
         """
-        pass
 
-    def get_point_count(self) -> int: 
+    def get_point_count(self) -> int:
         """
         Get the number of points of the polygon.
 
         Returns
         - Number of points of the polygon
         """
-        pass
 
-    def set_point(self, index: int, point: sfSystem.Vector2f) -> None: 
+    def set_point(self, index: int, point: sfSystem.Vector2f) -> None:
         """
         Set the position of a point.
 
@@ -2156,9 +2095,8 @@ class ConvexShape(Shape):
         - index	Index of the point to change, in range [0 .. getPointCount() - 1]
         - point	New position of the point
         """
-        pass
 
-    def get_point(self, index: int) -> sfSystem.Vector2f: 
+    def get_point(self, index: int) -> sfSystem.Vector2f:
         """
         Get the position of a point.
 
@@ -2170,7 +2108,6 @@ class ConvexShape(Shape):
         Returns
         - Position of the index-th point of the polygon
         """
-        pass
 
 class CircleShape(Shape):
     """
@@ -2180,12 +2117,10 @@ class CircleShape(Shape):
 
     Since the graphics card can't draw perfect circles, we have to fake them with multiple triangles connected to each other. The "points count" property of sf::CircleShape defines how many of these triangles to use, and therefore defines the quality of the circle.
 
-    The number of points can also be used for another purpose; with small numbers you can create any regular polygon shape: equilateral triangle, square, pentagon, hexagon, 
-
-pass
+    The number of points can also be used for another purpose; with small numbers you can create any regular polygon shape: equilateral triangle, square, pentagon, hexagon, ...
     """
 
-    def __init__(self, radius: float = 0, pointCount: int = 30) -> None: 
+    def __init__(self, radius: float = 0, pointCount: int = 30) -> None:
         """
         Default constructor.
 
@@ -2193,44 +2128,40 @@ pass
         - radius	Radius of the circle
         - pointCount	Number of points composing the circle
         """
-        pass
 
-    def set_radius(self, radius: float) -> None: 
+    def set_radius(self, radius: float) -> None:
         """
         Set the radius of the circle.
 
         Parameters
         - radius	New radius of the circle
         """
-        pass
 
-    def get_radius(self) -> float: 
+    def get_radius(self) -> float:
         """
         Get the radius of the circle.
 
         Returns
         - Radius of the circle
         """
-        pass
 
-    def set_point_count(self, count: int) -> None: 
+    def set_point_count(self, count: int) -> None:
         """
         Set the number of points of the circle.
 
         Parameters
         - count	New number of points of the circle
         """
-        pass
 
-    def get_point_count(self) -> int: 
+    def get_point_count(self) -> int:
         """
         Get the number of points of the circle.
 
         Returns
         - Number of points of the circle
         """
-        pass
-    def get_point(self, index: int) -> sfSystem.Vector2f: 
+
+    def get_point(self, index: int) -> sfSystem.Vector2f:
         """
         Get a point of the circle.
 
@@ -2242,9 +2173,8 @@ pass
         Returns
         - index-th point of the shape
         """
-        pass
 
-    def get_geometric_center(self) -> sfSystem.Vector2f: 
+    def get_geometric_center(self) -> sfSystem.Vector2f:
         """
         Get the geometric center of the circle.
 
@@ -2253,7 +2183,6 @@ pass
         Returns
         - The geometric center of the shape
         """
-        pass
 
 class RectangleShape(Shape):
     """
@@ -2262,43 +2191,39 @@ class RectangleShape(Shape):
     This class inherits all the functions of sf::Transformable (position, rotation, scale, bounds, ...) as well as the functions of sf::Shape (outline, color, texture, ...).
     """
 
-    def __init__(self, size: sfSystem.Vector2f = sfSystem.Vector2f()) -> None: 
+    def __init__(self, size: sfSystem.Vector2f = sfSystem.Vector2f()) -> None:
         """
         Default constructor.
 
         Parameters
         - size	Size of the rectangle
         """
-        pass
 
-    def set_size(self, size: sfSystem.Vector2f) -> None: 
+    def set_size(self, size: sfSystem.Vector2f) -> None:
         """
         Set the size of the rectangle.
 
         Parameters
         - size	New size of the rectangle
         """
-        pass
 
-    def get_size(self) -> sfSystem.Vector2f: 
+    def get_size(self) -> sfSystem.Vector2f:
         """
         Get the size of the rectangle.
 
         Returns
         - Size of the rectangle
         """
-        pass
 
-    def get_point_count(self) -> int: 
+    def get_point_count(self) -> int:
         """
         Get the number of points defining the shape.
 
         Returns
         - Number of points of the shape. For rectangle shapes, this number is always 4.
         """
-        pass
 
-    def get_point(self, index: int) -> sfSystem.Vector2f: 
+    def get_point(self, index: int) -> sfSystem.Vector2f:
         """
         Get a point of the rectangle.
 
@@ -2310,9 +2235,8 @@ class RectangleShape(Shape):
         Returns
         - index-th point of the shape
         """
-        pass
 
-    def get_geometric_center(self) -> sfSystem.Vector2f: 
+    def get_geometric_center(self) -> sfSystem.Vector2f:
         """
         Get the geometric center of the rectangle.
 
@@ -2321,7 +2245,6 @@ class RectangleShape(Shape):
         Returns
         - The geometric center of the shape
         """
-        pass
 
 class RenderStates:
     """
@@ -2363,7 +2286,7 @@ class RenderStates:
     shader: Shader
 
     @overload
-    def __init__(self) -> None: 
+    def __init__(self) -> None:
         """
         Default constructor.
 
@@ -2375,60 +2298,54 @@ class RenderStates:
         - a nullptr texture
         - a nullptr shader
         """
-        pass
 
     @overload
-    def __init__(self, theBlendMode: BlendMode) -> None: 
+    def __init__(self, theBlendMode: BlendMode) -> None:
         """
         Construct a default set of render states with a custom blend mode.
 
         Parameters
         - theBlendMode	Blend mode to use
         """
-        pass
 
     @overload
-    def __init__(self, theStencilMode: StencilMode) -> None: 
+    def __init__(self, theStencilMode: StencilMode) -> None:
         """
         Construct a default set of render states with a custom stencil mode.
 
         Parameters
         - theStencilMode	Stencil mode to use
         """
-        pass
 
     @overload
-    def __init__(self, theTransform: Transform) -> None: 
+    def __init__(self, theTransform: Transform) -> None:
         """
         Construct a default set of render states with a custom transform.
 
         Parameters
         - theTransform	Transform to use
         """
-        pass
 
     @overload
-    def __init__(self, theTexture: Texture) -> None: 
+    def __init__(self, theTexture: Texture) -> None:
         """
         Construct a default set of render states with a custom texture.
 
         Parameters
         - theTexture	Texture to use
         """
-        pass
 
     @overload
-    def __init__(self, shader: Shader) -> None: 
+    def __init__(self, shader: Shader) -> None:
         """
         Construct a default set of render states with a custom shader.
 
         Parameters
         - theShader	Shader to use
         """
-        pass
 
     @overload
-    def __init__(self, theBlendMode: BlendMode, theStencilMode: StencilMode, theTransform: Transform, theCoordinateType: CoordinateType, theTexture: Texture, theShader: Shader) -> None: 
+    def __init__(self, theBlendMode: BlendMode, theStencilMode: StencilMode, theTransform: Transform, theCoordinateType: CoordinateType, theTexture: Texture, theShader: Shader) -> None:
         """
         Construct a set of render states with all its attributes.
 
@@ -2440,14 +2357,12 @@ class RenderStates:
         - theTexture	Texture to use
         - theShader	Shader to use
         """
-        pass
 
     @staticmethod
-    def default() -> RenderStates: 
+    def default() -> RenderStates:
         """
         Special instance holding the default render states.
         """
-        pass
 
 class RenderTarget:
     """
@@ -2463,7 +2378,9 @@ class RenderTarget:
 
     While render targets are moveable, it is not valid to move them between threads. This will cause your program to crash. The problem boils down to OpenGL being limited with regard to how it works in multithreaded environments. Please ensure you only move render targets within the same thread.
     """
-    def clear(self, color: Color) -> None: 
+
+    @overload
+    def clear(self, color: Color) -> None:
         """
         Clear the entire target with a single color.
 
@@ -2472,9 +2389,9 @@ class RenderTarget:
         Parameters
         - color	Fill color to use to clear the render target
         """
-        pass
 
-    def clear(self, color: Color, stencilValue: StencilValue) -> None: 
+    @overload
+    def clear(self, color: Color, stencilValue: StencilValue) -> None:
         """
         Clear the entire target with a single color and stencil value.
 
@@ -2484,9 +2401,8 @@ class RenderTarget:
         - color	Fill color to use to clear the render target
         - stencilValue	Stencil value to clear to
         """
-        pass
 
-    def clear_stencil(self, stencilValue: StencilValue) -> None: 
+    def clear_stencil(self, stencilValue: StencilValue) -> None:
         """
         Clear the stencil buffer to a specific value.
 
@@ -2495,9 +2411,8 @@ class RenderTarget:
         Parameters
         - stencilValue	Stencil value to clear to
         """
-        pass
 
-    def set_view(self, view: View) -> None: 
+    def set_view(self, view: View) -> None:
         """
         Change the current active view.
 
@@ -2506,18 +2421,16 @@ class RenderTarget:
         Parameters
         - view	New view to use
         """
-        pass
 
-    def get_view(self) -> View: 
+    def get_view(self) -> View:
         """
         Get the view currently in use in the render target.
 
         Returns
         - The view object that is currently used
         """
-        pass
 
-    def get_default_view(self) -> View: 
+    def get_default_view(self) -> View:
         """
         Get the default view of the render target.
 
@@ -2526,9 +2439,8 @@ class RenderTarget:
         Returns
         - The default view of the render target
         """
-        pass
 
-    def get_viewport(self, view: View) -> IntRect: 
+    def get_viewport(self, view: View) -> IntRect:
         """
         Get the viewport of a view, applied to this render target.
 
@@ -2540,9 +2452,8 @@ class RenderTarget:
         Returns
         - Viewport rectangle, expressed in pixels
         """
-        pass
 
-    def get_scissor(self, view: View) -> IntRect: 
+    def get_scissor(self, view: View) -> IntRect:
         """
         Get the scissor rectangle of a view, applied to this render target.
 
@@ -2554,9 +2465,8 @@ class RenderTarget:
         Returns
         - Scissor rectangle, expressed in pixels
         """
-        pass
 
-    def map_pixel_to_coords(self, point: sfSystem.Vector2i, view: View) -> sfSystem.Vector2f: 
+    def map_pixel_to_coords(self, point: sfSystem.Vector2i, view: View) -> sfSystem.Vector2f:
         """
         Convert a point from target coordinates to world coordinates.
 
@@ -2575,9 +2485,8 @@ class RenderTarget:
         Returns
         - The converted point, in "world" units
         """
-        pass
 
-    def map_coords_to_pixel(self, point: sfSystem.Vector2f) -> sfSystem.Vector2i: 
+    def map_coords_to_pixel(self, point: sfSystem.Vector2f) -> sfSystem.Vector2i:
         """
         Convert a point from world coordinates to target coordinates, using the current view.
 
@@ -2593,10 +2502,9 @@ class RenderTarget:
         Returns
         - The converted point, in target coordinates (pixels)
         """
-        pass
 
     @overload
-    def draw(self, drawable: Drawable, states: RenderStates = RenderStates.default) -> None: 
+    def draw(self, drawable: Drawable, states: RenderStates = RenderStates.default) -> None:
         """
         Draw a drawable object to the render target.
 
@@ -2604,23 +2512,21 @@ class RenderTarget:
         - drawable	Object to draw
         - states	Render states to use for drawing
         """
-        pass
 
     @overload
-    def draw(self, vertices: Vertex, vertexCount: int, type: PrimitiveType, states: RenderStates = RenderStates.default) -> None: 
+    def draw(self, vertices: Vertex, vertexCount: int, type_: PrimitiveType, states: RenderStates = RenderStates.default) -> None:
         """
         Draw primitives defined by an array of vertices.
 
         Parameters
         - vertices	Pointer to the vertices
         - vertexCount	Number of vertices in the array
-        - type	Type of primitives to draw
+        - type_	Type of primitives to draw
         - states	Render states to use for drawing
         """
-        pass
 
     @overload
-    def draw(self, buffer: VertexBuffer, states: RenderStates = RenderStates.default) -> None: 
+    def draw(self, buffer: VertexBuffer, states: RenderStates = RenderStates.default) -> None:
         """
         Draw primitives defined by a vertex buffer.
 
@@ -2628,10 +2534,9 @@ class RenderTarget:
         - vertexBuffer	Vertex buffer
         - states	Render states to use for drawing
         """
-        pass
 
     @overload
-    def draw(self, buffer: VertexBuffer, first: int, count: int, states: RenderStates = RenderStates.default) -> None: 
+    def draw(self, buffer: VertexBuffer, first: int, count: int, states: RenderStates = RenderStates.default) -> None:
         """
         Draw primitives defined by a vertex buffer.
 
@@ -2641,9 +2546,8 @@ class RenderTarget:
         - vertexCount	Number of vertices to render
         - states	Render states to use for drawing
         """
-        pass
 
-    def get_size(self) -> sfSystem.Vector2u: 
+    def get_size(self) -> sfSystem.Vector2u:
         """
         Return the size of the rendering region of the target.
 
@@ -2652,20 +2556,18 @@ class RenderTarget:
 
         Implemented in sf::RenderTexture, and sf::RenderWindow.
         """
-        pass
 
-    def is_srgb(self) -> bool: 
+    def is_srgb(self) -> bool:
         """
         Tell if the render target will use sRGB encoding when drawing on it.
 
         Returns
         - true if the render target use sRGB encoding, false otherwise
-        
+
         Reimplemented in sf::RenderTexture, and sf::RenderWindow.
         """
-        pass
 
-    def set_active(self, active: bool) -> bool: 
+    def set_active(self, active: bool) -> bool:
         """
         Activate or deactivate the render target for rendering.
 
@@ -2679,9 +2581,8 @@ class RenderTarget:
 
         Reimplemented in sf::RenderTexture, and sf::RenderWindow.
         """
-        pass
 
-    def push_gl_states(self) -> None: 
+    def push_gl_states(self) -> None:
         """
         Save the current OpenGL render states and matrices.
 
@@ -2703,17 +2604,15 @@ class RenderTarget:
 
         Note that this function is quite expensive: it saves all the possible OpenGL states and matrices, even the ones you don't care about. Therefore it should be used wisely. It is provided for convenience, but the best results will be achieved if you handle OpenGL states yourself (because you know which states have really changed, and need to be saved and restored). Take a look at the resetGLStates function if you do so.
         """
-        pass
 
-    def pop_gl_states(self) -> None: 
+    def pop_gl_states(self) -> None:
         """
         Restore the previously saved OpenGL render states and matrices.
 
         See the description of pushGLStates to get a detailed description of these functions.
         """
-        pass
 
-    def reset_gl_states(self) -> None: 
+    def reset_gl_states(self) -> None:
         """
         Reset the internal OpenGL states so that the target is ready for drawing.
 
@@ -2731,7 +2630,6 @@ class RenderTarget:
         // OpenGL code here...
         ```
         """
-        pass
 
 class RenderTexture(RenderTarget):
     """
@@ -2752,16 +2650,15 @@ class RenderTexture(RenderTarget):
     """
 
     @overload
-    def __init__(self) -> None: 
+    def __init__(self) -> None:
         """
         Default constructor.
 
         Constructs a render-texture with width 0 and height 0.
         """
-        pass
 
     @overload
-    def __init__(self, size: sfSystem.Vector2u, context_settings: sfWindow.ContextSettings) -> None: 
+    def __init__(self, size: sfSystem.Vector2u, context_settings: sfWindow.ContextSettings) -> None:
         """
         Construct a render-texture.
 
@@ -2773,9 +2670,8 @@ class RenderTexture(RenderTarget):
         - size	Width and height of the render-texture
         - settings	Additional settings for the underlying OpenGL texture and context
         """
-        pass
 
-    def resize(self, size: sfSystem.Vector2u, settings: sfWindow.ContextSettings = sfWindow.ContextSettings()) -> None: 
+    def resize(self, size: sfSystem.Vector2u, settings: sfWindow.ContextSettings = sfWindow.ContextSettings()) -> None:
         """
         Resize the render-texture.
 
@@ -2790,9 +2686,8 @@ class RenderTexture(RenderTarget):
         Returns
         - true if resizing has been successful, false if it failed
         """
-        pass
 
-    def set_smooth(self, smooth: bool) -> None: 
+    def set_smooth(self, smooth: bool) -> None:
         """
         Enable or disable texture smoothing.
 
@@ -2801,18 +2696,16 @@ class RenderTexture(RenderTarget):
         Parameters
         - smooth	true to enable smoothing, false to disable it
         """
-        pass
 
-    def is_smooth(self) -> bool: 
+    def is_smooth(self) -> bool:
         """
         Tell whether the smooth filtering is enabled or not.
 
         Returns
         - true if texture smoothing is enabled
         """
-        pass
 
-    def set_repeated(self, repeated: bool) -> None: 
+    def set_repeated(self, repeated: bool) -> None:
         """
         Enable or disable texture repeating.
 
@@ -2821,18 +2714,16 @@ class RenderTexture(RenderTarget):
         Parameters
         - repeated	true to enable repeating, false to disable it
         """
-        pass
 
-    def is_repeated(self) -> bool: 
+    def is_repeated(self) -> bool:
         """
         Tell whether the texture is repeated or not.
 
         Returns
         - true if texture is repeated
         """
-        pass
 
-    def generate_mipmap(self) -> bool: 
+    def generate_mipmap(self) -> bool:
         """
         Generate a mipmap using the current texture data.
 
@@ -2841,9 +2732,8 @@ class RenderTexture(RenderTarget):
         Returns
         - true if mipmap generation was successful, false if unsuccessful
         """
-        pass
 
-    def set_active(self, active: bool) -> bool: 
+    def set_active(self, active: bool) -> bool:
         """
         Activate or deactivate the render-texture for rendering.
 
@@ -2857,17 +2747,15 @@ class RenderTexture(RenderTarget):
 
         Reimplemented from sf::RenderTarget.
         """
-        pass
 
-    def display(self) -> None: 
+    def display(self) -> None:
         """
         Update the contents of the target texture.
 
         This function updates the target texture with what has been drawn so far. Like for windows, calling this function is mandatory at the end of rendering. Not calling it may leave the texture in an undefined state.
         """
-        pass
 
-    def get_size(self) -> sfSystem.Vector2u: 
+    def get_size(self) -> sfSystem.Vector2u:
         """
         Return the size of the rendering region of the texture.
 
@@ -2878,9 +2766,8 @@ class RenderTexture(RenderTarget):
 
         Implements sf::RenderTarget.
         """
-        pass
 
-    def is_srgb(self) -> bool: 
+    def is_srgb(self) -> bool:
         """
         Tell if the render-texture will use sRGB encoding when drawing on it.
 
@@ -2891,9 +2778,8 @@ class RenderTexture(RenderTarget):
 
         Reimplemented from sf::RenderTarget.
         """
-        pass
 
-    def get_texture(self) -> Texture: 
+    def get_texture(self) -> Texture:
         """
         Get a read-only reference to the target texture.
 
@@ -2902,17 +2788,15 @@ class RenderTexture(RenderTarget):
         Returns
         - Const reference to the texture
         """
-        pass
 
     @staticmethod
-    def get_maximum_anti_aliasing_level() -> int: 
+    def get_maximum_anti_aliasing_level() -> int:
         """
         Get the maximum anti-aliasing level supported by the system.
 
         Returns
         - The maximum anti-aliasing level supported by the system
         """
-        pass
 
 class RenderWindow(sfWindow.Window, RenderTarget):
     """
@@ -2929,10 +2813,10 @@ class RenderWindow(sfWindow.Window, RenderTarget):
     ```
     // Declare and create a new render-window
     sf::RenderWindow window(sf::VideoMode({800, 600}), "SFML window");
-    
+
     // Limit the framerate to 60 frames per second (this step is optional)
     window.setFramerateLimit(60);
-    
+
     // The main loop - ends as soon as the window is closed
     while (window.isOpen())
     {
@@ -2943,15 +2827,15 @@ class RenderWindow(sfWindow.Window, RenderTarget):
         if (event->is<sf::Event::Closed>())
             window.close();
     }
-    
+
     // Clear the whole window before rendering a new frame
     window.clear();
-    
+
     // Draw some graphical entities
     window.draw(sprite);
     window.draw(circle);
     window.draw(text);
-    
+
     // End the current frame and display its contents on screen
     window.display();
     }
@@ -2962,40 +2846,40 @@ class RenderWindow(sfWindow.Window, RenderTarget):
     ```
     // Create the render window
     sf::RenderWindow window(sf::VideoMode({800, 600}), "SFML OpenGL");
-    
+
     // Create a sprite and a text to display
     const sf::Texture texture("circle.png");
     sf::Sprite sprite(texture);
     const sf::Font font("arial.ttf");
     sf::Text text(font);
     ...
-    
+
     // Perform OpenGL initializations
     glMatrixMode(GL_PROJECTION);
     ...
-    
+
     // Start the rendering loop
     while (window.isOpen())
     {
         // Process events
         ...
-    
+
         // Draw a background sprite
         window.pushGLStates();
         window.draw(sprite);
         window.popGLStates();
-    
+
         // Draw a 3D object using OpenGL
         glBegin(GL_TRIANGLES);
             glVertex3f(...);
             ...
         glEnd();
-    
+
         // Draw text on top of the 3D object
         window.pushGLStates();
         window.draw(text);
         window.popGLStates();
-    
+
         // Finally, display the rendered frame on screen
         window.display();
     }
@@ -3003,16 +2887,15 @@ class RenderWindow(sfWindow.Window, RenderTarget):
     """
 
     @overload
-    def __init__(self) -> None: 
+    def __init__(self) -> None:
         """
         Default constructor.
 
         This constructor doesn't actually create the window, use the other constructors or call create() to do so.
         """
-        pass
 
     @overload
-    def __init__(self, mode: sfWindow.VideoMode, title: str, style: sfWindow.Style = sfWindow.Style.Default, state: sfWindow.State = sfWindow.State.Windowed, settings: sfWindow.ContextSettings = sfWindow.ContextSettings()) -> None: 
+    def __init__(self, mode: sfWindow.VideoMode, title: str, style: sfWindow.Style = sfWindow.Style.Default, state: sfWindow.State = sfWindow.State.Windowed, settings: sfWindow.ContextSettings = sfWindow.ContextSettings()) -> None:
         """
         Construct a new window.
 
@@ -3027,9 +2910,8 @@ class RenderWindow(sfWindow.Window, RenderTarget):
         - state	Window state
         - settings	Additional settings for the underlying OpenGL context
         """
-        pass
 
-    def get_size(self) -> sfSystem.Vector2u: 
+    def get_size(self) -> sfSystem.Vector2u:
         """
         Get the size of the rendering region of the window.
 
@@ -3040,9 +2922,9 @@ class RenderWindow(sfWindow.Window, RenderTarget):
 
         Implements sf::RenderTarget.
         """
-        pass
 
-    def set_icon(self, image: Image) -> None: 
+    @overload
+    def set_icon(self, image: Image) -> None:
         """
         Change the window's icon.
 
@@ -3051,9 +2933,9 @@ class RenderWindow(sfWindow.Window, RenderTarget):
         Parameters
         - icon	Image to use as the icon. The image is copied, so you need not keep the source alive after calling this function.
         """
-        pass
 
-    def set_icon(self, size: sfSystem.Vector2u, pixels: bytes) -> None: 
+    @overload
+    def set_icon(self, size: sfSystem.Vector2u, pixels: bytes) -> None:
         """
         Change the window's icon.
 
@@ -3065,9 +2947,8 @@ class RenderWindow(sfWindow.Window, RenderTarget):
         - size	Icon's width and height, in pixels
         - pixels	Pointer to the array of pixels in memory. The pixels are copied, so you need not keep the source alive after calling this function.
         """
-        pass
 
-    def is_srgb(self) -> bool: 
+    def is_srgb(self) -> bool:
         """
         Tell if the window will use sRGB encoding when drawing on it.
 
@@ -3077,9 +2958,8 @@ class RenderWindow(sfWindow.Window, RenderTarget):
         - true if the window use sRGB encoding, false otherwise
         - Reimplemented from sf::RenderTarget.
         """
-        pass
 
-    def set_active(self, active: bool) -> bool: 
+    def set_active(self, active: bool) -> bool:
         """
         Activate or deactivate the window as the current target for OpenGL rendering.
 
@@ -3092,7 +2972,6 @@ class RenderWindow(sfWindow.Window, RenderTarget):
         - true if operation was successful, false otherwise
         - Reimplemented from sf::RenderTarget.
         """
-        pass
 
 class Shader:
     """
@@ -3198,7 +3077,7 @@ class Shader:
         Fragment = 2
 
     @overload
-    def __init__(self) -> None: 
+    def __init__(self) -> None:
         """
         Default constructor.
 
@@ -3206,10 +3085,9 @@ class Shader:
 
         Binding an empty shader has the same effect as not binding any shader.
         """
-        pass
 
     @overload
-    def __init__(self, filename: str, type: Type) -> None:
+    def __init__(self, filename: str, type_: Type) -> None:
         """
         Construct from a shader file.
 
@@ -3217,12 +3095,11 @@ class Shader:
 
         Parameters
         - filename	Path of the vertex, geometry or fragment shader file to load
-        - type	Type of shader (vertex, geometry or fragment)
+        - type_	Type of shader (vertex, geometry or fragment)
 
         Exceptions
         - sf::Exception	if loading was unsuccessful
         """
-        pass
 
     @overload
     def __init__(self, vertexShaderFilename: str, fragmentShaderFilename: str) -> None:
@@ -3238,7 +3115,6 @@ class Shader:
         Exceptions
         - sf::Exception	if loading was unsuccessful
         """
-        pass
 
     @overload
     def __init__(self, vertexShaderFilename: str, geometryShaderFilename: str, fragmentShaderFilename: str) -> None:
@@ -3255,10 +3131,9 @@ class Shader:
         Exceptions
         - sf::Exception	if loading was unsuccessful
         """
-        pass
 
     @overload
-    def load_from_file(self, filename: str, type: Type) -> bool: 
+    def load_from_file(self, filename: str, type_: Type) -> bool:
         """
         Load the vertex, geometry or fragment shader from a file.
 
@@ -3266,15 +3141,14 @@ class Shader:
 
         Parameters
         - filename	Path of the vertex, geometry or fragment shader file to load
-        - type	Type of shader (vertex, geometry or fragment)
+        - type_	Type of shader (vertex, geometry or fragment)
 
         Returns
         - true if loading succeeded, false if it failed
         """
-        pass
 
     @overload
-    def load_from_file(self, vertexShaderFilename: str, fragmentShaderFilename: str) -> bool: 
+    def load_from_file(self, vertexShaderFilename: str, fragmentShaderFilename: str) -> bool:
         """
         Load both the vertex and fragment shaders from files.
 
@@ -3287,10 +3161,9 @@ class Shader:
         Returns
         - true if loading succeeded, false if it failed
         """
-        pass
 
     @overload
-    def load_from_file(self, vertexShaderFilename: str, geometryShaderFilename: str, fragmentShaderFilename: str) -> bool: 
+    def load_from_file(self, vertexShaderFilename: str, geometryShaderFilename: str, fragmentShaderFilename: str) -> bool:
         """
         Load the vertex, geometry and fragment shaders from files.
 
@@ -3304,10 +3177,9 @@ class Shader:
         Returns
         - true if loading succeeded, false if it failed
         """
-        pass
 
     @overload
-    def load_from_memory(self, shader: str, type: Type) -> bool: 
+    def load_from_memory(self, shader: str, type_: Type) -> bool:
         """
         Load the vertex, geometry or fragment shader from a source code in memory.
 
@@ -3315,15 +3187,14 @@ class Shader:
 
         Parameters
         - shader	String containing the source code of the shader
-        - type	Type of shader (vertex, geometry or fragment)
+        - type_	Type of shader (vertex, geometry or fragment)
 
         Returns
         - true if loading succeeded, false if it failed
         """
-        pass
 
     @overload
-    def load_from_memory(self, vertexShader: str, fragmentShader: str) -> bool: 
+    def load_from_memory(self, vertexShader: str, fragmentShader: str) -> bool:
         """
         Load both the vertex and fragment shaders from source codes in memory.
 
@@ -3336,10 +3207,9 @@ class Shader:
         Returns
         - true if loading succeeded, false if it failed
         """
-        pass
 
     @overload
-    def load_from_memory(self, vertex: str, geometry: str, fragment: str) -> bool: 
+    def load_from_memory(self, vertex: str, geometry: str, fragment: str) -> bool:
         """
         Load the vertex, geometry and fragment shaders from source codes in memory.
 
@@ -3353,10 +3223,9 @@ class Shader:
         Returns
         - true if loading succeeded, false if it failed
         """
-        pass
 
     @overload
-    def set_uniform(self, name: str, x: float) -> None: 
+    def set_uniform(self, name: str, x: float) -> None:
         """
         Specify value for float uniform.
 
@@ -3364,10 +3233,9 @@ class Shader:
         - name	Name of the uniform variable in GLSL
         - x	Value of the float scalar
         """
-        pass
 
     @overload
-    def set_uniform(self, name: str, vector: Glsl.Vec2) -> None: 
+    def set_uniform(self, name: str, vector: Glsl.Vec2) -> None:
         """
         Specify value for vec2 uniform.
 
@@ -3375,10 +3243,9 @@ class Shader:
         - name	Name of the uniform variable in GLSL
         - vector	Value of the vec2 vector
         """
-        pass
 
     @overload
-    def set_uniform(self, name: str, vector: Glsl.Vec3) -> None: 
+    def set_uniform(self, name: str, vector: Glsl.Vec3) -> None:
         """
         Specify value for vec3 uniform.
 
@@ -3386,10 +3253,9 @@ class Shader:
         - name	Name of the uniform variable in GLSL
         - vector	Value of the vec3 vector
         """
-        pass
 
     @overload
-    def set_uniform(self, name: str, vector: Glsl.Vec4) -> None: 
+    def set_uniform(self, name: str, vector: Glsl.Vec4) -> None:
         """
         Specify value for vec4 uniform.
 
@@ -3402,10 +3268,9 @@ class Shader:
         - vector	Value of the vec4 vector
 
         """
-        pass
 
     @overload
-    def set_uniform(self, name: str, x: int) -> None: 
+    def set_uniform(self, name: str, x: int) -> None:
         """
         Specify value for int uniform.
 
@@ -3413,10 +3278,9 @@ class Shader:
         - name	Name of the uniform variable in GLSL
         - x	Value of the int scalar
         """
-        pass
 
     @overload
-    def set_uniform(self, name: str, vector: Glsl.Ivec2) -> None: 
+    def set_uniform(self, name: str, vector: Glsl.Ivec2) -> None:
         """
         Specify value for ivec2 uniform.
 
@@ -3424,10 +3288,9 @@ class Shader:
         - name	Name of the uniform variable in GLSL
         - vector	Value of the ivec2 vector
         """
-        pass
 
     @overload
-    def set_uniform(self, name: str, vector: Glsl.Ivec3) -> None: 
+    def set_uniform(self, name: str, vector: Glsl.Ivec3) -> None:
         """
         Specify value for ivec3 uniform.
 
@@ -3436,10 +3299,9 @@ class Shader:
         - vector	Value of the ivec3 vector
 
         """
-        pass
 
     @overload
-    def set_uniform(self, name: str, vector: Glsl.Ivec4) -> None: 
+    def set_uniform(self, name: str, vector: Glsl.Ivec4) -> None:
         """
         Specify value for ivec4 uniform.
 
@@ -3451,10 +3313,9 @@ class Shader:
         - name	Name of the uniform variable in GLSL
         - vector	Value of the ivec4 vector
         """
-        pass
 
     @overload
-    def set_uniform(self, name: str, x: bool) -> None: 
+    def set_uniform(self, name: str, x: bool) -> None:
         """
         Specify value for bool uniform.
 
@@ -3463,10 +3324,9 @@ class Shader:
         - x	Value of the bool scalar
 
         """
-        pass
 
     @overload
-    def set_uniform(self, name: str, vector: Glsl.Bvec2) -> None: 
+    def set_uniform(self, name: str, vector: Glsl.Bvec2) -> None:
         """
         Specify value for bvec2 uniform.
 
@@ -3474,10 +3334,9 @@ class Shader:
         - name	Name of the uniform variable in GLSL
         - vector	Value of the bvec2 vector
         """
-        pass
 
     @overload
-    def set_uniform(self, name: str, vector: Glsl.Bvec3) -> None: 
+    def set_uniform(self, name: str, vector: Glsl.Bvec3) -> None:
         """
         Specify value for bvec3 uniform.
 
@@ -3485,10 +3344,9 @@ class Shader:
         - name	Name of the uniform variable in GLSL
         - vector	Value of the bvec3 vector
         """
-        pass
 
     @overload
-    def set_uniform(self, name: str, vector: Glsl.Bvec4) -> None: 
+    def set_uniform(self, name: str, vector: Glsl.Bvec4) -> None:
         """
         pecify value for bvec4 uniform.
 
@@ -3497,10 +3355,9 @@ class Shader:
         - vector	Value of the bvec4 vector
 
         """
-        pass
 
     @overload
-    def set_uniform(self, name: str, matrix: Glsl.Mat3) -> None: 
+    def set_uniform(self, name: str, matrix: Glsl.Mat3) -> None:
         """
         Specify value for mat3 matrix.
 
@@ -3509,10 +3366,9 @@ class Shader:
         - matrix	Value of the mat3 matrix
 
         """
-        pass
 
     @overload
-    def set_uniform(self, name: str, matrix: Glsl.Mat4) -> None: 
+    def set_uniform(self, name: str, matrix: Glsl.Mat4) -> None:
         """
         Specify value for mat4 matrix.
 
@@ -3520,10 +3376,9 @@ class Shader:
         - name	Name of the uniform variable in GLSL
         - matrix	Value of the mat4 matrix
         """
-        pass
 
     @overload
-    def set_uniform(self, name: str, texture: Texture) -> None: 
+    def set_uniform(self, name: str, texture: Texture) -> None:
         """
         Specify a texture as sampler2D uniform.
 
@@ -3550,10 +3405,9 @@ class Shader:
         - name	Name of the texture in the shader
         - texture	Texture to assign
         """
-        pass
 
     @overload
-    def set_uniform_array(self, name: str, scalarArray: float, length: int) -> None: 
+    def set_uniform_array(self, name: str, scalarArray: float, length: int) -> None:
         """
         Specify values for float[] array uniform.
 
@@ -3562,10 +3416,9 @@ class Shader:
         - scalarArray	pointer to array of float values
         - length	Number of elements in the array
         """
-        pass
 
     @overload
-    def set_uniform_array(self, name: str, vectorArray: Glsl.Vec2, length: int) -> None: 
+    def set_uniform_array(self, name: str, vectorArray: Glsl.Vec2, length: int) -> None:
         """
         Specify values for vec2[] array uniform.
 
@@ -3574,10 +3427,9 @@ class Shader:
         - vectorArray	pointer to array of vec2 values
         - length	Number of elements in the array
         """
-        pass
 
     @overload
-    def set_uniform_array(self, name: str, vectorArray: Glsl.Vec3, length: int) -> None: 
+    def set_uniform_array(self, name: str, vectorArray: Glsl.Vec3, length: int) -> None:
         """
         Specify values for vec3[] array uniform.
 
@@ -3586,10 +3438,9 @@ class Shader:
         - vectorArray	pointer to array of vec3 values
         - length	Number of elements in the array
         """
-        pass
 
     @overload
-    def set_uniform_array(self, name: str, values: Glsl.Vec4, count: int) -> None: 
+    def set_uniform_array(self, name: str, values: Glsl.Vec4, count: int) -> None:
         """
         Specify values for vec4[] array uniform.
 
@@ -3598,10 +3449,9 @@ class Shader:
         - vectorArray	pointer to array of vec4 values
         - length	Number of elements in the array
         """
-        pass
 
     @overload
-    def set_uniform_array(self, name: str, matrixArray: Glsl.Mat3, length: int) -> None: 
+    def set_uniform_array(self, name: str, matrixArray: Glsl.Mat3, length: int) -> None:
         """
         Specify values for mat3[] array uniform.
 
@@ -3610,10 +3460,9 @@ class Shader:
         - matrixArray	pointer to array of mat3 values
         - length	Number of elements in the array
         """
-        pass
 
     @overload
-    def set_uniform_array(self, name: str, matrixArray: Glsl.Mat4, length: int) -> None: 
+    def set_uniform_array(self, name: str, matrixArray: Glsl.Mat4, length: int) -> None:
         """
         Specify values for mat4[] array uniform.
 
@@ -3622,9 +3471,8 @@ class Shader:
         - matrixArray	pointer to array of mat4 values
         - length	Number of elements in the array
         """
-        pass
 
-    def get_native_handle(self) -> int: 
+    def get_native_handle(self) -> int:
         """
         Get the underlying OpenGL handle of the shader.
 
@@ -3633,10 +3481,9 @@ class Shader:
         Returns
         - OpenGL handle of the shader or 0 if not yet loaded
         """
-        pass
 
     @staticmethod
-    def bind(shader: Shader) -> None: 
+    def bind(shader: Shader) -> None:
         """
         Bind a shader for rendering.
 
@@ -3656,10 +3503,9 @@ class Shader:
         Parameters
         - shader	Shader to bind, can be null to use no shader
         """
-        pass
 
     @staticmethod
-    def is_available() -> bool: 
+    def is_available() -> bool:
         """
         Tell whether or not the system supports shaders.
 
@@ -3668,10 +3514,9 @@ class Shader:
         Returns
         - true if shaders are supported, false otherwise
         """
-        pass
 
     @staticmethod
-    def is_geometry_available() -> bool: 
+    def is_geometry_available() -> bool:
         """
         Tell whether or not the system supports geometry shaders.
 
@@ -3684,7 +3529,6 @@ class Shader:
         Returns
         - true if geometry shaders are supported, false otherwise
         """
-        pass
 
 class Texture:
     """
@@ -3713,35 +3557,35 @@ class Texture:
     ```
     // This example shows the most common use of sf::Texture:
     // drawing a sprite
-    
+
     // Load a texture from a file
     const sf::Texture texture("texture.png");
-    
+
     // Assign it to a sprite
     sf::Sprite sprite(texture);
-    
+
     // Draw the textured sprite
     window.draw(sprite);
     // This example shows another common use of sf::Texture:
     // streaming real-time data, like video frames
-    
+
     // Create an empty texture
     sf::Texture texture({640, 480});
-    
+
     // Create a sprite that will display the texture
     sf::Sprite sprite(texture);
-    
+
     while (...) // the main loop
     {
         ...
-    
+
         // update the texture
         std::uint8_t* pixels = ...; // get a fresh chunk of pixels (the next frame of a movie, for example)
         texture.update(pixels);
-    
+
         // draw it
         window.draw(sprite);
-    
+
         ...
     }
     ```
@@ -3756,16 +3600,15 @@ class Texture:
     """
 
     @overload
-    def __init__(self) -> None: 
+    def __init__(self) -> None:
         """
         Default constructor.
 
         Creates a texture with width 0 and height 0.
         """
-        pass
 
     @overload
-    def __init__(self, filename: str, sRgb: bool = False, area: IntRect = IntRect()) -> None: 
+    def __init__(self, filename: str, sRgb: bool = False, area: IntRect = IntRect()) -> None:
         """
         Construct the texture from a sub-rectangle of a file on disk.
 
@@ -3781,10 +3624,9 @@ class Texture:
         Exceptions
         - sf::Exception	if loading was unsuccessful
         """
-        pass
 
     @overload
-    def __init__(self, data: bytes, size: int, sRgb: bool = False) -> None: 
+    def __init__(self, data: bytes, size: int, sRgb: bool = False) -> None:
         """
         Construct the texture from a file in memory.
 
@@ -3798,10 +3640,9 @@ class Texture:
         Exceptions
         - sf::Exception	if loading was unsuccessful
         """
-        pass
 
     @overload
-    def __init__(self, data: bytes, size: int, sRgb: bool, area: IntRect) -> None: 
+    def __init__(self, data: bytes, size: int, sRgb: bool, area: IntRect) -> None:
         """
         Construct the texture from a sub-rectangle of a file in memory.
 
@@ -3818,10 +3659,9 @@ class Texture:
         Exceptions
         - sf::Exception	if loading was unsuccessful
         """
-        pass
 
     @overload
-    def __init__(self, stream: sfSystem.InputStream, sRgb: bool = False) -> None: 
+    def __init__(self, stream: sfSystem.InputStream, sRgb: bool = False) -> None:
         """
         Construct the texture from a custom stream.
 
@@ -3834,10 +3674,9 @@ class Texture:
         Exceptions
         - sf::Exception	if loading was unsuccessful
         """
-        pass
 
     @overload
-    def __init__(self, stream: sfSystem.InputStream, sRgb: bool, area: IntRect) -> None: 
+    def __init__(self, stream: sfSystem.InputStream, sRgb: bool, area: IntRect) -> None:
         """
         Construct the texture from a sub-rectangle of a custom stream.
 
@@ -3853,10 +3692,9 @@ class Texture:
         Exceptions
         - sf::Exception	if loading was unsuccessful
         """
-        pass
 
     @overload
-    def __init__(self, image: Image, sRgb: bool = False) -> None: 
+    def __init__(self, image: Image, sRgb: bool = False) -> None:
         """
         Construct the texture from an image.
 
@@ -3869,10 +3707,9 @@ class Texture:
         Exceptions
         - sf::Exception	if loading was unsuccessful
         """
-        pass
 
     @overload
-    def __init__(self, image: Image, sRgb: bool, area: IntRect) -> None: 
+    def __init__(self, image: Image, sRgb: bool, area: IntRect) -> None:
         """
         Construct the texture from a sub-rectangle of an image.
 
@@ -3888,10 +3725,9 @@ class Texture:
         Exceptions
         - sf::Exception	if loading was unsuccessful
         """
-        pass
 
     @overload
-    def __init__(self, size: sfSystem.Vector2u, sRgb: bool = False) -> None: 
+    def __init__(self, size: sfSystem.Vector2u, sRgb: bool = False) -> None:
         """
         Construct the texture with a given size.
 
@@ -3902,9 +3738,8 @@ class Texture:
         Exceptions
         - sf::Exception	if construction was unsuccessful
         """
-        pass
 
-    def resize(self, size: sfSystem.Vector2u, sRgb: bool = False) -> None: 
+    def resize(self, size: sfSystem.Vector2u, sRgb: bool = False) -> None:
         """
         Resize the texture.
 
@@ -3917,9 +3752,8 @@ class Texture:
         Returns
         - true if resizing was successful, false if it failed
         """
-        pass
 
-    def load_from_file(self, filename: str, sRgb: bool = False, area: IntRect = IntRect()) -> bool: 
+    def load_from_file(self, filename: str, sRgb: bool = False, area: IntRect = IntRect()) -> bool:
         """
         Load the texture from a file on disk.
 
@@ -3937,9 +3771,8 @@ class Texture:
         Returns
         - true if loading was successful, false if it failed
         """
-        pass
 
-    def load_from_memory(self, data: bytes, size: int, sRgb: bool = False, area: IntRect = IntRect()) -> bool: 
+    def load_from_memory(self, data: bytes, size: int, sRgb: bool = False, area: IntRect = IntRect()) -> bool:
         """
         Load the texture from a file in memory.
 
@@ -3958,9 +3791,8 @@ class Texture:
         Returns
         - true if loading was successful, false if it failed
         """
-        pass
 
-    def load_from_stream(self, stream: sfSystem.InputStream, sRgb: bool = False, area: IntRect = IntRect()) -> bool: 
+    def load_from_stream(self, stream: sfSystem.InputStream, sRgb: bool = False, area: IntRect = IntRect()) -> bool:
         """
         Load the texture from a custom stream.
 
@@ -3978,9 +3810,8 @@ class Texture:
         Returns
         - true if loading was successful, false if it failed
         """
-        pass
 
-    def load_from_image(self, image: Image, sRgb: bool = False, area: IntRect = IntRect()) -> bool: 
+    def load_from_image(self, image: Image, sRgb: bool = False, area: IntRect = IntRect()) -> bool:
         """
         Load the texture from an image.
 
@@ -3998,18 +3829,16 @@ class Texture:
         Returns
         - true if loading was successful, false if it failed
         """
-        pass
 
-    def get_size(self) -> sfSystem.Vector2u: 
+    def get_size(self) -> sfSystem.Vector2u:
         """
         Return the size of the texture.
 
         Returns
         - Size in pixels
         """
-        pass
 
-    def copy_to_image(self) -> Image: 
+    def copy_to_image(self) -> Image:
         """
         Copy the texture pixels to an image.
 
@@ -4018,10 +3847,9 @@ class Texture:
         Returns
         - Image containing the texture's pixels
         """
-        pass
 
     @overload
-    def update(self, pixels: bytes) -> None: 
+    def update(self, pixels: bytes) -> None:
         """
         Update the whole texture from an array of pixels.
 
@@ -4034,10 +3862,9 @@ class Texture:
         Parameters
         - pixels	Array of pixels to copy to the texture
         """
-        pass
 
     @overload
-    def update(self, pixels: bytes, size: sfSystem.Vector2u, dest: sfSystem.Vector2u) -> None: 
+    def update(self, pixels: bytes, size: sfSystem.Vector2u, dest: sfSystem.Vector2u) -> None:
         """
         Update a part of the texture from an array of pixels.
 
@@ -4052,10 +3879,9 @@ class Texture:
         - size	Width and height of the pixel region contained in pixels
         - dest	Coordinates of the destination position
         """
-        pass
 
     @overload
-    def update(self, texture: Texture) -> None: 
+    def update(self, texture: Texture) -> None:
         """
         Update a part of this texture from another texture.
 
@@ -4068,10 +3894,9 @@ class Texture:
         Parameters
         - texture	Source texture to copy to this texture
         """
-        pass
 
     @overload
-    def update(self, texture: Texture, dest: sfSystem.Vector2u) -> None: 
+    def update(self, texture: Texture, dest: sfSystem.Vector2u) -> None:
         """
         Update a part of this texture from another texture.
 
@@ -4083,10 +3908,9 @@ class Texture:
         - texture	Source texture to copy to this texture
         - dest	Coordinates of the destination position
         """
-        pass
 
     @overload
-    def update(self, image: Image) -> None: 
+    def update(self, image: Image) -> None:
         """
         Update the texture from an image.
 
@@ -4099,10 +3923,9 @@ class Texture:
         Parameters
         - image	Image to copy to the texture
         """
-        pass
 
     @overload
-    def update(self, image: Image, dest: sfSystem.Vector2u) -> None: 
+    def update(self, image: Image, dest: sfSystem.Vector2u) -> None:
         """
         Update a part of the texture from an image.
 
@@ -4114,10 +3937,9 @@ class Texture:
         - image	Image to copy to the texture
         - dest	Coordinates of the destination position
         """
-        pass
 
     @overload
-    def update(self, window: sfWindow.Window) -> None: 
+    def update(self, window: sfWindow.Window) -> None:
         """
         Update the texture from the contents of a window.
 
@@ -4130,10 +3952,9 @@ class Texture:
         Parameters
         - window	Window to copy to the texture
         """
-        pass
 
     @overload
-    def update(self, window: sfWindow.Window, dest: sfSystem.Vector2u) -> None: 
+    def update(self, window: sfWindow.Window, dest: sfSystem.Vector2u) -> None:
         """
         Update a part of the texture from the contents of a window.
 
@@ -4145,9 +3966,8 @@ class Texture:
         - window	Window to copy to the texture
         - dest	Coordinates of the destination position
         """
-        pass
 
-    def set_smooth(self, smooth: bool) -> None: 
+    def set_smooth(self, smooth: bool) -> None:
         """
         Enable or disable the smooth filter.
 
@@ -4156,27 +3976,24 @@ class Texture:
         Parameters
         - smooth	true to enable smoothing, false to disable it
         """
-        pass
 
-    def is_smooth(self) -> bool: 
+    def is_smooth(self) -> bool:
         """
         Tell whether the smooth filter is enabled or not.
 
         Returns
         - true if smoothing is enabled, false if it is disabled
         """
-        pass
 
-    def is_srgb(self) -> bool: 
+    def is_srgb(self) -> bool:
         """
         Tell whether the texture source is converted from sRGB or not.
 
         Returns
         - true if the texture source is converted from sRGB, false if not
         """
-        pass
 
-    def set_repeated(self, repeated: bool) -> None: 
+    def set_repeated(self, repeated: bool) -> None:
         """
         Enable or disable repeating.
 
@@ -4185,18 +4002,16 @@ class Texture:
         Parameters
         - repeated	true to repeat the texture, false to disable repeating
         """
-        pass
 
-    def is_repeated(self) -> bool: 
+    def is_repeated(self) -> bool:
         """
         Tell whether the texture is repeated or not.
 
         Returns
         - true if repeat mode is enabled, false if it is disabled
         """
-        pass
 
-    def generate_mipmap(self) -> bool: 
+    def generate_mipmap(self) -> bool:
         """
         Generate a mipmap using the current texture data.
 
@@ -4207,18 +4022,16 @@ class Texture:
         Returns
         - true if mipmap generation was successful, false if unsuccessful
         """
-        pass
 
-    def swap(self, right: Texture) -> None: 
+    def swap(self, right: Texture) -> None:
         """
         Swap the contents of this texture with those of another.
 
         Parameters
         - right	Instance to swap with
         """
-        pass
 
-    def get_native_handle(self) -> int: 
+    def get_native_handle(self) -> int:
         """
         Get the underlying OpenGL handle of the texture.
 
@@ -4227,10 +4040,9 @@ class Texture:
         Returns
         - OpenGL handle of the texture or 0 if not yet created
         """
-        pass
 
     @staticmethod
-    def bind(texture: Texture, coordinateType: CoordinateType = CoordinateType.Normalized) -> None: 
+    def bind(texture: Texture, coordinateType: CoordinateType = CoordinateType.Normalized) -> None:
         """
         Bind a texture for rendering.
 
@@ -4253,10 +4065,9 @@ class Texture:
         - texture	Pointer to the texture to bind, can be null to use no texture
         - coordinateType	Type of texture coordinates to use
         """
-        pass
 
     @staticmethod
-    def get_maximum_size() -> int: 
+    def get_maximum_size() -> int:
         """
         Get the maximum texture size allowed.
 
@@ -4265,7 +4076,6 @@ class Texture:
         Returns
         - Maximum size allowed for textures, in pixels
         """
-        pass
 
 
 class Sprite(Transformable, Drawable):
@@ -4289,30 +4099,29 @@ class Sprite(Transformable, Drawable):
     ```
     // Load a texture
     const sf::Texture texture("texture.png");
-    
+
     // Create a sprite
     sf::Sprite sprite(texture);
     sprite.setTextureRect({{10, 10}, {50, 30}});
     sprite.setColor({255, 255, 255, 200});
     sprite.setPosition({100.f, 25.f});
-    
+
     // Draw it
     window.draw(sprite);
     ```
     """
 
     @overload
-    def __init__(self, texture: Texture) -> None: 
+    def __init__(self, texture: Texture) -> None:
         """
         Construct the sprite from a source texture.
 
         Parameters
         - texture	Source texture
         """
-        pass
 
     @overload
-    def __init__(self, texture: Texture, rectangle: IntRect) -> None: 
+    def __init__(self, texture: Texture, rectangle: IntRect) -> None:
         """
         Construct the sprite from a sub-rectangle of a source texture.
 
@@ -4320,9 +4129,8 @@ class Sprite(Transformable, Drawable):
         - texture	Source texture
         - rectangle	Sub-rectangle of the texture to assign to the sprite
         """
-        pass
 
-    def set_texture(self, texture: Texture, resetRect: bool) -> None: 
+    def set_texture(self, texture: Texture, resetRect: bool) -> None:
         """
         Change the source texture of the sprite.
 
@@ -4332,9 +4140,8 @@ class Sprite(Transformable, Drawable):
         - texture	New texture
         - resetRect	Should the texture rect be reset to the size of the new texture?
         """
-        pass
 
-    def set_texture_rect(self, rectangle: IntRect) -> None: 
+    def set_texture_rect(self, rectangle: IntRect) -> None:
         """
         Set the sub-rectangle of the texture that the sprite will display.
 
@@ -4343,9 +4150,8 @@ class Sprite(Transformable, Drawable):
         Parameters
         - rectangle	Rectangle defining the region of the texture to display
         """
-        pass
 
-    def set_color(self, color: Color) -> None: 
+    def set_color(self, color: Color) -> None:
         """
         Set the global color of the sprite.
 
@@ -4354,9 +4160,8 @@ class Sprite(Transformable, Drawable):
         Parameters
         - color	New color of the sprite
         """
-        pass
 
-    def get_texture(self) -> Texture: 
+    def get_texture(self) -> Texture:
         """
         Get the source texture of the sprite.
 
@@ -4365,27 +4170,24 @@ class Sprite(Transformable, Drawable):
         Returns
         - Reference to the sprite's texture
         """
-        pass
 
-    def get_texture_rect(self) -> IntRect: 
+    def get_texture_rect(self) -> IntRect:
         """
         Get the sub-rectangle of the texture displayed by the sprite.
 
         Returns
         - Texture rectangle of the sprite
         """
-        pass
 
-    def get_color(self) -> Color: 
+    def get_color(self) -> Color:
         """
         Get the global color of the sprite.
 
         Returns
         - Global color of the sprite
         """
-        pass
 
-    def get_local_bounds(self) -> FloatRect: 
+    def get_local_bounds(self) -> FloatRect:
         """
         Get the local bounding rectangle of the entity.
 
@@ -4394,9 +4196,8 @@ class Sprite(Transformable, Drawable):
         Returns
         - Local bounding rectangle of the entity
         """
-        pass
 
-    def get_global_bounds(self) -> FloatRect: 
+    def get_global_bounds(self) -> FloatRect:
         """
         Get the global bounding rectangle of the entity.
 
@@ -4406,7 +4207,6 @@ class Sprite(Transformable, Drawable):
         - Global bounding rectangle of the entity
         """
 
-        pass
 
 
 class StencilComparison(enum.IntEnum):
@@ -4464,8 +4264,8 @@ class StencilValue:
     Stencil value type (also used as a mask)
     """
 
-    def __init__(self, value: int) -> None: 
-        pass
+    def __init__(self, value: int) -> None:
+        ...
 
     value: int
 
@@ -4502,8 +4302,8 @@ class StencilMode:
     In SFML, a stencil mode can be specified every time you draw a sf::Drawable object to a render target. It is part of the sf::RenderStates compound that is passed to the member function sf::RenderTarget::draw().
     """
 
-    def __init__(self) -> None: 
-        pass
+    def __init__(self) -> None:
+        ...
 
     stencil_comparison: StencilComparison
     stencil_update_operation: StencilUpdateOperation
@@ -4511,11 +4311,11 @@ class StencilMode:
     stencil_mask: StencilValue
     stencil_only: bool
 
-    def __eq__(self, other: StencilMode) -> bool: 
-        pass
+    def __eq__(self, other: StencilMode) -> bool:
+        ...
 
-    def __ne__(self, other: StencilMode) -> bool: 
-        pass
+    def __ne__(self, other: StencilMode) -> bool:
+        ...
 
 
 class Text(Transformable, Drawable):
@@ -4553,7 +4353,7 @@ class Text(Transformable, Drawable):
         Underlined = 1 << 2
         StrikeThrough = 1 << 3
 
-    def __init__(self, font: Font, string: str = "", characterSize: int = 30) -> None: 
+    def __init__(self, font: Font, string: str = "", characterSize: int = 30) -> None:
         """
         Construct the text from a string, font and size.
 
@@ -4564,9 +4364,8 @@ class Text(Transformable, Drawable):
         - font	Font used to draw the string
         - characterSize	Base size of characters, in pixels
         """
-        pass
 
-    def set_string(self, string: str) -> None: 
+    def set_string(self, string: str) -> None:
         """
         Set the text's string.
 
@@ -4581,9 +4380,8 @@ class Text(Transformable, Drawable):
         Parameters
         - string	New string
         """
-        pass
 
-    def set_font(self, font: Font) -> None: 
+    def set_font(self, font: Font) -> None:
         """
         Set the text's font.
 
@@ -4592,9 +4390,8 @@ class Text(Transformable, Drawable):
         Parameters
         - font	New font
         """
-        pass
 
-    def set_character_size(self, size: int) -> None: 
+    def set_character_size(self, size: int) -> None:
         """
         Set the character size.
 
@@ -4605,9 +4402,8 @@ class Text(Transformable, Drawable):
         Parameters
         - size	New character size, in pixels
         """
-        pass
 
-    def set_line_spacing(self, spacing_factor: float) -> None: 
+    def set_line_spacing(self, spacing_factor: float) -> None:
         """
         Set the line spacing factor.
 
@@ -4616,12 +4412,18 @@ class Text(Transformable, Drawable):
         Parameters
         - spacingFactor	New line spacing factor
         """
-        pass
 
-    def set_letter_spacing(self, spacing_factor: float) -> None: 
-        pass
+    def set_letter_spacing(self, spacing_factor: float) -> None:
+        """
+        Set the letter spacing factor.
 
-    def set_style(self, style: Style) -> None: 
+        The default spacing between letters is defined by the font. This factor doesn't directly apply to the existing spacing between each character, it rather adds a fixed space between them which is calculated from the font metrics and the character size. Note that factors below 1 (including negative numbers) bring characters closer to each other. By default the letter spacing factor is 1.
+
+        Parameters
+        - spacingFactor	New letter spacing factor
+        """
+
+    def set_style(self, style: Style) -> None:
         """
         Set the text's style.
 
@@ -4630,9 +4432,8 @@ class Text(Transformable, Drawable):
         Parameters
         - style	New style
         """
-        pass
 
-    def set_fill_color(self, color: Color) -> None: 
+    def set_fill_color(self, color: Color) -> None:
         """
         Set the fill color of the text.
 
@@ -4641,9 +4442,8 @@ class Text(Transformable, Drawable):
         Parameters
         - color	New fill color of the text
         """
-        pass
 
-    def set_outline_color(self, color: Color) -> None: 
+    def set_outline_color(self, color: Color) -> None:
         """
         Set the outline color of the text.
 
@@ -4652,9 +4452,8 @@ class Text(Transformable, Drawable):
         Parameters
         - color	New outline color of the text
         """
-        pass
 
-    def set_outline_thickness(self, thickness: float) -> None: 
+    def set_outline_thickness(self, thickness: float) -> None:
         """
         Set the thickness of the text's outline.
 
@@ -4665,9 +4464,8 @@ class Text(Transformable, Drawable):
         Parameters
         - thickness	New outline thickness, in pixels
         """
-        pass
 
-    def get_string(self) -> str: 
+    def get_string(self) -> str:
         """
         Get the text's string.
 
@@ -4682,9 +4480,8 @@ class Text(Transformable, Drawable):
         Returns
         - Text's string
         """
-        pass
 
-    def get_font(self) -> Font: 
+    def get_font(self) -> Font:
         """
         Get the text's font.
 
@@ -4693,72 +4490,64 @@ class Text(Transformable, Drawable):
         Returns
         - Reference to the text's font
         """
-        pass
 
-    def get_character_size(self) -> int: 
+    def get_character_size(self) -> int:
         """
         Get the character size.
 
         Returns
         - Size of the characters, in pixels
         """
-        pass
 
-    def get_letter_spacing(self) -> float: 
+    def get_letter_spacing(self) -> float:
         """
         Get the size of the letter spacing factor.
 
         Returns
         - Size of the letter spacing factor
         """
-        pass
 
-    def get_line_spacing(self) -> float: 
+    def get_line_spacing(self) -> float:
         """
         Get the size of the line spacing factor.
 
         Returns
         - Size of the line spacing factor
         """
-        pass
 
-    def get_style(self) -> int: 
+    def get_style(self) -> int:
         """
         Get the text's style.
 
         Returns
         - Text's style
         """
-        pass
 
-    def get_fill_color(self) -> Color: 
+    def get_fill_color(self) -> Color:
         """
         Get the fill color of the text.
 
         Returns
         - Fill color of the text
         """
-        pass
 
-    def get_outline_color(self) -> Color: 
+    def get_outline_color(self) -> Color:
         """
         Get the outline color of the text.
 
         Returns
         - Outline color of the text
         """
-        pass
 
-    def get_outline_thickness(self) -> float: 
+    def get_outline_thickness(self) -> float:
         """
         Get the outline thickness of the text.
 
         Returns
         - Outline thickness of the text, in pixels
         """
-        pass
 
-    def find_character_pos(self, index: int) -> sfSystem.Vector2f: 
+    def find_character_pos(self, index: int) -> sfSystem.Vector2f:
         """
         Return the position of the index-th character.
 
@@ -4770,9 +4559,8 @@ class Text(Transformable, Drawable):
         Returns
         - Position of the character
         """
-        pass
 
-    def get_local_bounds(self) -> FloatRect: 
+    def get_local_bounds(self) -> FloatRect:
         """
         Get the local bounding rectangle of the entity.
 
@@ -4781,9 +4569,8 @@ class Text(Transformable, Drawable):
         Returns
         - Local bounding rectangle of the entity
         """
-        pass
 
-    def get_global_bounds(self) -> FloatRect: 
+    def get_global_bounds(self) -> FloatRect:
         """
         Get the global bounding rectangle of the entity.
 
@@ -4792,7 +4579,6 @@ class Text(Transformable, Drawable):
         Returns
         - Global bounding rectangle of the entity
         """
-        pass
 
 class View:
     """
@@ -4812,26 +4598,24 @@ class View:
     """
 
     @overload
-    def __init__(self) -> None: 
+    def __init__(self) -> None:
         """
         Default constructor.
 
         This constructor creates a default view of (0, 0, 1000, 1000)
         """
-        pass
 
     @overload
-    def __init__(self, rectangle: FloatRect) -> None: 
+    def __init__(self, rectangle: FloatRect) -> None:
         """
         Construct the view from a rectangle.
 
         Parameters
         - rectangle	Rectangle defining the zone to display
         """
-        pass
 
     @overload
-    def __init__(self, center: sfSystem.Vector2f, size: sfSystem.Vector2f) -> None: 
+    def __init__(self, center: sfSystem.Vector2f, size: sfSystem.Vector2f) -> None:
         """
         Construct the view from its center and size.
 
@@ -4839,27 +4623,24 @@ class View:
         - center	Center of the zone to display
         - size	Size of zone to display
         """
-        pass
 
-    def set_center(self, center: sfSystem.Vector2f) -> None: 
+    def set_center(self, center: sfSystem.Vector2f) -> None:
         """
         Set the center of the view.
 
         Parameters
         - center	New center
         """
-        pass
 
-    def set_size(self, size: sfSystem.Vector2f) -> None: 
+    def set_size(self, size: sfSystem.Vector2f) -> None:
         """
         Set the size of the view.
 
         Parameters
         - size	New size
         """
-        pass
 
-    def set_rotation(self, angle: sfSystem.Angle) -> None: 
+    def set_rotation(self, angle: sfSystem.Angle) -> None:
         """
         Set the orientation of the view.
 
@@ -4868,9 +4649,8 @@ class View:
         Parameters
         - angle	New angle
         """
-        pass
 
-    def set_viewport(self, viewport: FloatRect) -> None: 
+    def set_viewport(self, viewport: FloatRect) -> None:
         """
         Set the target viewport.
 
@@ -4879,9 +4659,8 @@ class View:
         Parameters
         - viewport	New viewport rectangle
         """
-        pass
 
-    def set_scissor(self, scissor: FloatRect) -> None: 
+    def set_scissor(self, scissor: FloatRect) -> None:
         """
         Set the target scissor rectangle.
 
@@ -4890,72 +4669,64 @@ class View:
         Parameters
         - scissor	New scissor rectangle
         """
-        pass
 
-    def get_center(self) -> sfSystem.Vector2f: 
+    def get_center(self) -> sfSystem.Vector2f:
         """
         Get the center of the view.
 
         Returns
         - Center of the view
         """
-        pass
 
-    def get_size(self) -> sfSystem.Vector2f: 
+    def get_size(self) -> sfSystem.Vector2f:
         """
         Get the size of the view.
 
         Returns
         - Size of the view
         """
-        pass
 
-    def get_rotation(self) -> sfSystem.Angle: 
+    def get_rotation(self) -> sfSystem.Angle:
         """
         Get the current orientation of the view.
 
         Returns
         - Rotation angle of the view
         """
-        pass
 
-    def get_viewport(self) -> FloatRect: 
+    def get_viewport(self) -> FloatRect:
         """
         Get the target viewport rectangle of the view.
 
         Returns
         - Viewport rectangle, expressed as a factor of the target size
         """
-        pass
 
-    def get_scissor(self) -> FloatRect: 
+    def get_scissor(self) -> FloatRect:
         """
         Get the scissor rectangle of the view.
 
         Returns
         - Scissor rectangle, expressed as a factor of the target size
         """
-        pass
 
-    def move(self, offset: sfSystem.Vector2f) -> None: 
+    def move(self, offset: sfSystem.Vector2f) -> None:
         """
         Move the view relatively to its current position.
 
         Parameters
         - offset	Move offset
         """
-        pass
 
-    def rotate(self, angle: float) -> None: 
+    def rotate(self, angle: float) -> None:
         """
         Rotate the view relatively to its current orientation.
 
         Parameters
         - angle	Angle to rotate
         """
-        pass
 
-    def zoom(self, factor: float) -> None: 
+    def zoom(self, factor: float) -> None:
         """
         Resize the view rectangle relatively to its current size.
 
@@ -4968,9 +4739,8 @@ class View:
         Parameters
         - factor	Zoom factor to apply
         """
-        pass
 
-    def get_transform(self) -> Transform: 
+    def get_transform(self) -> Transform:
         """
         Get the projection transform of the view.
 
@@ -4979,9 +4749,8 @@ class View:
         Returns
         - Projection transform defining the view
         """
-        pass
 
-    def get_inverse_transform(self) -> Transform: 
+    def get_inverse_transform(self) -> Transform:
         """
         Get the inverse projection transform of the view.
 
@@ -4990,4 +4759,3 @@ class View:
         Returns
         - Inverse of the projection transform defining the view
         """
-        pass

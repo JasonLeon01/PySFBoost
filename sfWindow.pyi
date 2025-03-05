@@ -1,8 +1,13 @@
 """
-This module provides bindings for SFML's window and event system, including classes
-for window context, events, cursor, video modes, and more.
+Provides OpenGL-based windows, and abstractions for events and input handling.
 """
 
+# pylint: disable=unused-argument
+# pylint: disable=line-too-long
+# pylint: disable=too-many-lines
+# pylint: disable=invalid-name
+
+from __future__ import annotations
 import enum
 from typing import List, overload
 from types import ModuleType
@@ -55,7 +60,6 @@ class Context:
         - settings: Creation parameters
         - size: Back buffer size
         """
-        pass
 
     def set_active(self, active: bool) -> None:
         """
@@ -68,7 +72,6 @@ class Context:
 
         - true on success, false on failure
         """
-        pass
 
     def get_settings(self) -> ContextSettings:
         """
@@ -79,7 +82,6 @@ class Context:
         Returns
         - Structure containing the settings
         """
-        pass
 
 class ContextSettings:
     """
@@ -127,7 +129,6 @@ class ContextSettings:
         """
         Initializes the ContextSettings object.
         """
-        pass
 
 
 class Cursor:
@@ -244,19 +245,18 @@ class Cursor:
         NotAllowed = 20
 
     @overload
-    def __init__(self, type: Type) -> None:
+    def __init__(self, type_: Type) -> None:
         """
         Create a native system cursor.
 
         Refer to the list of cursor available on each system (see sf::Cursor::Type) to know whether a given cursor is expected to load successfully or is not supported by the operating system.
 
         Parameters
-        - type: Native system cursor type
+        - type_: Native system cursor type
 
         Exceptions
         - sf::Exception: if the corresponding cursor is not natively supported by the operating system
         """
-        pass
 
     @overload
     def __init__(self, pixels: bytes, size: sfSystem.Vector2u, hotspot: sfSystem.Vector2u) -> None:
@@ -281,7 +281,6 @@ class Cursor:
         Exceptions
         - sf::Exception: if the cursor could not be constructed
         """
-        pass
 
     def createFromPixels(self, pixels: bytes, size: sfSystem.Vector2u) -> bool:
         """
@@ -291,13 +290,11 @@ class Cursor:
         :param size: Size of the cursor.
         :return: True if creation is successful, False otherwise.
         """
-        pass
 
     def createFromSystem(self) -> bool:
         """
         Creates a cursor using system resources.
         """
-        pass
 
 class Event:
     """
@@ -318,16 +315,31 @@ class Event:
 
     # Event subclasses for specific event types
     class Closed(Event):
-        pass
+        """
+        Closed event.
+        """
     class Resized(Event):
+        """
+        Resized event.
+        """
         size: sfSystem.Vector2u
     class FocusLost:
-        pass
+        """
+        Focus lost event.
+        """
     class FocusGained:
-        pass
+        """
+        Focus gained event.
+        """
     class TextEntered:
+        """
+        Text entered event.
+        """
         unicode: str
     class KeyPressed:
+        """
+        Key pressed event.
+        """
         code: Keyboard.Key
         scancode: Keyboard.Scan
         alt: bool
@@ -335,6 +347,9 @@ class Event:
         shift: bool
         system: bool
     class KeyReleased:
+        """
+        Key released event.
+        """
         code: Keyboard.Key
         scancode: Keyboard.Scan
         alt: bool
@@ -342,105 +357,262 @@ class Event:
         shift: bool
         system: bool
     class MouseWheelScrolled:
+        """
+        Mouse wheel scrolled event.
+        """
         wheel: Mouse.Wheel
         delta: float
         position: sfSystem.Vector2i
     class MouseButtonPressed:
+        """
+        Mouse button pressed event.
+        """
         button: Mouse.Button
         position: sfSystem.Vector2i
     class MouseButtonReleased:
+        """
+        Mouse button released event.
+        """
         button: Mouse.Button
         position: sfSystem.Vector2i
     class MouseMoved:
+        """
+        Mouse moved event.
+        """
         position: sfSystem.Vector2i
     class MouseMovedRaw:
+        """
+        Mouse moved event (raw).
+        """
         delta: sfSystem.Vector2i
     class MouseEntered:
-        pass
+        """
+        Mouse entered event.
+        """
     class MouseLeft:
-        pass
+        """
+        Mouse left event.
+        """
     class JoystickButtonPressed:
+        """
+        Joystick button pressed event.
+        """
         joystick_id: int
         button: int
     class JoystickButtonReleased:
+        """
+        Joystick button released event.
+        """
         joystick_id: int
         button: int
     class JoystickMoved:
+        """
+        Joystick moved event.
+        """
         joystick_id: int
         axis: Joystick.Axis
         position: float
     class JoystickConnected:
+        """
+        Joystick connected event.
+        """
         joystick_id: int
     class JoystickDisconnected:
+        """
+        Joystick disconnected event.
+        """
         joystick_id: int
     class TouchBegan:
+        """
+        Touch began event.
+        """
         finger: int
         position: sfSystem.Vector2i
     class TouchMoved:
+        """
+        Touch moved event.
+        """
         finger: int
         position: sfSystem.Vector2i
     class TouchEnded:
+        """
+        Touch ended event.
+        """
         finger: int
         position: sfSystem.Vector2i
     class SensorChanged:
+        """
+        Sensor changed event.
+        """
         sensor_type: Sensor.Type
         value: sfSystem.Vector3f
-    
+
     def __init__(self, event_type: Event) -> None:
         """
         Construct from a given sf::Event subtype.
         """
-        pass
 
     def isClosed(self) -> bool:
-        pass
+        """
+        Judge whether the event is a closed event.
+
+        Returns
+        - True if the event is a closed event, false otherwise.
+        """
     def isResized(self) -> bool:
-        pass
+        """
+        Judge whether the event is a resized event.
+
+        Returns
+        - True if the event is a resized event, false otherwise.
+        """
     def isFocusLost(self) -> bool:
-        pass
+        """
+        Judge whether the event is a focus lost event.
+
+        Returns
+        - True if the event is a focus lost event, false otherwise.
+        """
     def isFocusGained(self) -> bool:
-        pass
+        """
+        Judge whether the event is a focus gained event.
+
+        Returns
+        - True if the event is a focus gained event, false otherwise.
+        """
     def isTextEntered(self) -> bool:
-        pass
+        """
+        Judge whether the event is a text entered event.
+
+        Returns
+        - True if the event is a text entered event, false otherwise.
+        """
     def isKeyPressed(self) -> bool:
-        pass
+        """
+        Judge whether the event is a key pressed event.
+
+        Returns
+        - True if the event is a key pressed event, false otherwise.
+        """
     def isKeyReleased(self) -> bool:
-        pass
+        """
+        Judge whether the event is a key released event.
+
+        Returns
+        - True if the event is a key released event, false otherwise.
+        """
     def isMouseWheelScrolled(self) -> bool:
-        pass
+        """
+        Judge whether the event is a mouse wheel scrolled event.
+
+        Returns
+        - True if the event is a mouse wheel scrolled event, false otherwise.
+        """
     def isMouseButtonPressed(self) -> bool:
-        pass
+        """
+        Judge whether the event is a mouse button pressed event.
+
+        Returns
+        - True if the event is a mouse button pressed event, false otherwise.
+        """
     def isMouseButtonReleased(self) -> bool:
-        pass
+        """
+        Judge whether the event is a mouse button released event.
+
+        Returns
+        - True if the event is a mouse button released event, false otherwise.
+        """
     def isMouseMoved(self) -> bool:
-        pass
+        """
+        Judge whether the event is a mouse moved event.
+
+        Returns
+        - True if the event is a mouse moved event, false otherwise.
+        """
     def isMouseMovedRaw(self) -> bool:
-        pass
+        """
+        Judge whether the event is a mouse moved event (raw).
+
+        Returns
+        - True if the event is a mouse moved event (raw), false otherwise.
+        """
     def isMouseEntered(self) -> bool:
-        pass
+        """
+        Judge whether the event is a mouse entered event.
+
+        Returns
+        - True if the event is a mouse entered event, false otherwise.
+        """
     def isMouseLeft(self) -> bool:
-        pass
+        """
+        Judge whether the event is a mouse left event.
+
+        Returns
+        - True if the event is a mouse left event, false otherwise.
+        """
     def isJoystickButtonPressed(self) -> bool:
-        pass
+        """
+        Judge whether the event is a joystick button pressed event.
+
+        Returns
+        - True if the event is a joystick button pressed event, false otherwise.
+        """
     def isJoystickButtonReleased(self) -> bool:
-        pass
+        """
+        Judge whether the event is a joystick button released event.
+
+        Returns
+        - True if the event is a joystick button released event, false otherwise.
+        """
     def isJoystickMoved(self) -> bool:
-        pass
+        """
+        Judge whether the event is a joystick moved event.
+
+        Returns
+        - True if the event is a joystick moved event, false otherwise.
+        """
     def isJoystickConnected(self) -> bool:
-        pass
+        """
+        Judge whether the event is a joystick connected event.
+
+        Returns
+        - True if the event is a joystick connected event, false otherwise.
+        """
     def isJoystickDisconnected(self) -> bool:
-        pass
+        """
+        Judge whether the event is a joystick disconnected event.
+
+        Returns
+        - True if the event is a joystick disconnected event, false otherwise.
+        """
     def isTouchBegan(self) -> bool:
-        pass
+        """
+        Judge whether the event is a touch began event.
+
+        Returns
+        - True if the event is a touch began event, false otherwise.
+        """
     def isTouchMoved(self) -> bool:
-        pass
+        """
+        Judge whether the event is a touch moved event.
+
+        Returns
+        - True if the event is a touch moved event, false otherwise.
+        """
     def isTouchEnded(self) -> bool:
-        pass
+        """
+        Judge whether the event is a touch ended event.
+
+        Returns
+        - True if the event is a touch ended event, false otherwise.
+        """
     def isSensorChanged(self) -> bool:
-        pass
+        """
+        Judge whether the event is a sensor changed event.
 
-    pass
-
+        Returns
+        - True if the event is a sensor changed event, false otherwise.
+        """
 class VideoMode:
     """
     VideoMode defines a video mode (size, bpp)
@@ -470,7 +642,6 @@ class VideoMode:
         - modeBitsPerPixel: Pixel depths in bits per pixel.
 
         """
-        pass
 
     @staticmethod
     def get_desktop_mode() -> VideoMode:
@@ -480,7 +651,6 @@ class VideoMode:
         Returns
         - Current desktop video mode
         """
-        pass
 
     @staticmethod
     def get_fullscreen_modes() -> List[VideoMode]:
@@ -492,7 +662,6 @@ class VideoMode:
         Returns
         - Array containing all the supported fullscreen modes
         """
-        pass
 
     def isValid(self) -> bool:
         """
@@ -503,7 +672,6 @@ class VideoMode:
         Returns
         - true if the video mode is valid for fullscreen mode
         """
-        pass
 
 class WindowBase:
     """
@@ -528,8 +696,8 @@ class WindowBase:
         - style: Window style, a bitwise OR combination of sf::Style enumerators
         - state: Window state
         """
-        pass
 
+    @overload
     def create(self, mode: VideoMode, title: str, style: int = Style.Default, state: State = State.Windowed) -> None:
         """
         Create (or recreate) the window.
@@ -545,6 +713,7 @@ class WindowBase:
         - Reimplemented in sf::Window.
         """
 
+    @overload
     def create(self, mode: VideoMode, title: str, state: State) -> None:
         """
         Create (or recreate) the window.
@@ -568,7 +737,6 @@ class WindowBase:
         Returns
         - true if the window is open, false if it has been closed
         """
-        pass
 
     def close(self) -> None:
         """
@@ -578,7 +746,6 @@ class WindowBase:
 
         Reimplemented in sf::Window.
         """
-        pass
 
     def poll_event(self) -> Event:
         """
@@ -589,7 +756,6 @@ class WindowBase:
         Returns
         - The event, otherwise std::nullopt if no events are pending
         """
-        pass
 
     def wait_event(self, timeout: sfSystem.Time = 0) -> Event:
         """
@@ -603,7 +769,6 @@ class WindowBase:
         Returns
         - The event, otherwise std::nullopt on timeout or if window was closed
         """
-        pass
 
     def get_position(self) -> sfSystem.Vector2i:
         """
@@ -613,7 +778,6 @@ class WindowBase:
         - Position of the window, in pixels
 
         """
-        pass
 
     def set_position(self, position: sfSystem.Vector2i) -> None:
         """
@@ -625,7 +789,6 @@ class WindowBase:
         - position	New position, in pixels
 
         """
-        pass
 
     def get_size(self) -> sfSystem.Vector2u:
         """
@@ -636,7 +799,6 @@ class WindowBase:
         Returns
         - Size in pixels
         """
-        pass
 
     def set_size(self, size: sfSystem.Vector2u) -> None:
         """
@@ -646,7 +808,6 @@ class WindowBase:
         - size	New size, in pixels
 
         """
-        pass
 
     def set_minimum_size(self, minimumSize: sfSystem.Vector2u | None) -> None:
         """
@@ -658,7 +819,6 @@ class WindowBase:
         - minimumSize	New minimum size, in pixels
 
         """
-        pass
 
     def set_maximum_size(self, maximumSize: sfSystem.Vector2u | None) -> None:
         """
@@ -669,7 +829,6 @@ class WindowBase:
         Parameters
         - maximumSize	New maximum size, in pixels
         """
-        pass
 
     def set_title(self, title: str) -> None:
         """
@@ -679,7 +838,6 @@ class WindowBase:
         - title	New title
 
         """
-        pass
 
     def set_icon(self, size: sfSystem.Vector2u, pixels: bytes) -> None:
         """
@@ -693,7 +851,6 @@ class WindowBase:
         size	Icon's width and height, in pixels
         pixels	Pointer to the array of pixels in memory. The pixels are copied, so you need not keep the source alive after calling this function.
         """
-        pass
 
     def set_visible(self, visible: bool) -> None:
         """
@@ -705,7 +862,6 @@ class WindowBase:
         - visible	true to show the window, false to hide it
 
         """
-        pass
 
     def set_mouse_cursor_visible(self, visible: bool) -> None:
         """
@@ -721,7 +877,6 @@ class WindowBase:
         - visible	true to show the mouse cursor, false to hide it
 
         """
-        pass
 
     def set_mouse_cursor_grabbed(self, grabbed: bool) -> None:
         """
@@ -732,7 +887,6 @@ class WindowBase:
         Parameters
         - grabbed	true to enable, false to disable
         """
-        pass
 
     def set_mouse_cursor(self, cursor: Cursor) -> None:
         """
@@ -749,7 +903,6 @@ class WindowBase:
         Parameters
         - cursor	Native system cursor type to display
         """
-        pass
 
     def set_key_repeat_enabled(self, enabled: bool) -> None:
         """
@@ -762,7 +915,6 @@ class WindowBase:
         Parameters
         - enabled	true to enable, false to disable
         """
-        pass
 
     def set_joystick_threshold(self, threshold: float) -> None:
         """
@@ -776,7 +928,6 @@ class WindowBase:
         - threshold	New threshold, in the range [0, 100]
 
         """
-        pass
 
     def request_focus(self) -> None:
         """
@@ -784,7 +935,6 @@ class WindowBase:
 
         At any given time, only one window may have the input focus to receive input events such as keystrokes or mouse events. If a window requests focus, it only hints to the operating system, that it would like to be focused. The operating system is free to deny the request. This is not to be confused with setActive().
         """
-        pass
 
     def has_focus(self) -> bool:
         """
@@ -795,7 +945,6 @@ class WindowBase:
         Returns
         - true if window has focus, false otherwise
         """
-        pass
 
 
 class Window(WindowBase):
@@ -830,23 +979,6 @@ class Window(WindowBase):
         - state	Window state
         - settings	Additional settings for the underlying OpenGL context
         """
-        pass
-
-    @overload
-    def create(self, mode: VideoMode, title: str, state: State) -> None:
-        """
-        Create (or recreate) the window.
-
-        If the window was already created, it closes it first. If state is State::Fullscreen, then mode must be a valid video mode.
-
-        Parameters
-        - mode	Video mode to use (defines the width, height and depth of the rendering area of the window)
-        - title	Title of the window
-        - state	Window state
-
-        Reimplemented from sf::WindowBase.
-        """
-        pass
 
     @overload
     def create(self, mode: VideoMode, title: str, style: int = Style.Default, state: State = State.Windowed) -> None:
@@ -863,7 +995,21 @@ class Window(WindowBase):
         - style	Window style, a bitwise OR combination of sf::Style enumerators
         - state	Window state
         """
-        pass
+
+    @overload
+    def create(self, mode: VideoMode, title: str, state: State) -> None:
+        """
+        Create (or recreate) the window.
+
+        If the window was already created, it closes it first. If state is State::Fullscreen, then mode must be a valid video mode.
+
+        Parameters
+        - mode	Video mode to use (defines the width, height and depth of the rendering area of the window)
+        - title	Title of the window
+        - state	Window state
+
+        Reimplemented from sf::WindowBase.
+        """
 
     @overload
     def create(self, mode: VideoMode, title: str, style: int, state: State, settings: ContextSettings) -> None:
@@ -881,7 +1027,6 @@ class Window(WindowBase):
         - state	Window state
         - settings	Additional settings for the underlying OpenGL context
         """
-        pass
 
     def close(self) -> None:
         """
@@ -891,7 +1036,6 @@ class Window(WindowBase):
 
         Reimplemented from sf::WindowBase.
         """
-        pass
 
     def set_vertical_sync_enabled(self, enabled: bool) -> None:
         """
@@ -904,7 +1048,6 @@ class Window(WindowBase):
         Parameters
         - enabled	true to enable v-sync, false to deactivate it
         """
-        pass
 
     def set_framerate_limit(self, limit: int) -> None:
         """
@@ -916,7 +1059,6 @@ class Window(WindowBase):
         - limit	Framerate limit, in frames per seconds (use 0 to disable limit)
 
         """
-        pass
 
     def set_active(self, active: bool) -> bool:
         """
@@ -930,7 +1072,6 @@ class Window(WindowBase):
         Returns
         - true if operation was successful, false otherwise
         """
-        pass
 
     def display(self) -> None:
         """
@@ -938,7 +1079,6 @@ class Window(WindowBase):
 
         This function is typically called after all OpenGL rendering has been done for the current frame, in order to show it on screen.
         """
-        pass
 
     def get_settings(self) -> ContextSettings:
         """
@@ -949,7 +1089,6 @@ class Window(WindowBase):
         Returns
         - Structure containing the OpenGL context settings
         """
-        pass
 
 class Clipboard(ModuleType):
     """
@@ -969,7 +1108,6 @@ class Clipboard(ModuleType):
         Returns
         - Clipboard contents as string object
         """
-        pass
 
     @staticmethod
     def set_string(text: str) -> None:
@@ -980,12 +1118,11 @@ class Clipboard(ModuleType):
 
         Warning
         - Due to limitations on some operating systems, setting the clipboard contents is only guaranteed to work if there is currently an open window for which events are being handled.
-        
+
         Parameters
         - text	sf::String containing the data to be sent to the clipboard
 
         """
-        pass
 
 
 class Joystick(ModuleType):
@@ -1037,19 +1174,17 @@ class Joystick(ModuleType):
         product_id: int = 0
 
         def __init__(self):
-            self.name = ""
+            ...
 
-        def name(self) -> str:
+        def get_name(self) -> str:
             """
             Name of the joystick.
             """
-            pass
 
         def set_name(self, value: str) -> None:
             """
             Sets the joystick name.
             """
-            pass
 
     @staticmethod
     def is_connected(joystick: int) -> bool:
@@ -1062,7 +1197,6 @@ class Joystick(ModuleType):
         Returns
         - true if the joystick is connected, false otherwise
         """
-        pass
 
     @staticmethod
     def get_button_count(joystick: int) -> int:
@@ -1077,7 +1211,6 @@ class Joystick(ModuleType):
         Returns
         - Number of buttons supported by the joystick
         """
-        pass
 
     @staticmethod
     def has_axis(joystick: int, axis: Axis) -> bool:
@@ -1093,7 +1226,6 @@ class Joystick(ModuleType):
         Returns
         - true if the joystick supports the axis, false otherwise
         """
-        pass
 
     @staticmethod
     def is_button_pressed(joystick: int, button: int) -> bool:
@@ -1109,14 +1241,12 @@ class Joystick(ModuleType):
         Returns
         - true if the button is pressed, false otherwise
         """
-        pass
 
     @staticmethod
     def get_axis_position(joystick: int, axis: Axis) -> float:
         """
         Returns the position of the specified axis on the joystick.
         """
-        pass
 
     @staticmethod
     def get_identification(joystick: int) -> Identification:
@@ -1129,7 +1259,6 @@ class Joystick(ModuleType):
         Returns
         - Structure containing joystick information.
         """
-        pass
 
     @staticmethod
     def update() -> None:
@@ -1138,7 +1267,6 @@ class Joystick(ModuleType):
 
         This function is used internally by SFML, so you normally don't have to call it explicitly. However, you may need to call it if you have no window yet (or no window at all): in this case the joystick states are not updated automatically.
         """
-        pass
 
 
 class Keyboard(ModuleType):
@@ -1196,12 +1324,10 @@ class Keyboard(ModuleType):
         - LControl: The left Control key.
         - LShift: The left Shift key.
         - LAlt: The left Alt key.
-        - LSystem: The left OS specific key: window (Windows and Linux), apple (macOS), pass
-        - RControl: The right Control key.
+        - LSystem: The left OS specific key: window (Windows and Linux), apple (macOS),         - RControl: The right Control key.
         - RShift: The right Shift key.
         - RAlt: The right Alt key.
-        - RSystem: The right OS specific key: window (Windows and Linux), apple (macOS), pass
-        - Menu: The Menu key.
+        - RSystem: The right OS specific key: window (Windows and Linux), apple (macOS),         - Menu: The Menu key.
         - LBracket: The [ key.
         - RBracket: The ] key.
         - Semicolon: The ; key.
@@ -1209,7 +1335,7 @@ class Keyboard(ModuleType):
         - Period: The . key.
         - Apostrophe: The ' key.
         - Slash: The / key.
-        - Backslash: The \ key.
+        - Backslash: The \\ key.
         - Grave: The ` key.
         - Equal: The = key.
         - Hyphen: The - key (hyphen)
@@ -1412,7 +1538,7 @@ class Keyboard(ModuleType):
         - Equal: Keyboard = and +.
         - LBracket: Keyboard [ and { key.
         - RBracket: Keyboard ] and } key.
-        - Backslash: Keyboard \ and | key OR various keys for Non-US keyboards.
+        - Backslash: Keyboard \\ and | key OR various keys for Non-US keyboards.
         - Semicolon: Keyboard ; and : key.
         - Apostrophe: Keyboard ' and " key.
         - Grave: Keyboard ` and ~ key.
@@ -1475,7 +1601,7 @@ class Keyboard(ModuleType):
         - Numpad8: Keypad 8 and Up Arrow key.
         - Numpad9: Keypad 9 and Page Up key.
         - Numpad0: Keypad 0 and Insert key.
-        - NonUsBackslash: Keyboard Non-US \ and | key.
+        - NonUsBackslash: Keyboard Non-US \\ and | key.
         - Application: Keyboard Application key.
         - Execute: Keyboard Execute key.
         - ModeChange: Keyboard Mode Change key.
@@ -1661,19 +1787,19 @@ class Keyboard(ModuleType):
         LaunchMail = 143
         LaunchMediaSelect = 144
 
+    @overload
     @staticmethod
     def is_key_pressed(key: Key | Scan) -> bool:
         """
         Returns whether the specified key is pressed.
         """
-        pass
 
+    @overload
     @staticmethod
     def is_key_pressed(scan: Key | Scan) -> bool:
         """
         Returns whether the specified scan code is pressed.
         """
-        pass
 
 class Mouse(ModuleType):
     """
@@ -1727,8 +1853,8 @@ class Mouse(ModuleType):
         Returns
         - true if the button is pressed, false otherwise
         """
-        pass
 
+    @overload
     @staticmethod
     def get_position() -> sfSystem.Vector2i:
         """
@@ -1739,8 +1865,8 @@ class Mouse(ModuleType):
         Returns
         - Current position of the mouse
         """
-        pass
 
+    @overload
     @staticmethod
     def get_position(relativeTo: WindowBase) -> sfSystem.Vector2i:
         """
@@ -1754,8 +1880,8 @@ class Mouse(ModuleType):
         Returns
         - Current position of the mouse
         """
-        pass
 
+    @overload
     @staticmethod
     def set_position(x: int, y: int) -> None:
         """
@@ -1766,8 +1892,8 @@ class Mouse(ModuleType):
         Parameters
         - position	New position of the mouse
         """
-        pass
 
+    @overload
     @staticmethod
     def set_position(x: int, y: int, relativeTo: WindowBase) -> None:
         """
@@ -1779,7 +1905,6 @@ class Mouse(ModuleType):
         - position	New position of the mouse
         - relativeTo	Reference window
         """
-        pass
 
 class Sensor(ModuleType):
     """
@@ -1823,7 +1948,6 @@ class Sensor(ModuleType):
         Returns
         - true if the sensor is available, false otherwise
         """
-        pass
 
     @staticmethod
     def set_enabled(sensor: Type, enabled: bool) -> None:
@@ -1838,7 +1962,6 @@ class Sensor(ModuleType):
         - sensor	Sensor to enable
         - enabled	true to enable, false to disable
         """
-        pass
 
     @staticmethod
     def get_value(sensor: Type) -> float:
@@ -1851,7 +1974,6 @@ class Sensor(ModuleType):
         Returns
         - The current sensor value
         """
-        pass
 
 class Touch(ModuleType):
     """
@@ -1876,8 +1998,8 @@ class Touch(ModuleType):
         Returns
         - true if finger is currently touching the screen, false otherwise
         """
-        pass
 
+    @overload
     @staticmethod
     def getPosition(finger: int) -> sfSystem.Vector2i:
         """
@@ -1891,8 +2013,8 @@ class Touch(ModuleType):
         Returns
         - Current position of finger, or undefined if it's not down
         """
-        pass
 
+    @overload
     @staticmethod
     def getPosition(finger: int, relativeTo: WindowBase) -> sfSystem.Vector2i:
         """
@@ -1907,4 +2029,3 @@ class Touch(ModuleType):
         Returns
         - Current position of finger, or undefined if it's not down
         """
-        pass
