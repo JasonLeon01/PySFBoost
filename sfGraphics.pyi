@@ -9,7 +9,7 @@
 
 from __future__ import annotations
 import enum
-from typing import Any, List, overload
+from typing import List, overload
 from types import ModuleType
 from . import sfSystem
 from . import sfWindow
@@ -1558,7 +1558,7 @@ class Font:
         """
 
     @overload
-    def __init__(self, data: Any, sizeInBytes: bytes) -> None:
+    def __init__(self, data: bytes, sizeInBytes: bytes) -> None:
         """
         Construct the font from a file in memory.
 
@@ -1625,7 +1625,7 @@ class Font:
         - true if opening succeeded, false if it failed
         """
 
-    def open_from_memory(self, data: Any, sizeInBytes: bytes) -> bool:
+    def open_from_memory(self, data: bytes, sizeInBytes: bytes) -> bool:
         """
         Open the font from a file in memory.
 
@@ -1839,7 +1839,7 @@ class Image:
         """
 
     @overload
-    def __init__(self, data: Any, size: bytes) -> None:
+    def __init__(self, data: bytes, size: bytes) -> None:
         """
         Construct the image from a file in memory.
 
@@ -1909,7 +1909,7 @@ class Image:
         - filename	Path of the image file to load
         """
 
-    def load_from_memory(self, data: Any, size: bytes) -> bool:
+    def load_from_memory(self, data: bytes, size: bytes) -> bool:
         """
         Load the image from a file in memory.
 

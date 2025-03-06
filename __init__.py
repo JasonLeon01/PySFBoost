@@ -5,9 +5,11 @@ SFML provides a simple interface to the various components of your PC, to ease t
 from . import sfSystem
 from . import sfWindow
 from . import sfGraphics
+from . import sfAudio
 
 __all__ = [
     "sfSystem",
     "sfWindow",
-    "sfGraphics"
+    "sfGraphics",
+    "sfAudio"
 ]
