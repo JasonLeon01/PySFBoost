@@ -118,6 +118,48 @@ class Time:
         Returns a string representation of the time in seconds.
         """
 
+    @staticmethod
+    def FromSeconds(seconds: float) -> Time:
+        """
+        Construct a time value from a number of seconds.
+
+        Parameters:
+        - seconds: Number of seconds.
+
+        Returns:
+        - Time object.
+        """
+
+    @staticmethod
+    def FromMilliseconds(milliseconds: int) -> Time:
+        """
+        Construct a time value from a number of milliseconds.
+
+        Parameters:
+        - milliseconds: Number of milliseconds.
+
+        Returns:
+        - Time object.
+        """
+
+    @staticmethod
+    def FromMicroSeconds(microseconds: int) -> Time:
+        """
+        Construct a time value from a number of microseconds.
+
+        Parameters:
+        - microseconds: Number of microseconds.
+
+        Returns:
+        - Time object.
+        """
+
+    @staticmethod
+    def Zero() -> Time:
+        """
+        Predefined "zero" time value.
+        """
+
 class Clock:
     """
     Utility class that measures the elapsed time.

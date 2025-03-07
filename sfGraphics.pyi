@@ -2567,7 +2567,7 @@ class RenderTarget:
         Reimplemented in sf::RenderTexture, and sf::RenderWindow.
         """
 
-    def set_active(self, active: bool) -> bool:
+    def set_active(self, active: bool = True) -> bool:
         """
         Activate or deactivate the render target for rendering.
 
@@ -2733,7 +2733,7 @@ class RenderTexture(RenderTarget):
         - true if mipmap generation was successful, false if unsuccessful
         """
 
-    def set_active(self, active: bool) -> bool:
+    def set_active(self, active: bool = True) -> bool:
         """
         Activate or deactivate the render-texture for rendering.
 
@@ -2959,7 +2959,7 @@ class RenderWindow(sfWindow.Window, RenderTarget):
         - Reimplemented from sf::RenderTarget.
         """
 
-    def set_active(self, active: bool) -> bool:
+    def set_active(self, active: bool = True) -> bool:
         """
         Activate or deactivate the window as the current target for OpenGL rendering.
 

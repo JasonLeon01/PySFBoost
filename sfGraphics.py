@@ -1,4 +1,4 @@
-from .  import pysf
+from . import pysf
 
 Glsl = pysf.Glsl
 CoordinateType = pysf.CoordinateType

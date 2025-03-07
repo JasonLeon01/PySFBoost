@@ -61,7 +61,7 @@ class Context:
         - size: Back buffer size
         """
 
-    def set_active(self, active: bool) -> None:
+    def set_active(self, active: bool = True) -> None:
         """
         Activate or deactivate explicitly the context.
 
@@ -1060,7 +1060,7 @@ class Window(WindowBase):
 
         """
 
-    def set_active(self, active: bool) -> bool:
+    def set_active(self, active: bool = True) -> bool:
         """
         Activate or deactivate the window as the current target for OpenGL rendering.
 

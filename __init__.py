@@ -6,10 +6,12 @@ from . import sfSystem
 from . import sfWindow
 from . import sfGraphics
 from . import sfAudio
+from . import sfNetwork
 
 __all__ = [
     "sfSystem",
     "sfWindow",
     "sfGraphics",
-    "sfAudio"
+    "sfAudio",
+    "sfNetwork"
 ]

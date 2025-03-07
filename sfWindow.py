@@ -1,4 +1,4 @@
-from .  import pysf
+from . import pysf
 
 Style = pysf.Style
 State = pysf.State

@@ -1,4 +1,4 @@
-from .  import pysf
+from . import pysf
 
 SoundChannel = pysf.SoundChannel
 Listener = pysf.Listener
