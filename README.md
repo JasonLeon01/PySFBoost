@@ -11,6 +11,10 @@ Type Annotations : Comprehensive type hints for all PySFML classes and methods.
 - Type Hinting : Provides `.pyi` files for enhanced code completion, linting, and static type checking.
 - Compatibility : Designed for Python **3.9.0** and works seamlessly with the PySFML bindings.
 - Developer-Friendly : Improves the development workflow by offering clear and precise type annotations for SFML's Python API.
+- **Resource Management**: Includes `TextureMgr`, `FontMgr`, and `AudioMgr` in `ResourceMgr.py` to manage textures, fonts, and audios efficiently.
+- **Particle System**: The `Particle.py` file provides a particle system with `Particle` and `ParticleMgr` classes to manage particle behavior.
+- **Animation System**: `Animation.py` offers an animation system with `Event`, `Animation`, and `AnimationMgr` classes to manage and display animations.
+- **Time Management**: `Time.py` contains the `TimeMgr` class to handle time-related operations such as getting current time and delta time.
 
 ## Installation
 To use PySFBoost, clone the repository.
@@ -53,6 +57,58 @@ while window.is_open:
 
     window.clear(background_color)
     window.display()
+```
+
+## Using Resource Managers
+```python
+from PySFBoost.ResourceMgr import TextureMgr, FontMgr, AudioMgr
+
+# Get a texture
+texture = TextureMgr.block("grass.png")
+
+# Get a font
+font = FontMgr.get_font("arial.ttf")
+
+# Play a sound
+AudioMgr.play_sound("jump.wav")
+```
+
+## Using Particle System
+```python
+from PySFBoost.Particle import Particle, ParticleMgr
+from PySFBoost import sfGraphics, sfSystem
+
+texture = TextureMgr.block("particle.png")
+velocity = sfSystem.Vector2f(10, 10)
+duration = sfSystem.Time.FromSeconds(5)
+particle = Particle(texture, velocity, duration)
+ParticleMgr.add_particle(particle)
+```
+
+## Using Animation System
+```python
+from PySFBoost.Animation import Event, Animation, AnimationMgr
+from PySFBoost import sfSystem, sfGraphics, sfAudio
+
+# Create an event
+sprite = sfGraphics.Sprite(TextureMgr.block("sprite.png"))
+duration = sfSystem.Time.FromSeconds(2)
+event = Event(sprite, duration)
+
+# Create an animation
+animation_len = sfSystem.Time.FromSeconds(5)
+animation_events = [(event, sfSystem.Time.Zero())]
+animation = Animation(animation_len, animation_events)
+AnimationMgr.add_animation(animation)
+```
+
+## Using Time Manager
+```python
+from PySFBoost.Time import TimeMgr
+
+TimeMgr.init()
+current_time = TimeMgr.get_current_time()
+delta_time = TimeMgr.get_delta_time()
 ```
 
 With PySFBoost , your IDE will provide autocompletion and type checking for all SFML classes and methods.

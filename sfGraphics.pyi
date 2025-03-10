@@ -907,13 +907,30 @@ class VertexArray(Drawable):
         """
 
     @overload
-    def __init__(self, type_: PrimitiveType, vertexCount: int) -> None:
+    def __init__(self, type_: PrimitiveType, vertexCount: int = 0) -> None:
         """
         Construct the vertex array with a type and an initial number of vertices.
 
         Parameters
         - type_	Type of primitives
         - vertexCount	Initial number of vertices in the array
+        """
+
+    @overload
+    def __getitem__(self, index: int) -> Vertex:
+        """
+        Subscript operator for read-only access to a vertex.
+
+        The returned vertex is a copy of the vertex in the array,
+        so that you can modify it without affecting the original.
+        """
+
+    @overload
+    def __setitem__(self, index: int, value: Vertex) -> None:
+        """
+        Subscript operator for write access to a vertex.
+
+        This function provides write access to a vertex in the array.
         """
 
     def get_vertex_count(self) -> int:
@@ -2658,7 +2675,7 @@ class RenderTexture(RenderTarget):
         """
 
     @overload
-    def __init__(self, size: sfSystem.Vector2u, context_settings: sfWindow.ContextSettings) -> None:
+    def __init__(self, size: sfSystem.Vector2u, context_settings: sfWindow.ContextSettings = sfWindow.ContextSettings()) -> None:
         """
         Construct a render-texture.
 

@@ -248,15 +248,8 @@ class Vector2f:
         - y: The y component of the vector.
         """
 
-    def x(self) -> float:
-        """
-        Returns the x component of the vector.
-        """
-
-    def y(self) -> float:
-        """
-        Returns the y component of the vector.
-        """
+    x: float
+    y: float
 
 class Vector2i:
     """
@@ -293,15 +286,8 @@ class Vector2i:
         - y: The y component of the vector.
         """
 
-    def x(self) -> int:
-        """
-        Returns the x component of the vector.
-        """
-
-    def y(self) -> int:
-        """
-        Returns the y component of the vector.
-        """
+    x: int
+    y: int
 
 class Vector2u:
     """
@@ -338,15 +324,8 @@ class Vector2u:
         - y: The y component of the vector.
         """
 
-    def x(self) -> int:
-        """
-        Returns the x component of the vector.
-        """
-
-    def y(self) -> int:
-        """
-        Returns the y component of the vector.
-        """
+    x: int
+    y: int
 
 class Vector3f:
     """
@@ -382,20 +361,9 @@ class Vector3f:
         - z: The z component of the vector.
         """
 
-    def x(self) -> float:
-        """
-        Returns the x component of the vector.
-        """
-
-    def y(self) -> float:
-        """
-        Returns the y component of the vector.
-        """
-
-    def z(self) -> float:
-        """
-        Returns the z component of the vector.
-        """
+    x: float
+    y: float
+    z: float
 
 class Vector3i:
     """
@@ -431,20 +399,9 @@ class Vector3i:
         - z: The z component of the vector.
         """
 
-    def x(self) -> int:
-        """
-        Returns the x component of the vector.
-        """
-
-    def y(self) -> int:
-        """
-        Returns the y component of the vector.
-        """
-
-    def z(self) -> int:
-        """
-        Returns the z component of the vector.
-        """
+    x: int
+    y: int
+    z: int
 
 class Vector3u:
     """
@@ -480,20 +437,9 @@ class Vector3u:
         - z: The z component of the vector.
         """
 
-    def x(self) -> int:
-        """
-        Returns the x component of the vector.
-        """
-
-    def y(self) -> int:
-        """
-        Returns the y component of the vector.
-        """
-
-    def z(self) -> int:
-        """
-        Returns the z component of the vector.
-        """
+    x: int
+    y: int
+    z: int
 
 class InputStream:
     """

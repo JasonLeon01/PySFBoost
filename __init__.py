@@ -7,11 +7,19 @@ from . import sfWindow
 from . import sfGraphics
 from . import sfAudio
 from . import sfNetwork
+from . import Particle
+from . import ResourceMgr
+from . import Time
+from . import Animation
 
 __all__ = [
     "sfSystem",
     "sfWindow",
     "sfGraphics",
     "sfAudio",
-    "sfNetwork"
+    "sfNetwork",
+    "Particle",
+    "ResourceMgr",
+    "Time",
+    "Animation"
 ]
