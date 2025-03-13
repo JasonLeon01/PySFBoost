@@ -101,12 +101,15 @@ class ParticleMgr:
     It could manage all particles' behaviour.
     """
 
-    _particles: Dict[int, Dict[sfGraphics.Texture, List[Particle]]] = {}
-    _z_list = []
-    _particles_to_z: Dict[Particle, int] = {}
+    def __init__(self):
+        """
+        Particle system constructor.
+        """
+        self._particles: Dict[int, Dict[sfGraphics.Texture, List[Particle]]] = {}
+        self._z_list = []
+        self._particles_to_z: Dict[Particle, int] = {}
 
-    @staticmethod
-    def add_particle(particle: Particle, z: int = 0):
+    def add_particle(self, particle: Particle, z: int = 0):
         """
         Add a particle to the particle system.
 
@@ -115,22 +118,21 @@ class ParticleMgr:
         - z: Layer of the particle.
         """
 
-        if particle in ParticleMgr._particles_to_z:
+        if particle in self._particles_to_z:
             raise ValueError('Particle already exists.')
 
-        if z not in ParticleMgr._particles:
-            ParticleMgr._particles[z] = {}
-            bisect.insort(ParticleMgr._z_list, z)
+        if z not in self._particles:
+            self._particles[z] = {}
+            bisect.insort(self._z_list, z)
 
         texture = particle.get_texture()
-        if texture not in ParticleMgr._particles[z]:
-            ParticleMgr._particles[z][texture] = []
+        if texture not in self._particles[z]:
+            self._particles[z][texture] = []
 
-        ParticleMgr._particles[z][texture].append(particle)
-        ParticleMgr._particles_to_z[particle] = z
+        self._particles[z][texture].append(particle)
+        self._particles_to_z[particle] = z
 
-    @staticmethod
-    def remove_particle(particle: Particle):
+    def remove_particle(self, particle: Particle):
         """
         Remove a particle from the particle system.
 
@@ -138,34 +140,32 @@ class ParticleMgr:
         - particle: Particle to remove.
         """
 
-        if particle not in ParticleMgr._particles_to_z:
+        if particle not in self._particles_to_z:
             raise ValueError('Particle not found.')
 
         texture = particle.get_texture()
 
-        z = ParticleMgr._particles_to_z[particle]
-        ParticleMgr._particles[z][texture].remove(particle)
-        ParticleMgr._particles_to_z.pop(particle)
+        z = self._particles_to_z[particle]
+        self._particles[z][texture].remove(particle)
+        self._particles_to_z.pop(particle)
 
-        if len(ParticleMgr._particles[z][texture]) == 0:
-            ParticleMgr._particles[z].pop(texture)
+        if len(self._particles[z][texture]) == 0:
+            self._particles[z].pop(texture)
 
-        if len(ParticleMgr._particles[z]) == 0:
-            ParticleMgr._particles.pop(z)
-            ParticleMgr._z_list.remove(z)
+        if len(self._particles[z]) == 0:
+            self._particles.pop(z)
+            self._z_list.remove(z)
 
-    @staticmethod
-    def clear():
+    def clear(self):
         """
         Clear all particles.
         """
 
-        ParticleMgr._particles.clear()
-        ParticleMgr._z_list.clear()
-        ParticleMgr._particles_to_z.clear()
+        self._particles.clear()
+        self._z_list.clear()
+        self._particles_to_z.clear()
 
-    @staticmethod
-    def get_z_list() -> List[int]:
+    def get_z_list(self) -> List[int]:
         """
         Get all layers.
 
@@ -173,10 +173,9 @@ class ParticleMgr:
         - List of all layers.
         """
 
-        return ParticleMgr._z_list.copy()
+        return self._z_list.copy()
 
-    @staticmethod
-    def update(delta_time: sfSystem.Time):
+    def update(self, delta_time: sfSystem.Time):
         """
         Update all particles.
 
@@ -184,15 +183,14 @@ class ParticleMgr:
         - deltaTime: Time elapsed since last update.
         """
 
-        for particles_ in ParticleMgr._particles.copy().values():
+        for particles_ in self._particles.copy().values():
             for particle_list in particles_.copy().values():
                 for particle in particle_list:
                     particle.update(delta_time)
                     if particle.is_expired():
-                        ParticleMgr.remove_particle(particle)
+                        self.remove_particle(particle)
 
-    @staticmethod
-    def display(target: sfGraphics.RenderTarget, z: int = None):
+    def display(self, target: sfGraphics.RenderTarget, z: int = None):
         """
         Draw all particles.
 
@@ -201,11 +199,11 @@ class ParticleMgr:
         - states: Render states.
         """
         if z is None:
-            z_list = ParticleMgr.get_z_list()
+            z_list = self.get_z_list()
         else:
             z_list = [z]
 
         for z_ in z_list:
-            for particle_list in ParticleMgr._particles[z_].values():
+            for particle_list in self._particles[z_].values():
                 for particle in particle_list:
                     target.draw(particle, particle.render_state)

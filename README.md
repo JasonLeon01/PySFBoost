@@ -83,7 +83,8 @@ texture = TextureMgr.block("particle.png")
 velocity = sfSystem.Vector2f(10, 10)
 duration = sfSystem.Time.FromSeconds(5)
 particle = Particle(texture, velocity, duration)
-ParticleMgr.add_particle(particle)
+mgr = ParticleMgr()
+mgr.add_particle(particle)
 ```
 
 ## Using Animation System
@@ -100,7 +101,8 @@ event = Event(sprite, duration)
 animation_len = sfSystem.Time.FromSeconds(5)
 animation_events = [(event, sfSystem.Time.Zero())]
 animation = Animation(animation_len, animation_events)
-AnimationMgr.add_animation(animation)
+mgr = AnimationMgr()
+mgr.add_animation(animation)
 ```
 
 ## Using Time Manager

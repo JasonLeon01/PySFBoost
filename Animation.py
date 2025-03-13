@@ -175,12 +175,15 @@ class AnimationMgr:
     Animation manager is used to manage animations, and can be used to add, remove, clear, and display animations.
     """
 
-    _animations: Dict[int, List[Animation]] = {}
-    _z_list: List[int] = []
-    _animation_to_z: Dict[Animation, int] = {}
+    def __init__(self):
+        """
+        Default constructor for the AnimationMgr class.
+        """
+        self._animations: Dict[int, List[Animation]] = {}
+        self._z_list: List[int] = []
+        self._animation_to_z: Dict[Animation, int] = {}
 
-    @staticmethod
-    def add_animation(animation: Animation, z: int = 0):
+    def add_animation(self, animation: Animation, z: int = 0):
         """
         Add an animation to the manager at the specified z - index.
 
@@ -192,18 +195,17 @@ class AnimationMgr:
         - ValueError: If the animation already exists in the manager.
         """
 
-        if animation in AnimationMgr._animation_to_z:
+        if animation in self._animation_to_z:
             raise ValueError('Animation already exists')
 
-        if z not in AnimationMgr._animations:
-            AnimationMgr._animations[z] = []
-            bisect.insort(AnimationMgr._z_list, z)
+        if z not in self._animations:
+            self._animations[z] = []
+            bisect.insort(self._z_list, z)
 
-        AnimationMgr._animations[z].append(animation)
-        AnimationMgr._animation_to_z[animation] = z
+        self._animations[z].append(animation)
+        self._animation_to_z[animation] = z
 
-    @staticmethod
-    def remove_animation(animation: Animation):
+    def remove_animation(self, animation: Animation):
         """
         Remove an animation from the manager.
 
@@ -214,31 +216,29 @@ class AnimationMgr:
         - ValueError: If the animation does not exist in the manager.
         """
 
-        if animation not in AnimationMgr._animation_to_z:
+        if animation not in self._animation_to_z:
             raise ValueError('Animation does not exist')
 
-        z = AnimationMgr._animation_to_z[animation]
-        AnimationMgr._animations[z].remove(animation)
-        AnimationMgr._animation_to_z.pop(animation)
+        z = self._animation_to_z[animation]
+        self._animations[z].remove(animation)
+        self._animation_to_z.pop(animation)
 
-        if len(AnimationMgr._animations[z]) == 0:
-            AnimationMgr._animations.pop(z)
-            AnimationMgr._z_list.remove(z)
+        if len(self._animations[z]) == 0:
+            self._animations.pop(z)
+            self._z_list.remove(z)
 
-    @staticmethod
-    def clear():
+    def clear(self):
         """
         Clear all animations and associated data from the manager.
         This method resets the manager to its initial state by clearing all stored animations,
         the list of z - indices, and the mapping between animations and their z - indices.
         """
 
-        AnimationMgr._animations.clear()
-        AnimationMgr._z_list.clear()
-        AnimationMgr._animation_to_z.clear()
+        self._animations.clear()
+        self._z_list.clear()
+        self._animation_to_z.clear()
 
-    @staticmethod
-    def get_z_list() -> List[int]:
+    def get_z_list(self) -> List[int]:
         """
         Retrieve a copy of the sorted list of z - indices used by the AnimationMgr.
 
@@ -249,10 +249,9 @@ class AnimationMgr:
         - List[int]: A copy of the sorted list of z - indices.
         """
 
-        return AnimationMgr._z_list.copy()
+        return self._z_list.copy()
 
-    @staticmethod
-    def update(delta_time: sfSystem.Time):
+    def update(self, delta_time: sfSystem.Time):
         """
         Update all animations managed by the AnimationMgr and remove expired animations.
 
@@ -260,14 +259,13 @@ class AnimationMgr:
         - delta_time: The time elapsed since the last update.
         """
 
-        for animations in AnimationMgr._animations.copy().values():
+        for animations in self._animations.copy().values():
             for animation in animations[:]:
                 animation.update(delta_time)
                 if animation.is_expired():
-                    AnimationMgr.remove_animation(animation)
+                    self.remove_animation(animation)
 
-    @staticmethod
-    def display(target: sfGraphics.RenderTarget, z: int = None):
+    def display(self, target: sfGraphics.RenderTarget, z: int = None):
         """
         Draw all animations managed by the AnimationMgr on the specified render target.
         If a z - index is provided, only animations at that z - index will be drawn;
@@ -279,10 +277,10 @@ class AnimationMgr:
         """
 
         if z is None:
-            z_list = AnimationMgr.get_z_list()
+            z_list = self.get_z_list()
         else:
             z_list = [z]
 
         for z_ in z_list:
-            for animation in AnimationMgr._animations[z_]:
+            for animation in self._animations[z_]:
                 animation.display(target)

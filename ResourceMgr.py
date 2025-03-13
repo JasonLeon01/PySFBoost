@@ -11,8 +11,8 @@ class TextureMgr:
 
     _textures: Dict[str, sfGraphics.Texture] = {}
 
-    @staticmethod
-    def get_texture(path: str) -> sfGraphics.Texture:
+    @classmethod
+    def get_texture(cls, path: str) -> sfGraphics.Texture:
         """
         Get texture from path.
 
@@ -23,15 +23,15 @@ class TextureMgr:
         - The texture from path.
         """
 
-        if path not in TextureMgr._textures:
-            TextureMgr._textures[path] = sfGraphics.Texture()
-            if not TextureMgr._textures[path].load_from_file(path):
+        if path not in cls._textures:
+            cls._textures[path] = sfGraphics.Texture()
+            if not cls._textures[path].load_from_file(path):
                 raise ValueError(f'Failed to load texture from {path}.')
 
-        return TextureMgr._textures[path]
+        return cls._textures[path]
 
-    @staticmethod
-    def has_texture(path: str) -> bool:
+    @classmethod
+    def has_texture(cls, path: str) -> bool:
         """
         Check if texture is loaded.
 
@@ -42,10 +42,10 @@ class TextureMgr:
         - True if texture is loaded, False otherwise.
         """
 
-        return path in TextureMgr._textures
+        return path in cls._textures
 
-    @staticmethod
-    def release_texture(path: str):
+    @classmethod
+    def release_texture(cls, path: str):
         """
         Release texture from path.
 
@@ -53,21 +53,21 @@ class TextureMgr:
         - path: Path of texture.
         """
 
-        if path in TextureMgr._textures:
-            TextureMgr._textures.pop(path)
+        if path in cls._textures:
+            cls._textures.pop(path)
         else:
             raise ValueError(f'Failed to release texture from {path}.')
 
-    @staticmethod
-    def clear():
+    @classmethod
+    def clear(cls):
         """
         Clear all textures.
         """
 
-        TextureMgr._textures.clear()
+        cls._textures.clear()
 
-    @staticmethod
-    def block(filename: str) -> sfGraphics.Texture:
+    @classmethod
+    def block(cls, filename: str) -> sfGraphics.Texture:
         """
         It will return a texture from assets/blocks folder.
 
@@ -75,10 +75,10 @@ class TextureMgr:
         - filename: Name of texture.
         """
 
-        return TextureMgr.get_texture(f'assets/blocks/{filename}')
+        return cls.get_texture(f'assets/blocks/{filename}')
 
-    @staticmethod
-    def character(filename: str) -> sfGraphics.Texture:
+    @classmethod
+    def character(cls, filename: str) -> sfGraphics.Texture:
         """
         It will return a texture from assets/characters folder.
 
@@ -86,10 +86,10 @@ class TextureMgr:
         - filename: Name of texture.
         """
 
-        return TextureMgr.get_texture(f'assets/characters/{filename}')
+        return cls.get_texture(f'assets/characters/{filename}')
 
-    @staticmethod
-    def system(filename: str) -> sfGraphics.Texture:
+    @classmethod
+    def system(cls, filename: str) -> sfGraphics.Texture:
         """
         It will return a texture from assets/system folder.
 
@@ -97,10 +97,10 @@ class TextureMgr:
         - filename: Name of texture.
         """
 
-        return TextureMgr.get_texture(f'assets/system/{filename}')
+        return cls.get_texture(f'assets/system/{filename}')
 
-    @staticmethod
-    def tilesets(filename: str) -> sfGraphics.Texture:
+    @classmethod
+    def tilesets(cls, filename: str) -> sfGraphics.Texture:
         """
         It will return a texture from assets/tilesets folder.
 
@@ -108,10 +108,10 @@ class TextureMgr:
         - filename: Name of texture.
         """
 
-        return TextureMgr.get_texture(f'assets/tilesets/{filename}')
+        return cls.get_texture(f'assets/tilesets/{filename}')
 
-    @staticmethod
-    def release_block(filename: str):
+    @classmethod
+    def release_block(cls, filename: str):
         """
         Release texture from assets/blocks folder.
 
@@ -119,10 +119,10 @@ class TextureMgr:
         - filename: Name of texture.
         """
 
-        TextureMgr.release_texture(f'assets/blocks/{filename}')
+        cls.release_texture(f'assets/blocks/{filename}')
 
-    @staticmethod
-    def release_character(filename: str):
+    @classmethod
+    def release_character(cls, filename: str):
         """
         Release texture from assets/characters folder.
 
@@ -130,10 +130,10 @@ class TextureMgr:
         - filename: Name of texture.
         """
 
-        TextureMgr.release_texture(f'assets/characters/{filename}')
+        cls.release_texture(f'assets/characters/{filename}')
 
-    @staticmethod
-    def release_system(filename: str):
+    @classmethod
+    def release_system(cls, filename: str):
         """
         Release texture from assets/system folder.
 
@@ -141,10 +141,10 @@ class TextureMgr:
         - filename: Name of texture.
         """
 
-        TextureMgr.release_texture(f'assets/system/{filename}')
+        cls.release_texture(f'assets/system/{filename}')
 
-    @staticmethod
-    def release_tilesets(filename: str):
+    @classmethod
+    def release_tilesets(cls, filename: str):
         """
         Release texture from assets/tilesets folder.
 
@@ -152,7 +152,7 @@ class TextureMgr:
         - filename: Name of texture.
         """
 
-        TextureMgr.release_texture(f'assets/tilesets/{filename}')
+        cls.release_texture(f'assets/tilesets/{filename}')
 
 
 class FontMgr:
@@ -164,8 +164,8 @@ class FontMgr:
 
     _fonts: Dict[str, sfGraphics.Font] = {}
 
-    @staticmethod
-    def get_font(filename: str) -> sfGraphics.Font:
+    @classmethod
+    def get_font(cls, filename: str) -> sfGraphics.Font:
         """
         Get font from name.
 
@@ -176,15 +176,15 @@ class FontMgr:
         - The font from path.
         """
 
-        if filename not in FontMgr._fonts:
-            FontMgr._fonts[filename] = sfGraphics.Font()
-            if not FontMgr._fonts[filename].open_from_file(f'assets/fonts/{filename}'):
+        if filename not in cls._fonts:
+            cls._fonts[filename] = sfGraphics.Font()
+            if not cls._fonts[filename].open_from_file(f'assets/fonts/{filename}'):
                 raise ValueError(f'Failed to load font from {filename}.')
 
-        return FontMgr._fonts[filename]
+        return cls._fonts[filename]
 
-    @staticmethod
-    def has_font(filename: str) -> bool:
+    @classmethod
+    def has_font(cls, filename: str) -> bool:
         """
         Check if font is loaded.
 
@@ -195,10 +195,10 @@ class FontMgr:
         - True if font is loaded, False otherwise.
         """
 
-        return filename in FontMgr._fonts
+        return filename in cls._fonts
 
-    @staticmethod
-    def release_font(filename: str):
+    @classmethod
+    def release_font(cls, filename: str):
         """
         Release font from name.
 
@@ -206,18 +206,18 @@ class FontMgr:
         - filename: File name of font.
         """
 
-        if filename in FontMgr._fonts:
-            FontMgr._fonts.pop(filename)
+        if filename in cls._fonts:
+            cls._fonts.pop(filename)
         else:
             raise ValueError(f'Fail to release font from {filename}.')
 
-    @staticmethod
-    def clear():
+    @classmethod
+    def clear(cls):
         """
         Clear all fonts.
         """
 
-        FontMgr._fonts.clear()
+        cls._fonts.clear()
 
 class AudioMgr:
     """
@@ -233,8 +233,8 @@ class AudioMgr:
     _sound_list: List[sfAudio.Sound] = []
     _voice_list: List[sfAudio.Sound] = []
 
-    @staticmethod
-    def get_music(name: str) -> sfAudio.Music:
+    @classmethod
+    def get_music(cls, name: str) -> sfAudio.Music:
         """
         Get music from name.
 
@@ -249,10 +249,10 @@ class AudioMgr:
         if not music.open_from_file(f'assets/musics/{name}'):
             raise ValueError(f'Fail to load music from {name}.')
 
-        return AudioMgr._music
+        return cls._music
 
-    @staticmethod
-    def get_sound(name: str) -> sfAudio.SoundBuffer:
+    @classmethod
+    def get_sound(cls, name: str) -> sfAudio.SoundBuffer:
         """
         Get sound from name.
 
@@ -263,15 +263,15 @@ class AudioMgr:
         - The sound from path.
         """
 
-        if name not in AudioMgr._sounds_cache:
-            AudioMgr._sounds_cache[name] = sfAudio.SoundBuffer()
-            if not AudioMgr._sounds_cache[name].load_from_file(f'assets/sounds/{name}'):
+        if name not in cls._sounds_cache:
+            cls._sounds_cache[name] = sfAudio.SoundBuffer()
+            if not cls._sounds_cache[name].load_from_file(f'assets/sounds/{name}'):
                 raise ValueError(f'Fail to load sound from {name}.')
 
-        return AudioMgr._sounds_cache[name]
+        return cls._sounds_cache[name]
 
-    @staticmethod
-    def get_voice(name: str) -> sfAudio.SoundBuffer:
+    @classmethod
+    def get_voice(cls, name: str) -> sfAudio.SoundBuffer:
         """
         Get voice from name.
 
@@ -282,28 +282,28 @@ class AudioMgr:
         - The voice from path.
         """
 
-        if name not in AudioMgr._voices_cache:
-            AudioMgr._voices_cache[name] = sfAudio.SoundBuffer()
-            if not AudioMgr._voices_cache[name].load_from_file(f'assets/voices/{name}'):
+        if name not in cls._voices_cache:
+            cls._voices_cache[name] = sfAudio.SoundBuffer()
+            if not cls._voices_cache[name].load_from_file(f'assets/voices/{name}'):
                 raise ValueError(f'Fail to load voice from {name}.')
 
-        return AudioMgr._voices_cache[name]
+        return cls._voices_cache[name]
 
-    @staticmethod
-    def release_music(keyword: str):
+    @classmethod
+    def release_music(cls, keyword: str):
         """
         Release music from name.
         """
 
-        if keyword in AudioMgr._music:
-            AudioMgr._music[keyword].stop()
-            AudioMgr._music.pop(keyword)
+        if keyword in cls._music:
+            cls._music[keyword].stop()
+            cls._music.pop(keyword)
         else:
             raise ValueError(f'Fail to release music from {keyword}.')
 
 
-    @staticmethod
-    def release_sound(name: str):
+    @classmethod
+    def release_sound(cls, name: str):
         """
         Release sound from name.
 
@@ -311,14 +311,14 @@ class AudioMgr:
         - name: Name of sound.
         """
 
-        if name in AudioMgr._sounds_cache:
-            AudioMgr._sounds_cache[name].stop()
-            AudioMgr._sounds_cache.pop(name)
+        if name in cls._sounds_cache:
+            cls._sounds_cache[name].stop()
+            cls._sounds_cache.pop(name)
         else:
             raise ValueError(f'Fail to release sound from {name}.')
 
-    @staticmethod
-    def release_voice(name: str):
+    @classmethod
+    def release_voice(cls, name: str):
         """
         Release voice from name.
 
@@ -326,14 +326,14 @@ class AudioMgr:
         - name: Name of voice.
         """
 
-        if name in AudioMgr._voices_cache:
-            AudioMgr._voices_cache[name].stop()
-            AudioMgr._voices_cache.pop(name)
+        if name in cls._voices_cache:
+            cls._voices_cache[name].stop()
+            cls._voices_cache.pop(name)
         else:
             raise ValueError(f'Fail to release voice from {name}.')
 
-    @staticmethod
-    def play_music(keyword: str, para: Union[str, sfAudio.Music]):
+    @classmethod
+    def play_music(cls, keyword: str, para: Union[str, sfAudio.Music]):
         """
         Play music from name or music.
 
@@ -343,21 +343,21 @@ class AudioMgr:
         """
 
         if isinstance(para, str):
-            music = AudioMgr.get_music(para)
+            music = cls.get_music(para)
         elif isinstance(para, sfAudio.Music):
             music = para
         else:
             raise ValueError('Music not found.')
 
-        if keyword in AudioMgr._music:
-            AudioMgr._music[keyword].stop()
+        if keyword in cls._music:
+            cls._music[keyword].stop()
 
-        AudioMgr._music[keyword] = music
+        cls._music[keyword] = music
 
-        AudioMgr._music[keyword].play()
+        cls._music[keyword].play()
 
-    @staticmethod
-    def play_sound(para: Union[str, sfAudio.SoundBuffer]):
+    @classmethod
+    def play_sound(cls, para: Union[str, sfAudio.SoundBuffer]):
         """
         Play sound from name or sound buffer.
 
@@ -368,18 +368,18 @@ class AudioMgr:
         sound: sfAudio.Sound = None
 
         if isinstance(para, str):
-            sound = sfAudio.Sound(AudioMgr.get_sound(para))
+            sound = sfAudio.Sound(cls.get_sound(para))
         elif isinstance(para, sfAudio.SoundBuffer):
             sound = sfAudio.Sound(para)
 
         if sound is None:
             raise ValueError('Sound not found.')
 
-        AudioMgr._sound_list.append(sound)
+        cls._sound_list.append(sound)
         sound.play()
 
-    @staticmethod
-    def play_voice(para: Union[str, sfAudio.SoundBuffer]):
+    @classmethod
+    def play_voice(cls, para: Union[str, sfAudio.SoundBuffer]):
         """
         Play voice from name or sound buffer.
 
@@ -390,43 +390,43 @@ class AudioMgr:
         voice: sfAudio.Sound = None
 
         if isinstance(para, str):
-            voice = sfAudio.Sound(AudioMgr.get_voice(para))
+            voice = sfAudio.Sound(cls.get_voice(para))
         elif isinstance(para, sfAudio.SoundBuffer):
             voice = sfAudio.Sound(para)
 
         if voice is None:
             raise ValueError('Voice not found.')
 
-        AudioMgr._voice_list.append(voice)
+        cls._voice_list.append(voice)
         voice.play()
 
-    @staticmethod
-    def update():
+    @classmethod
+    def update(cls):
         """
         Update all audios.
         """
 
-        for sound in AudioMgr._sound_list[:]:
+        for sound in cls._sound_list[:]:
             if sound.get_status() == sfAudio.Sound.Status.Stopped:
-                AudioMgr._sound_list.remove(sound)
-        for voice in AudioMgr._voice_list[:]:
+                cls._sound_list.remove(sound)
+        for voice in cls._voice_list[:]:
             if voice.get_status() == sfAudio.Sound.Status.Stopped:
-                AudioMgr._voice_list.remove(voice)
+                cls._voice_list.remove(voice)
 
-    @staticmethod
-    def clear():
+    @classmethod
+    def clear(cls):
         """
         Clear all audios.
         """
 
-        for value in AudioMgr._sounds_cache.values():
+        for value in cls._sounds_cache.values():
             value.stop()
-        AudioMgr._sounds_cache.clear()
-        for value in AudioMgr._voices_cache.values():
+        cls._sounds_cache.clear()
+        for value in cls._voices_cache.values():
             value.stop()
-        AudioMgr._voices_cache.clear()
-        for value in AudioMgr._music.values():
+        cls._voices_cache.clear()
+        for value in cls._music.values():
             value.stop()
-        AudioMgr._music.clear()
-        AudioMgr._sound_list.clear()
-        AudioMgr._voice_list.clear()
+        cls._music.clear()
+        cls._sound_list.clear()
+        cls._voice_list.clear()
