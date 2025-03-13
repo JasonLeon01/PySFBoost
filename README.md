@@ -76,23 +76,20 @@ AudioMgr.play_sound("jump.wav")
 
 ## Using Particle System
 ```python
-from PySFBoost.Particle import Particle, ParticleMgr
-from PySFBoost import sfGraphics, sfSystem
-
 texture = TextureMgr.block("particle.png")
 velocity = sfSystem.Vector2f(10, 10)
 duration = sfSystem.Time.FromSeconds(5)
 particle = Particle(texture, velocity, duration)
 mgr = ParticleMgr()
 mgr.add_particle(particle)
+...
+mgr.update(delta_time)
+mgr.display(window)
+...
 ```
 
 ## Using Animation System
 ```python
-from PySFBoost.Animation import Event, Animation, AnimationMgr
-from PySFBoost import sfSystem, sfGraphics, sfAudio
-
-# Create an event
 sprite = sfGraphics.Sprite(TextureMgr.block("sprite.png"))
 duration = sfSystem.Time.FromSeconds(2)
 event = Event(sprite, duration)
@@ -103,22 +100,20 @@ animation_events = [(event, sfSystem.Time.Zero())]
 animation = Animation(animation_len, animation_events)
 mgr = AnimationMgr()
 mgr.add_animation(animation)
+...
+mgr.update(delta_time)
+mgr.display(window)
+...
 ```
 
 ## Using Time Manager
 ```python
-from PySFBoost.Time import TimeMgr
-
 TimeMgr.init()
-current_time = TimeMgr.get_current_time()
-delta_time = TimeMgr.get_delta_time()
+TimeMgr.update()
 ```
 
 ## Using Enhanced Text Rendering
 ```python
-from PySFBoost.TextEnhance import EText, StyleConfig
-from PySFBoost import sfSystem, sfGraphics
-
 # Load a font
 font = sfGraphics.Font.load_from_file("arial.ttf")
 
@@ -131,16 +126,11 @@ text = EText(font, r"\c[red]\s[24]Hello World!\c[white]\s[12] This is enhanced t
 # Render the text
 text.render()
 
-# Display the text on a window
-window = sfGraphics.RenderWindow(sfWindow.VideoMode(sfSystem.Vector2u(800, 600)), "Enhanced Text Example")
-while window.is_open:
-    for event in window.poll_events():
-        if event.type == sfWindow.Event.Closed:
-            window.close()
-
-    window.clear()
-    text.display(window)
-    window.display()
+...
+window.clear()
+window.draw(text)
+window.display()
+...
 ```
 
 With PySFBoost , your IDE will provide autocompletion and type checking for all SFML classes and methods.
