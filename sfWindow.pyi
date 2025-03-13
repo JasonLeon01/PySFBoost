@@ -314,11 +314,11 @@ class Event:
     """
 
     # Event subclasses for specific event types
-    class Closed(Event):
+    class Closed:
         """
         Closed event.
         """
-    class Resized(Event):
+    class Resized:
         """
         Resized event.
         """
@@ -613,6 +613,168 @@ class Event:
         Returns
         - True if the event is a sensor changed event, false otherwise.
         """
+    def getIfClosed(self) -> Closed:
+        """
+        Get the closed event if the event is a closed event.
+
+        Returns
+        - The closed event if the event is a closed event, nullptr otherwise.
+        """
+    def getIfResized(self) -> Resized:
+        """
+        Get the resized event if the event is a resized event.
+
+        Returns
+        - The resized event if the event is a resized event, nullptr otherwise.
+        """
+    def getIfFocusLost(self) -> FocusLost:
+        """
+        Get the focus lost event if the event is a focus lost event.
+
+        Returns
+        - The focus lost event if the event is a focus lost event, nullptr otherwise.
+        """
+    def getIfFocusGained(self) -> FocusGained:
+        """
+        Get the focus gained event if the event is a focus gained event.
+
+        Returns
+        - The focus gained event if the event is a focus gained event, nullptr otherwise.
+        """
+    def getIfTextEntered(self) -> TextEntered:
+        """
+        Get the text entered event if the event is a text entered event.
+
+        Returns
+        - The text entered event if the event is a text entered event, nullptr otherwise.
+        """
+    def getIfKeyPressed(self) -> KeyPressed:
+        """
+        Get the key pressed event if the event is a key pressed event.
+
+        Returns
+        - The key pressed event if the event is a key pressed event, nullptr otherwise.
+        """
+    def getIfKeyReleased(self) -> KeyReleased:
+        """
+        Get the key released event if the event is a key released event.
+
+        Returns
+        - The key released event if the event is a key released event, nullptr otherwise.
+        """
+    def getIfMouseWheelScrolled(self) -> MouseWheelScrolled:
+        """
+        Get the mouse wheel scrolled event if the event is a mouse wheel scrolled event.
+
+        Returns
+        - The mouse wheel scrolled event if the event is a mouse wheel scrolled event, nullptr otherwise.
+        """
+    def getIfMouseButtonPressed(self) -> MouseButtonPressed:
+        """
+        Get the mouse button pressed event if the event is a mouse button pressed event.
+
+        Returns
+        - The mouse button pressed event if the event is a mouse button pressed event, nullptr otherwise.
+        """
+    def getIfMouseButtonReleased(self) -> MouseButtonReleased:
+        """
+        Get the mouse button released event if the event is a mouse button released event.
+
+        Returns
+        - The mouse button released event if the event is a mouse button released event, nullptr otherwise.
+        """
+    def getIfMouseMoved(self) -> MouseMoved:
+        """
+        Get the mouse moved event if the event is a mouse moved event.
+
+        Returns
+        - The mouse moved event if the event is a mouse moved event, nullptr otherwise.
+        """
+    def getIfMouseMovedRaw(self) -> MouseMovedRaw:
+        """
+        Get the mouse moved event (raw) if the event is a mouse moved event (raw).
+
+        Returns
+        - The mouse moved event (raw) if the event is a mouse moved event (raw), nullptr otherwise.
+        """
+    def getIfMouseEntered(self) -> MouseEntered:
+        """
+        Get the mouse entered event if the event is a mouse entered event.
+
+        Returns
+        - The mouse entered event if the event is a mouse entered event, nullptr otherwise.
+        """
+    def getIfMouseLeft(self) -> MouseLeft:
+        """
+        Get the mouse left event if the event is a mouse left event.
+
+        Returns
+        - The mouse left event if the event is a mouse left event, nullptr otherwise.
+        """
+    def getIfJoystickButtonPressed(self) -> JoystickButtonPressed:
+        """
+        Get the joystick button pressed event if the event is a joystick button pressed event.
+
+        Returns
+        - The joystick button pressed event if the event is a joystick button pressed event, nullptr otherwise.
+        """
+    def getIfJoystickButtonReleased(self) -> JoystickButtonReleased:
+        """
+        Get the joystick button released event if the event is a joystick button released event.
+
+        Returns
+        - The joystick button released event if the event is a joystick button released event, nullptr otherwise.
+        """
+    def getIfJoystickMoved(self) -> JoystickMoved:
+        """
+        Get the joystick moved event if the event is a joystick moved event.
+
+        Returns
+        - The joystick moved event if the event is a joystick moved event, nullptr otherwise.
+        """
+    def getIfJoystickConnected(self) -> JoystickConnected:
+        """
+        Get the joystick connected event if the event is a joystick connected event.
+
+        Returns
+        - The joystick connected event if the event is a joystick connected event, nullptr otherwise.
+        """
+    def getIfJoystickDisconnected(self) -> JoystickDisconnected:
+        """
+        Get the joystick disconnected event if the event is a joystick disconnected event.
+
+        Returns
+        - The joystick disconnected event if the event is a joystick disconnected event, nullptr otherwise.
+        """
+    def getIfTouchBegan(self) -> TouchBegan:
+        """
+        Get the touch began event if the event is a touch began event.
+
+        Returns
+        - The touch began event if the event is a touch began event, nullptr otherwise.
+        """
+    def getIfTouchMoved(self) -> TouchMoved:
+        """
+        Get the touch moved event if the event is a touch moved event.
+
+        Returns
+        - The touch moved event if the event is a touch moved event, nullptr otherwise.
+        """
+    def getIfTouchEnded(self) -> TouchEnded:
+        """
+        Get the touch ended event if the event is a touch ended event.
+
+        Returns
+        - The touch ended event if the event is a touch ended event, nullptr otherwise.
+        """
+    def getIfSensorChanged(self) -> SensorChanged:
+        """
+        Get the sensor changed event if the event is a sensor changed event.
+
+        Returns
+        - The sensor changed event if the event is a sensor changed event, nullptr otherwise.
+        """
+
 class VideoMode:
     """
     VideoMode defines a video mode (size, bpp)
