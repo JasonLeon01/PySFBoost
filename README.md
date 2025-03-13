@@ -15,6 +15,7 @@ Type Annotations : Comprehensive type hints for all PySFML classes and methods.
 - **Particle System**: The `Particle.py` file provides a particle system with `Particle` and `ParticleMgr` classes to manage particle behavior.
 - **Animation System**: `Animation.py` offers an animation system with `Event`, `Animation`, and `AnimationMgr` classes to manage and display animations.
 - **Time Management**: `Time.py` contains the `TimeMgr` class to handle time-related operations such as getting current time and delta time.
+- **Enhanced Text Rendering**: The `TextEnhance.py` module provides a class `EText` for rendering enhanced text with various styles and configurations. It supports features such as bold, italic, underlined, strike-through text, custom colors, and custom sizes.
 
 ## Installation
 To use PySFBoost, clone the repository.
@@ -109,6 +110,35 @@ from PySFBoost.Time import TimeMgr
 TimeMgr.init()
 current_time = TimeMgr.get_current_time()
 delta_time = TimeMgr.get_delta_time()
+```
+
+## Using Enhanced Text Rendering
+```python
+from PySFBoost.TextEnhance import EText, StyleConfig
+from PySFBoost import sfSystem, sfGraphics
+
+# Load a font
+font = sfGraphics.Font.load_from_file("arial.ttf")
+
+# Create a style configuration
+style_config = StyleConfig(sfGraphics.Color.White, 24, 1.0, 1.5)
+
+# Create an EText object
+text = EText(font, r"\c[red]\s[24]Hello World!\c[white]\s[12] This is enhanced text.", sfSystem.Vector2u(800, 600), style_config)
+
+# Render the text
+text.render()
+
+# Display the text on a window
+window = sfGraphics.RenderWindow(sfWindow.VideoMode(sfSystem.Vector2u(800, 600)), "Enhanced Text Example")
+while window.is_open:
+    for event in window.poll_events():
+        if event.type == sfWindow.Event.Closed:
+            window.close()
+
+    window.clear()
+    text.display(window)
+    window.display()
 ```
 
 With PySFBoost , your IDE will provide autocompletion and type checking for all SFML classes and methods.

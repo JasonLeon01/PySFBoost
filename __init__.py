@@ -11,6 +11,7 @@ from . import Particle
 from . import ResourceMgr
 from . import Time
 from . import Animation
+from . import TextEnhance
 
 __all__ = [
     "sfSystem",
@@ -21,5 +22,6 @@ __all__ = [
     "Particle",
     "ResourceMgr",
     "Time",
-    "Animation"
+    "Animation",
+    "TextEnhance"
 ]

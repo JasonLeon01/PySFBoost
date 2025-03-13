@@ -9,6 +9,7 @@ class TimeMgr:
 
     _clock = sfSystem.Clock()
     _last_elapsed_time = sfSystem.Time.Zero()
+    _delta_time = sfSystem.Time.Zero()
 
     @staticmethod
     def init():
@@ -17,6 +18,7 @@ class TimeMgr:
         """
 
         TimeMgr._clock.start()
+        TimeMgr.update()
 
     @staticmethod
     def get_current_time() -> sfSystem.Time:
@@ -27,7 +29,6 @@ class TimeMgr:
         - Current time.
         """
 
-        TimeMgr._last_elapsed_time = TimeMgr._clock.get_elapsed_time()
         return TimeMgr._last_elapsed_time
 
     @staticmethod
@@ -39,7 +40,15 @@ class TimeMgr:
         - Delta time.
         """
 
-        last_time = TimeMgr._last_elapsed_time.as_seconds()
-        current_time = TimeMgr.get_current_time().as_seconds()
-        delta_time = current_time - last_time
-        return sfSystem.Time.FromSeconds(delta_time)
+        return sfSystem.Time.FromSeconds(TimeMgr._delta_time)
+
+    @staticmethod
+    def update():
+        """
+        Update the time manager.
+        """
+
+        last_time = TimeMgr._last_elapsed_time
+        current_time = TimeMgr._clock.get_elapsed_time()
+        TimeMgr._last_elapsed_time = current_time
+        TimeMgr._delta_time = current_time - last_time

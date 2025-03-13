@@ -297,6 +297,7 @@ class FloatRect:
         Creates an empty rectangle (it is equivalent to calling Rect({0, 0}, {0, 0})).
         """
 
+    @overload
     def __init__(self, position: sfSystem.Vector2f, size: sfSystem.Vector2f):
         """
         Construct the rectangle from its position and size.
