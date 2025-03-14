@@ -9,7 +9,7 @@
 
 from __future__ import annotations
 import enum
-from typing import List, overload
+from typing import List, Tuple, Union, overload
 from types import ModuleType
 from . import sfSystem
 from . import sfWindow
@@ -242,6 +242,79 @@ class IntRect:
         - size: Size of the rectangle.
         """
 
+    @overload
+    def __init__(self, tp: Tuple[Union[int, float], Union[int, float], Union[int, float], Union[int, float]]) -> None:
+        """
+        Construct the rectangle from its position and size.
+
+        Parameters:
+        - tp: Position and size of the rectangle.
+        """
+
+    def to_int(self) -> IntRect:
+        """
+        Convert the rectangle to an integer rectangle.
+
+        Returns:
+        - The converted rectangle.
+        """
+
+    def to_float(self) -> FloatRect:
+        """
+        Convert the rectangle to an integer rectangle.
+
+        Returns:
+        - The converted rectangle.
+        """
+
+    def left(self) -> int:
+        """
+        Get the left coordinate of the rectangle.
+
+        Returns:
+        - The left coordinate of the rectangle.
+        """
+
+    def top(self) -> int:
+        """
+        Get the top coordinate of the rectangle.
+
+        Returns:
+        - The top coordinate of the rectangle.
+        """
+
+    def right(self) -> int:
+        """
+        Get the right coordinate of the rectangle.
+
+        Returns:
+        - The right coordinate of the rectangle.
+        """
+
+    def bottom(self) -> int:
+        """
+        Get the bottom coordinate of the rectangle.
+
+        Returns:
+        - The bottom coordinate of the rectangle.
+        """
+
+    def width(self) -> int:
+        """
+        Get the width of the rectangle.
+
+        Returns:
+        - The width of the rectangle.
+        """
+
+    def height(self) -> int:
+        """
+        Get the height of the rectangle.
+
+        Returns:
+        - The height of the rectangle.
+        """
+
     def contains(self, point: sfSystem.Vector2i) -> bool:
         """
         Check if a point is inside the rectangle
@@ -305,6 +378,79 @@ class FloatRect:
         Parameters:
         - position: Position of the top-left corner of the rectangle.
         - size: Size of the rectangle.
+        """
+
+    @overload
+    def __init__(self, tp: Tuple[Union[int, float], Union[int, float], Union[int, float], Union[int, float]]) -> None:
+        """
+        Construct the rectangle from its position and size.
+
+        Parameters:
+        - tp: Position and size of the rectangle.
+        """
+
+    def to_int(self) -> IntRect:
+        """
+        Convert the rectangle to an integer rectangle.
+
+        Returns:
+        - The converted rectangle.
+        """
+
+    def to_float(self) -> FloatRect:
+        """
+        Convert the rectangle to an integer rectangle.
+
+        Returns:
+        - The converted rectangle.
+        """
+
+    def left(self) -> float:
+        """
+        Get the left coordinate of the rectangle.
+
+        Returns:
+        - The left coordinate of the rectangle.
+        """
+
+    def top(self) -> float:
+        """
+        Get the top coordinate of the rectangle.
+
+        Returns:
+        - The top coordinate of the rectangle.
+        """
+
+    def right(self) -> float:
+        """
+        Get the right coordinate of the rectangle.
+
+        Returns:
+        - The right coordinate of the rectangle.
+        """
+
+    def bottom(self) -> float:
+        """
+        Get the bottom coordinate of the rectangle.
+
+        Returns:
+        - The bottom coordinate of the rectangle.
+        """
+
+    def width(self) -> float:
+        """
+        Get the width of the rectangle.
+
+        Returns:
+        - The width of the rectangle.
+        """
+
+    def height(self) -> float:
+        """
+        Get the height of the rectangle.
+
+        Returns:
+        - The height of the rectangle.
         """
 
     def contains(self, point: sfSystem.Vector2f) -> bool:

@@ -10,7 +10,7 @@ It provides vector classes, Unicode strings and conversion functions, threads an
 # pylint: disable=invalid-name
 
 from __future__ import annotations
-import typing
+from typing import Any, Tuple, Union, overload
 
 class Angle:
     """
@@ -39,13 +39,13 @@ class Angle:
         """
 
     @staticmethod
-    def degrees(degrees: float) -> "Angle":
+    def degrees(degrees: float) -> Angle:
         """
         Construct an angle value from a number of degrees.
         """
 
     @staticmethod
-    def radians(radians: float) -> "Angle":
+    def radians(radians: float) -> Angle:
         """
         Overload of operator!= to compare two angle values.
         """
@@ -60,7 +60,7 @@ class Angle:
         Return the angle's value in radians.
         """
 
-    def wrap_signed(self) -> "Angle":
+    def wrap_signed(self) -> Angle:
         """
         Wrap to a range such that -180° <= angle < 180°
 
@@ -69,7 +69,7 @@ class Angle:
         The name "signed" originates from the similarity to signed integers.
         """
 
-    def wrap_unsigned(self) -> "Angle":
+    def wrap_unsigned(self) -> Angle:
         """
         Wrap to a range such that 0° <= angle < 360°
 
@@ -108,14 +108,9 @@ class Time:
         Returns the time as microseconds.
         """
 
-    def to_duration(self) -> typing.Any:
+    def to_duration(self) -> Any:
         """
         Converts the time to a duration object.
-        """
-
-    def __repr__(self) -> str:
-        """
-        Returns a string representation of the time in seconds.
         """
 
     @staticmethod
@@ -239,13 +234,146 @@ class Vector2f:
     The sf::Vector2 class has a simple interface, its x and y members can be accessed directly (there are no accessors like setX(), getX()).
     """
 
-    def __init__(self, x: float = 0.0, y: float = 0.0) -> None:
+    @overload
+    def __init__(self, x: Union[int, float] = 0.0, y: Union[int, float] = 0.0) -> None:
         """
         Initializes a Vector2f object.
 
         Parameters:
         - x: The x component of the vector.
         - y: The y component of the vector.
+        """
+
+    @overload
+    def __init__(self, tp: Tuple[Union[int, float], Union[int, float]]) -> None:
+        """
+        Initializes a Vector2f object.
+
+        Parameters:
+        - tp: A tuple containing the x and y components of the vector.
+        """
+
+    def to_int(self) -> Vector2i:
+        """
+        Converts the vector to an integer vector.
+
+        Returns:
+        - A new Vector2i object with the converted components.
+        """
+
+    def to_float(self) -> Vector2f:
+        """
+        Converts the vector to a floating-point vector.
+
+        Returns:
+        - A new Vector2f object with the converted components.
+        """
+
+    def to_uint(self) -> Vector2u:
+        """
+        Converts the vector to an unsigned integer vector.
+
+        Returns:
+        - A new Vector2u object with the converted components.
+        """
+
+    def __add__(self, other: Vector2f) -> Vector2f:
+        """
+        Overload of operator+ to add two vectors.
+
+        Parameters:
+        - other: The vector to add.
+
+        Returns:
+        - A new Vector2f object representing the sum of the two vectors.
+        """
+
+    def __sub__(self, other: Vector2f) -> Vector2f:
+        """
+        Overload of operator- to subtract two vectors.
+
+        Parameters:
+        - other: The vector to subtract.
+
+        Returns:
+        - A new Vector2f object representing the difference of the two vectors.
+        """
+
+    def __mul__(self, scalar: Union[int, float]) -> Vector2f:
+        """
+        Overload of operator* to multiply a vector by a scalar.
+
+        Parameters:
+        - scalar: The scalar value to multiply.
+
+        Returns:
+        - A new Vector2f object representing the scaled vector.
+        """
+
+    def __rmul__(self, scalar: Union[int, float]) -> Vector2f:
+        """
+        Overload of operator* to multiply a scalar by a vector.
+
+        Parameters:
+        - scalar: The scalar value to multiply.
+
+        Returns:
+        - A new Vector2f object representing the scaled vector.
+        """
+
+    def __truediv__(self, scalar: Union[int, float]) -> Vector2f:
+        """
+        Overload of operator/ to divide a vector by a scalar.
+
+        Parameters:
+        - scalar: The scalar value to divide by.
+
+        Returns:
+        - A new Vector2f object representing the divided vector.
+        """
+
+    def __iadd__(self, other: Vector2f) -> Vector2f:
+        """
+        Overload of operator+= to add another vector in-place.
+
+        Parameters:
+        - other: The vector to add.
+
+        Returns:
+        - The current Vector2f object after the addition.
+        """
+
+    def __isub__(self, other: Vector2f) -> Vector2f:
+        """
+        Overload of operator-= to subtract another vector in-place.
+
+        Parameters:
+        - other: The vector to subtract.
+
+        Returns:
+        - The current Vector2f object after the subtraction.
+        """
+
+    def __imul__(self, scalar: Union[int, float]) -> Vector2f:
+        """
+        Overload of operator*= to multiply the vector by a scalar in-place.
+
+        Parameters:
+        - scalar: The scalar value to multiply.
+
+        Returns:
+        - The current Vector2f object after the multiplication.
+        """
+
+    def __itruediv__(self, scalar: Union[int, float]) -> Vector2f:
+        """
+        Overload of operator/= to divide the vector by a scalar in-place.
+
+        Parameters:
+        - scalar: The scalar value to divide by.
+
+        Returns:
+        - The current Vector2f object after the division.
         """
 
     x: float
@@ -277,13 +405,146 @@ class Vector2i:
     The sf::Vector2 class has a simple interface, its x and y members can be accessed directly (there are no accessors like setX(), getX()).
     """
 
-    def __init__(self, x: int = 0, y: int = 0) -> None:
+    @overload
+    def __init__(self, x: Union[int, float] = 0.0, y: Union[int, float] = 0.0) -> None:
         """
         Initializes a Vector2i object.
 
         Parameters:
         - x: The x component of the vector.
         - y: The y component of the vector.
+        """
+
+    @overload
+    def __init__(self, tp: Tuple[Union[int, float], Union[int, float]]) -> None:
+        """
+        Initializes a Vector2i object.
+
+        Parameters:
+        - tp: A tuple containing the x and y components of the vector.
+        """
+
+    def to_int(self) -> Vector2i:
+        """
+        Converts the vector to an integer vector.
+
+        Returns:
+        - A new Vector2i object with the converted components.
+        """
+
+    def to_float(self) -> Vector2f:
+        """
+        Converts the vector to a floating-point vector.
+
+        Returns:
+        - A new Vector2f object with the converted components.
+        """
+
+    def to_uint(self) -> Vector2u:
+        """
+        Converts the vector to an unsigned integer vector.
+
+        Returns:
+        - A new Vector2u object with the converted components.
+        """
+
+    def __add__(self, other: Vector2i) -> Vector2i:
+        """
+        Overload of operator+ to add two vectors.
+
+        Parameters:
+        - other: The vector to add.
+
+        Returns:
+        - A new Vector2f object representing the sum of the two vectors.
+        """
+
+    def __sub__(self, other: Vector2i) -> Vector2i:
+        """
+        Overload of operator- to subtract two vectors.
+
+        Parameters:
+        - other: The vector to subtract.
+
+        Returns:
+        - A new Vector2f object representing the difference of the two vectors.
+        """
+
+    def __mul__(self, scalar: Union[int, float]) -> Vector2i:
+        """
+        Overload of operator* to multiply a vector by a scalar.
+
+        Parameters:
+        - scalar: The scalar value to multiply.
+
+        Returns:
+        - A new Vector2f object representing the scaled vector.
+        """
+
+    def __rmul__(self, scalar: Union[int, float]) -> Vector2i:
+        """
+        Overload of operator* to multiply a scalar by a vector.
+
+        Parameters:
+        - scalar: The scalar value to multiply.
+
+        Returns:
+        - A new Vector2f object representing the scaled vector.
+        """
+
+    def __truediv__(self, scalar: Union[int, float]) -> Vector2i:
+        """
+        Overload of operator/ to divide a vector by a scalar.
+
+        Parameters:
+        - scalar: The scalar value to divide by.
+
+        Returns:
+        - A new Vector2f object representing the divided vector.
+        """
+
+    def __iadd__(self, other: Vector2i) -> Vector2i:
+        """
+        Overload of operator+= to add another vector in-place.
+
+        Parameters:
+        - other: The vector to add.
+
+        Returns:
+        - The current Vector2f object after the addition.
+        """
+
+    def __isub__(self, other: Vector2i) -> Vector2i:
+        """
+        Overload of operator-= to subtract another vector in-place.
+
+        Parameters:
+        - other: The vector to subtract.
+
+        Returns:
+        - The current Vector2f object after the subtraction.
+        """
+
+    def __imul__(self, scalar: Union[int, float]) -> Vector2i:
+        """
+        Overload of operator*= to multiply the vector by a scalar in-place.
+
+        Parameters:
+        - scalar: The scalar value to multiply.
+
+        Returns:
+        - The current Vector2f object after the multiplication.
+        """
+
+    def __itruediv__(self, scalar: Union[int, float]) -> Vector2i:
+        """
+        Overload of operator/= to divide the vector by a scalar in-place.
+
+        Parameters:
+        - scalar: The scalar value to divide by.
+
+        Returns:
+        - The current Vector2f object after the division.
         """
 
     x: int
@@ -315,13 +576,146 @@ class Vector2u:
     The sf::Vector2 class has a simple interface, its x and y members can be accessed directly (there are no accessors like setX(), getX()).
     """
 
-    def __init__(self, x: int = 0, y: int = 0) -> None:
+    @overload
+    def __init__(self, x: Union[int, float] = 0.0, y: Union[int, float] = 0.0) -> None:
         """
         Initializes a Vector2u object.
 
         Parameters:
         - x: The x component of the vector.
         - y: The y component of the vector.
+        """
+
+    @overload
+    def __init__(self, tp: Tuple[Union[int, float], Union[int, float]]) -> None:
+        """
+        Initializes a Vector2u object.
+
+        Parameters:
+        - tp: A tuple containing the x and y components of the vector.
+        """
+
+    def to_int(self) -> Vector2i:
+        """
+        Converts the vector to an integer vector.
+
+        Returns:
+        - A new Vector2i object with the converted components.
+        """
+
+    def to_float(self) -> Vector2f:
+        """
+        Converts the vector to a floating-point vector.
+
+        Returns:
+        - A new Vector2f object with the converted components.
+        """
+
+    def to_uint(self) -> Vector2u:
+        """
+        Converts the vector to an unsigned integer vector.
+
+        Returns:
+        - A new Vector2u object with the converted components.
+        """
+
+    def __add__(self, other: Vector2u) -> Vector2u:
+        """
+        Overload of operator+ to add two vectors.
+
+        Parameters:
+        - other: The vector to add.
+
+        Returns:
+        - A new Vector2f object representing the sum of the two vectors.
+        """
+
+    def __sub__(self, other: Vector2u) -> Vector2u:
+        """
+        Overload of operator- to subtract two vectors.
+
+        Parameters:
+        - other: The vector to subtract.
+
+        Returns:
+        - A new Vector2f object representing the difference of the two vectors.
+        """
+
+    def __mul__(self, scalar: Union[int, float]) -> Vector2u:
+        """
+        Overload of operator* to multiply a vector by a scalar.
+
+        Parameters:
+        - scalar: The scalar value to multiply.
+
+        Returns:
+        - A new Vector2f object representing the scaled vector.
+        """
+
+    def __rmul__(self, scalar: Union[int, float]) -> Vector2u:
+        """
+        Overload of operator* to multiply a scalar by a vector.
+
+        Parameters:
+        - scalar: The scalar value to multiply.
+
+        Returns:
+        - A new Vector2f object representing the scaled vector.
+        """
+
+    def __truediv__(self, scalar: Union[int, float]) -> Vector2u:
+        """
+        Overload of operator/ to divide a vector by a scalar.
+
+        Parameters:
+        - scalar: The scalar value to divide by.
+
+        Returns:
+        - A new Vector2f object representing the divided vector.
+        """
+
+    def __iadd__(self, other: Vector2u) -> Vector2u:
+        """
+        Overload of operator+= to add another vector in-place.
+
+        Parameters:
+        - other: The vector to add.
+
+        Returns:
+        - The current Vector2f object after the addition.
+        """
+
+    def __isub__(self, other: Vector2u) -> Vector2u:
+        """
+        Overload of operator-= to subtract another vector in-place.
+
+        Parameters:
+        - other: The vector to subtract.
+
+        Returns:
+        - The current Vector2f object after the subtraction.
+        """
+
+    def __imul__(self, scalar: Union[int, float]) -> Vector2u:
+        """
+        Overload of operator*= to multiply the vector by a scalar in-place.
+
+        Parameters:
+        - scalar: The scalar value to multiply.
+
+        Returns:
+        - The current Vector2f object after the multiplication.
+        """
+
+    def __itruediv__(self, scalar: Union[int, float]) -> Vector2u:
+        """
+        Overload of operator/= to divide the vector by a scalar in-place.
+
+        Parameters:
+        - scalar: The scalar value to divide by.
+
+        Returns:
+        - The current Vector2f object after the division.
         """
 
     x: int
@@ -351,7 +745,8 @@ class Vector3f:
     and simple interface, its x, y and z members can be accessed directly (there are no accessors like setX(), getX()).
     """
 
-    def __init__(self, x: float = 0.0, y: float = 0.0, z: float = 0.0) -> None:
+    @overload
+    def __init__(self, x: Union[int, float] = 0.0, y: Union[int, float] = 0.0, z: Union[int, float] = 0.0) -> None:
         """
         Initializes a Vector3f object.
 
@@ -359,6 +754,39 @@ class Vector3f:
         - x: The x component of the vector.
         - y: The y component of the vector.
         - z: The z component of the vector.
+        """
+
+    @overload
+    def __init__(self, tp: Tuple[Union[int, float], Union[int, float], Union[int, float]]) -> None:
+        """
+        Initializes a Vector3f object.
+
+        Parameters:
+        - tp: A tuple containing the x, y and z components of the vector.
+        """
+
+    def to_int(self) -> Vector3i:
+        """
+        Converts the vector to an integer vector.
+
+        Returns:
+        - A new Vector2i object with the converted components.
+        """
+
+    def to_float(self) -> Vector3f:
+        """
+        Converts the vector to a floating-point vector.
+
+        Returns:
+        - A new Vector2f object with the converted components.
+        """
+
+    def to_uint(self) -> Vector3u:
+        """
+        Converts the vector to an unsigned integer vector.
+
+        Returns:
+        - A new Vector2u object with the converted components.
         """
 
     x: float
@@ -389,7 +817,8 @@ class Vector3i:
     and simple interface, its x, y and z members can be accessed directly (there are no accessors like setX(), getX()).
     """
 
-    def __init__(self, x: int = 0, y: int = 0, z: int = 0) -> None:
+    @overload
+    def __init__(self, x: Union[int, float] = 0.0, y: Union[int, float] = 0.0, z: Union[int, float] = 0.0) -> None:
         """
         Initializes a Vector3i object.
 
@@ -397,6 +826,39 @@ class Vector3i:
         - x: The x component of the vector.
         - y: The y component of the vector.
         - z: The z component of the vector.
+        """
+
+    @overload
+    def __init__(self, tp: Tuple[Union[int, float], Union[int, float], Union[int, float]]) -> None:
+        """
+        Initializes a Vector3i object.
+
+        Parameters:
+        - tp: A tuple containing the x, y and z components of the vector.
+        """
+
+    def to_int(self) -> Vector3i:
+        """
+        Converts the vector to an integer vector.
+
+        Returns:
+        - A new Vector2i object with the converted components.
+        """
+
+    def to_float(self) -> Vector3f:
+        """
+        Converts the vector to a floating-point vector.
+
+        Returns:
+        - A new Vector2f object with the converted components.
+        """
+
+    def to_uint(self) -> Vector3u:
+        """
+        Converts the vector to an unsigned integer vector.
+
+        Returns:
+        - A new Vector2u object with the converted components.
         """
 
     x: int
@@ -427,7 +889,8 @@ class Vector3u:
     and simple interface, its x, y and z members can be accessed directly (there are no accessors like setX(), getX()).
     """
 
-    def __init__(self, x: int = 0, y: int = 0, z: int = 0) -> None:
+    @overload
+    def __init__(self, x: Union[int, float] = 0.0, y: Union[int, float] = 0.0, z: Union[int, float] = 0.0) -> None:
         """
         Initializes a Vector3u object.
 
@@ -435,6 +898,39 @@ class Vector3u:
         - x: The x component of the vector.
         - y: The y component of the vector.
         - z: The z component of the vector.
+        """
+
+    @overload
+    def __init__(self, tp: Tuple[Union[int, float], Union[int, float], Union[int, float]]) -> None:
+        """
+        Initializes a Vector3u object.
+
+        Parameters:
+        - tp: A tuple containing the x, y and z components of the vector.
+        """
+
+    def to_int(self) -> Vector3i:
+        """
+        Converts the vector to an integer vector.
+
+        Returns:
+        - A new Vector2i object with the converted components.
+        """
+
+    def to_float(self) -> Vector3f:
+        """
+        Converts the vector to a floating-point vector.
+
+        Returns:
+        - A new Vector2f object with the converted components.
+        """
+
+    def to_uint(self) -> Vector3u:
+        """
+        Converts the vector to an unsigned integer vector.
+
+        Returns:
+        - A new Vector2u object with the converted components.
         """
 
     x: int
