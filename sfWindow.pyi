@@ -9,7 +9,7 @@ Provides OpenGL-based windows, and abstractions for events and input handling.
 
 from __future__ import annotations
 import enum
-from typing import List, overload
+from typing import List, Tuple, overload
 from types import ModuleType
 from . import sfSystem
 
@@ -2018,7 +2018,7 @@ class Mouse(ModuleType):
 
     @overload
     @staticmethod
-    def get_position() -> sfSystem.Vector2i:
+    def get_position() -> Tuple[int, int]:
         """
         Get the current position of the mouse in desktop coordinates.
 
@@ -2030,7 +2030,7 @@ class Mouse(ModuleType):
 
     @overload
     @staticmethod
-    def get_position(relativeTo: WindowBase) -> sfSystem.Vector2i:
+    def get_position(relativeTo: WindowBase) -> Tuple[int, int]:
         """
         Get the current position of the mouse in window coordinates.
 

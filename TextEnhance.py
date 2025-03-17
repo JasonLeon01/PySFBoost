@@ -85,6 +85,43 @@ class EText(sfGraphics.Sprite):
         self._parse()
         super().__init__(self._canvas.get_texture())
 
+    def render(self):
+        """
+        Renders the text on the canvas.
+        """
+
+        for texts in self._render_fragments:
+            for text in texts:
+                self._canvas.draw(text)
+        self._canvas.display()
+
+    def render_one(self):
+        """
+        Renders one fragment of the text on the canvas.
+        """
+
+        if len(self._fragments_list) != 0:
+            self._canvas.draw(self._fragments_list[0])
+            self._fragments_list.pop(0)
+            self._canvas.display()
+
+    @staticmethod
+    def from_str(text: str, font: sfGraphics.Font, size: sfSystem.Vector2u, style_config: StyleConfig, middle: bool = False):
+        """
+        Creates an EText object from a string.
+
+        Parameters:
+        - text    The text to be rendered.
+        - font    The font to use for rendering the text.
+        - size    The size of the text.
+        - style_config    The style configuration for the text.
+        """
+
+        text_obj = EText(font, text, size, style_config, middle)
+        text_obj.render()
+        return text_obj
+
+
     def _get_line_spacing(self, text: str, size = None):
         """
         Returns the line spacing for the given text.
@@ -349,23 +386,3 @@ class EText(sfGraphics.Sprite):
                 text.move(sfSystem.Vector2f(x_offset, offset))
                 position.x += self._get_advance(text.get_string(), text.get_character_size())
             position = sfSystem.Vector2f(0, position.y + max_h)
-
-    def render(self):
-        """
-        Renders the text on the canvas.
-        """
-
-        for texts in self._render_fragments:
-            for text in texts:
-                self._canvas.draw(text)
-        self._canvas.display()
-
-    def render_one(self):
-        """
-        Renders one fragment of the text on the canvas.
-        """
-
-        if len(self._fragments_list) != 0:
-            self._canvas.draw(self._fragments_list[0])
-            self._fragments_list.pop(0)
-            self._canvas.display()

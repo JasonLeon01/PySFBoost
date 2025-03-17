@@ -419,11 +419,13 @@ class AudioMgr:
         Clear all audios.
         """
 
-        for value in cls._sounds_cache.values():
+        for value in cls._sound_list:
             value.stop()
+        cls._sound_list.clear()
         cls._sounds_cache.clear()
-        for value in cls._voices_cache.values():
+        for value in cls._voice_list:
             value.stop()
+        cls._voice_list.clear()
         cls._voices_cache.clear()
         for value in cls._music.values():
             value.stop()

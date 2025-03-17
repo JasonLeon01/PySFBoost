@@ -2822,7 +2822,7 @@ class RenderTexture(RenderTarget):
         """
 
     @overload
-    def __init__(self, size: sfSystem.Vector2u, context_settings: sfWindow.ContextSettings = sfWindow.ContextSettings()) -> None:
+    def __init__(self, size: sfSystem.Vector2u, settings: sfWindow.ContextSettings = sfWindow.ContextSettings()) -> None:
         """
         Construct a render-texture.
 
