@@ -1229,16 +1229,6 @@ class Sound(SoundSource):
         - Current playing position, from the beginning of the sound
         """
 
-    def getStatus(self) -> SoundSource.Status:
-        """
-        Get the current status of the sound (stopped, paused, playing)
-
-        Returns
-        - Current status of the sound
-
-        Implements sf::SoundSource.
-        """
-
 class SoundRecorder:
     """
     Abstract base class for capturing sound data.
