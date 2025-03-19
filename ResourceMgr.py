@@ -1,4 +1,6 @@
 from typing import Dict, List, Union
+
+from . import sfSystem
 from . import sfGraphics
 from . import sfAudio
 
@@ -225,13 +227,23 @@ class AudioMgr:
 
     It could manage all audios.
     """
+    class _SoundExt(sfAudio.Sound):
+        def __init__(self, buffer):
+            super().__init__(buffer)
+            self.started = False
+        def play(self):
+            self.started = True
+            super().play()
+
 
     _sounds_cache: Dict[str, sfAudio.SoundBuffer] = {}
     _voices_cache: Dict[str, sfAudio.SoundBuffer] = {}
 
     _music: Dict[str, sfAudio.Music] = {}
-    _sound_list: List[sfAudio.Sound] = []
-    _voice_list: List[sfAudio.Sound] = []
+    _sound_list: List[_SoundExt] = []
+    _voice_list: List[_SoundExt] = []
+
+    _sound_pool: Dict[sfAudio.SoundBuffer, List[sfAudio.Sound]] = {}
 
     @classmethod
     def get_music(cls, name: str) -> sfAudio.Music:
@@ -249,7 +261,7 @@ class AudioMgr:
         if not music.open_from_file(f'assets/musics/{name}'):
             raise ValueError(f'Fail to load music from {name}.')
 
-        return cls._music
+        return music
 
     @classmethod
     def get_sound(cls, name: str) -> sfAudio.SoundBuffer:
@@ -342,12 +354,9 @@ class AudioMgr:
         - para: Name of music or music object.
         """
 
+        music = para
         if isinstance(para, str):
             music = cls.get_music(para)
-        elif isinstance(para, sfAudio.Music):
-            music = para
-        else:
-            raise ValueError('Music not found.')
 
         if keyword in cls._music:
             cls._music[keyword].stop()
@@ -365,18 +374,20 @@ class AudioMgr:
         - para: Name of sound or sound buffer.
         """
 
-        sound: sfAudio.Sound = None
+        sound: AudioMgr._SoundExt = None
 
+        sound_buffer = para
         if isinstance(para, str):
-            sound = sfAudio.Sound(cls.get_sound(para))
-        elif isinstance(para, sfAudio.SoundBuffer):
-            sound = sfAudio.Sound(para)
+            sound_buffer = cls.get_sound(para)
+
+        if sound_buffer in cls._sound_pool:
+            if len(cls._sound_pool[sound_buffer]) > 0:
+                sound = cls._sound_pool[sound_buffer].pop()
 
         if sound is None:
-            raise ValueError('Sound not found.')
+            sound = cls._SoundExt(sound_buffer)
 
         cls._sound_list.append(sound)
-        sound.play()
 
     @classmethod
     def play_voice(cls, para: Union[str, sfAudio.SoundBuffer]):
@@ -387,18 +398,20 @@ class AudioMgr:
         - para: Name of voice or sound buffer.
         """
 
-        voice: sfAudio.Sound = None
+        voice: AudioMgr._SoundExt = None
 
+        sound_buffer = para
         if isinstance(para, str):
-            voice = sfAudio.Sound(cls.get_voice(para))
-        elif isinstance(para, sfAudio.SoundBuffer):
-            voice = sfAudio.Sound(para)
+            sound_buffer = cls.get_sound(para)
+
+        if sound_buffer in cls._sound_pool:
+            if len(cls._sound_pool[sound_buffer]) > 0:
+                voice = cls._sound_pool[sound_buffer].pop()
 
         if voice is None:
-            raise ValueError('Voice not found.')
+            voice = cls._SoundExt(sound_buffer)
 
         cls._voice_list.append(voice)
-        voice.play()
 
     @classmethod
     def update(cls):
@@ -407,10 +420,21 @@ class AudioMgr:
         """
 
         for sound in cls._sound_list[:]:
+            if not sound.started:
+                sound.play()
+                continue
             if sound.get_status() == sfAudio.Sound.Status.Stopped:
+                if not sound.get_buffer() in cls._sound_pool:
+                    cls._sound_pool[sound.get_buffer()] = []
+                sound.started = False
+                cls._sound_pool[sound.get_buffer()].append(sound)
                 cls._sound_list.remove(sound)
         for voice in cls._voice_list[:]:
             if voice.get_status() == sfAudio.Sound.Status.Stopped:
+                if not voice.get_buffer() in cls._sound_pool:
+                    cls._sound_pool[voice.get_buffer()] = []
+                voice.started = False
+                cls._sound_pool[voice.get_buffer()].append(voice)
                 cls._voice_list.remove(voice)
 
     @classmethod
@@ -430,5 +454,3 @@ class AudioMgr:
         for value in cls._music.values():
             value.stop()
         cls._music.clear()
-        cls._sound_list.clear()
-        cls._voice_list.clear()

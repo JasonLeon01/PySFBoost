@@ -1173,7 +1173,7 @@ class Sound(SoundSource):
         Implements sf::SoundSource.
         """
 
-    def setBuffer(self, buffer: SoundBuffer) -> None:
+    def set_buffer(self, buffer: SoundBuffer) -> None:
         """
         Set the source buffer containing the audio data to play.
 
@@ -1184,7 +1184,7 @@ class Sound(SoundSource):
 
         """
 
-    def setLooping(self, looping: bool) -> None:
+    def set_looping(self, looping: bool) -> None:
         """
         Set whether or not the sound should loop after reaching the end.
 
@@ -1194,7 +1194,7 @@ class Sound(SoundSource):
         - loop	true to play in loop, false to play once
         """
 
-    def setPlayingOffset(self, timeOffset: sfSystem.Time) -> None:
+    def set_playing_offset(self, timeOffset: sfSystem.Time) -> None:
         """
         Change the current playing position of the sound.
 
@@ -1205,7 +1205,7 @@ class Sound(SoundSource):
 
         """
 
-    def getBuffer(self) -> SoundBuffer:
+    def get_buffer(self) -> SoundBuffer:
         """
         Get the audio buffer attached to the sound.
 
@@ -1213,7 +1213,7 @@ class Sound(SoundSource):
         - Sound buffer attached to the sound
         """
 
-    def isLooping(self) -> bool:
+    def is_looping(self) -> bool:
         """
         Tell whether or not the sound is in loop mode.
 
@@ -1221,7 +1221,7 @@ class Sound(SoundSource):
         - true if the sound is looping, false otherwise
         """
 
-    def getPlayingOffset(self) -> sfSystem.Time:
+    def get_playing_offset(self) -> sfSystem.Time:
         """
         Get the current playing position of the sound.
 
