@@ -143,6 +143,35 @@ Contributions to PySFBoost are welcome! If you encounter any issues or have sugg
 3. Commit your changes and ensure the `.pyi` files are updated accordingly.
 4. Submit a pull request with a detailed description of your changes.
 
+## Third-Party Libraries
+This project is a pybind11 binding for SFML (Simple and Fast Multimedia Library) and includes the following third-party libraries:
+
+1. **SFML (Simple and Fast Multimedia Library)**
+   - License: zlib/png License
+   - Website: [https://www.sfml-dev.org](https://www.sfml-dev.org)
+   - License Text: [SFML License](https://www.sfml-dev.org/license.php)
+
+2. **SFML Dependencies**
+   - stb_image and stb_image_write (Public Domain)
+     - Website: [https://github.com/nothings/stb](https://github.com/nothings/stb)
+   - FreeType (FreeType License)
+     - Website: [https://www.freetype.org](https://www.freetype.org)
+     - License Text: [FreeType License](https://www.freetype.org/license.html)
+   - libogg (BSD License)
+     - Website: [https://xiph.org/ogg/](https://xiph.org/ogg/)
+     - License Text: [libogg License](https://xiph.org/licenses/bsd/)
+   - libvorbis (BSD License)
+     - Website: [https://xiph.org/vorbis/](https://xiph.org/vorbis/)
+     - License Text: [libvorbis License](https://xiph.org/licenses/bsd/)
+   - libflac (BSD License)
+     - Website: [https://xiph.org/flac/](https://xiph.org/flac/)
+     - License Text: [libflac License](https://xiph.org/licenses/bsd/)
+   - minimp3 (CC0)
+     - Website: [https://github.com/lieff/minimp3](https://github.com/lieff/minimp3)
+   - miniaudio (Public Domain or MIT No Attribution)
+     - Website: [https://miniaud.io](https://miniaud.io)
+     - License Text: [miniaudio License](https://github.com/mackron/miniaudio/blob/master/LICENSE)
+
 ## License
 PySFBoost is licensed under the Zlib license. See the [LICENSE](license.md) file for more details.
 
