@@ -47,7 +47,7 @@ window: sfGraphics.RenderWindow = sfGraphics.RenderWindow(sfWindow.VideoMode(sfS
 background_color: sfGraphics.Color = sfGraphics.Color(50, 50, 50)
 
 # Main loop
-while window.is_open:
+while window.is_open():
         while True:
             event = window.poll_event()
             if event is None:
@@ -131,6 +131,42 @@ window.clear()
 window.draw(text)
 window.display()
 ...
+```
+
+## Using Video Player
+To use this module, you need to install opencv-python.
+
+By the way, the video is silent. You can play its back sound with other ways.
+```python
+from PySFBoost import Video, sfGraphics, sfSystem, sfWindow, Time
+video_player = Video.Player("video.mp4", sfSystem.Vector2u(800, 600))
+
+# Create a window with type hints
+window: sfGraphics.RenderWindow = sfGraphics.RenderWindow(sfWindow.VideoMode(sfSystem.Vector2u(800, 600)), "pysf Test")
+window.set_framerate_limit(120)
+Time.TimeMgr.init()
+
+# Set the background color with type hints
+background_color: sfGraphics.Color = sfGraphics.Color(50, 50, 50)
+
+# Main loop
+while window.is_open():
+    while True:
+        event = window.poll_event()
+        if event is None:
+            break
+        if event.isClosed():
+            window.close()
+            break
+    Time.TimeMgr.update()
+    delta_time = Time.TimeMgr.get_delta_time().as_seconds()
+    print(1/delta_time)
+    window.clear(background_color)
+    sprite = video_player.get_frame(delta_time)
+    if sprite is None:
+        break
+    window.draw(sprite)
+    window.display()
 ```
 
 With PySFBoost , your IDE will provide autocompletion and type checking for all SFML classes and methods.

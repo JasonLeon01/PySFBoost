@@ -730,22 +730,7 @@ class SoundBuffer:
         """
 
     @overload
-    def __init__(self, data: bytes, sizeInBytes: int) -> None:
-        """
-        Construct the sound buffer from a file in memory.
-
-        See the documentation of sf::InputSoundFile for the list of supported formats.
-
-        Parameters
-        - data	Pointer to the file data in memory
-        - sizeInBytes	Size of the data to load, in bytes
-
-        Exceptions
-        - sf::Exception	if loading was unsuccessful
-        """
-
-    @overload
-    def __init__(self, data: bytes, stream: sfSystem.InputStream) -> None:
+    def __init__(self, stream: sfSystem.InputStream) -> None:
         """
         Construct the sound buffer from a custom stream.
 
@@ -796,8 +781,7 @@ class SoundBuffer:
         See the documentation of sf::InputSoundFile for the list of supported formats.
 
         Parameters
-        - data	Pointer to the file data in memory
-        - sizeInBytes	Size of the data to load, in bytes
+        - data	Bytes data in memory
 
         Returns
         - true if loading succeeded, false if it failed

@@ -2003,21 +2003,6 @@ class Image:
         """
 
     @overload
-    def __init__(self, data: bytes, size: bytes) -> None:
-        """
-        Construct the image from a file in memory.
-
-        The supported image formats are bmp, png, tga, jpg, gif, psd, hdr, pic and pnm. Some format options are not supported, like jpeg with arithmetic coding or ASCII pnm.
-
-        Parameters
-        - data	Pointer to the file data in memory
-        - size	Size of the data to load, in bytes
-
-        Exceptions
-        - sf::Exception	if loading was unsuccessful
-        """
-
-    @overload
     def __init__(self, stream: sfSystem.InputStream) -> None:
         """
         Construct the image from a custom stream.
@@ -2073,15 +2058,14 @@ class Image:
         - filename	Path of the image file to load
         """
 
-    def load_from_memory(self, data: bytes, size: bytes) -> bool:
+    def load_from_memory(self, data: bytes) -> bool:
         """
         Load the image from a file in memory.
 
         The supported image formats are bmp, png, tga, jpg, gif, psd, hdr, pic and pnm. Some format options are not supported, like jpeg with arithmetic coding or ASCII pnm. If this function fails, the image is left unchanged.
 
         Parameters
-        - data	Pointer to the file data in memory
-        - size	Size of the data to load, in bytes
+        - data	Bytes data in memory
 
         Returns
         - true if loading was successful
@@ -3790,41 +3774,6 @@ class Texture:
         """
 
     @overload
-    def __init__(self, data: bytes, size: int, sRgb: bool = False) -> None:
-        """
-        Construct the texture from a file in memory.
-
-        The maximum size for a texture depends on the graphics driver and can be retrieved with the getMaximumSize function.
-
-        Parameters
-        - data	Pointer to the file data in memory
-        - size	Size of the data to load, in bytes
-        - sRgb	true to enable sRGB conversion, false to disable it
-
-        Exceptions
-        - sf::Exception	if loading was unsuccessful
-        """
-
-    @overload
-    def __init__(self, data: bytes, size: int, sRgb: bool, area: IntRect) -> None:
-        """
-        Construct the texture from a sub-rectangle of a file in memory.
-
-        The area argument can be used to load only a sub-rectangle of the whole image. If you want the entire image then leave the default value (which is an empty IntRect). If the area rectangle crosses the bounds of the image, it is adjusted to fit the image size.
-
-        The maximum size for a texture depends on the graphics driver and can be retrieved with the getMaximumSize function.
-
-        Parameters
-        - data	Pointer to the file data in memory
-        - size	Size of the data to load, in bytes
-        - sRgb	true to enable sRGB conversion, false to disable it
-        - area	Area of the image to load
-
-        Exceptions
-        - sf::Exception	if loading was unsuccessful
-        """
-
-    @overload
     def __init__(self, stream: sfSystem.InputStream, sRgb: bool = False) -> None:
         """
         Construct the texture from a custom stream.
@@ -3936,7 +3885,7 @@ class Texture:
         - true if loading was successful, false if it failed
         """
 
-    def load_from_memory(self, data: bytes, size: int, sRgb: bool = False, area: IntRect = IntRect()) -> bool:
+    def load_from_memory(self, data: bytes, sRgb: bool = False, area: IntRect = IntRect()) -> bool:
         """
         Load the texture from a file in memory.
 
@@ -3947,8 +3896,7 @@ class Texture:
         If this function fails, the texture is left unchanged.
 
         Parameters
-        - data	Pointer to the file data in memory
-        - size	Size of the data to load, in bytes
+        - data	Bytes data in memory
         - sRgb	true to enable sRGB conversion, false to disable it
         - area	Area of the image to load
 
