@@ -12,6 +12,7 @@ from . import ResourceMgr
 from . import Time
 from . import Animation
 from . import TextEnhance
+from . import Video
 
 __all__ = [
     "sfSystem",
@@ -23,5 +24,6 @@ __all__ = [
     "ResourceMgr",
     "Time",
     "Animation",
-    "TextEnhance"
+    "TextEnhance",
+    "Video"
 ]

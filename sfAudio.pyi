@@ -1041,7 +1041,7 @@ class Music(SoundStream):
         - true if loading succeeded, false if it failed
         """
 
-    def open_from_memory(self, data: bytes, sizeInBytes: int) -> bool:
+    def open_from_memory(self, data: bytes) -> bool:
         """
         Open a music from an audio file in memory.
 
@@ -1052,7 +1052,6 @@ class Music(SoundStream):
 
         Parameters
         - data	Pointer to the file data in memory
-        - sizeInBytes	Size of the data to load, in bytes
 
         Returns
         - true if loading succeeded, false if it failed

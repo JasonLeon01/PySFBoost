@@ -1,3 +1,4 @@
+import os
 from typing import Dict, List, Union
 
 from . import sfSystem
@@ -12,6 +13,7 @@ class TextureMgr:
     """
 
     _textures: Dict[str, sfGraphics.Texture] = {}
+    _ref_pak: Dict[str, Dict[str, bytes]] = {}
 
     @classmethod
     def get_texture(cls, path: str) -> sfGraphics.Texture:
@@ -25,12 +27,45 @@ class TextureMgr:
         - The texture from path.
         """
 
-        if path not in cls._textures:
-            cls._textures[path] = sfGraphics.Texture()
-            if not cls._textures[path].load_from_file(path):
+        if os.path.exists(path):
+            if path not in cls._textures:
+                cls._textures[path] = sfGraphics.Texture()
+                if not cls._textures[path].load_from_file(path):
+                    raise ValueError(f'Failed to load texture from {path}.')
+        else:
+            path_parts = path.split('/')
+            if len(path_parts) < 2:
                 raise ValueError(f'Failed to load texture from {path}.')
+            key = path_parts[1:]
+            if len(key) < 2:
+                raise ValueError(f'Failed to load texture from {path}.')
+            ref = cls._ref_pak
+            level = 0
+            while level < len(key):
+                if key[level] in ref:
+                    ref = ref[key[level]]
+                    level += 1
+                else:
+                    raise ValueError(f'Failed to load texture from {path}.')
+                    break
+            if isinstance(ref, bytes):
+                texture = sfGraphics.Texture()
+                if not texture.load_from_memory(ref):
+                    raise ValueError(f'Failed to load texture from {path}.')
+                cls._textures[path] = texture
 
         return cls._textures[path]
+
+    @classmethod
+    def add_pak_ref(cls, pak: Dict[str, Dict[str, bytes]]):
+        """
+        Add a pak reference to the manager.
+
+        Parameters:
+        - pak: The pak reference.
+        """
+
+        cls._ref_pak = pak
 
     @classmethod
     def has_texture(cls, path: str) -> bool:
@@ -237,11 +272,10 @@ class AudioMgr:
 
 
     _sounds_cache: Dict[str, sfAudio.SoundBuffer] = {}
-    _voices_cache: Dict[str, sfAudio.SoundBuffer] = {}
+    _voice: Union[sfAudio.SoundBuffer, sfAudio.Sound] = None
 
     _music: Dict[str, sfAudio.Music] = {}
     _sound_list: List[_SoundExt] = []
-    _voice_list: List[_SoundExt] = []
 
     _sound_pool: Dict[sfAudio.SoundBuffer, List[sfAudio.Sound]] = {}
 
@@ -294,12 +328,13 @@ class AudioMgr:
         - The voice from path.
         """
 
+        sb: sfAudio.SoundBuffer = None
         if name not in cls._voices_cache:
-            cls._voices_cache[name] = sfAudio.SoundBuffer()
-            if not cls._voices_cache[name].load_from_file(f'assets/voices/{name}'):
+            sb = sfAudio.SoundBuffer()
+            if not sb.load_from_file(f'assets/voices/{name}'):
                 raise ValueError(f'Fail to load voice from {name}.')
 
-        return cls._voices_cache[name]
+        return sb
 
     @classmethod
     def release_music(cls, keyword: str):
@@ -328,21 +363,6 @@ class AudioMgr:
             cls._sounds_cache.pop(name)
         else:
             raise ValueError(f'Fail to release sound from {name}.')
-
-    @classmethod
-    def release_voice(cls, name: str):
-        """
-        Release voice from name.
-
-        Parameters:
-        - name: Name of voice.
-        """
-
-        if name in cls._voices_cache:
-            cls._voices_cache[name].stop()
-            cls._voices_cache.pop(name)
-        else:
-            raise ValueError(f'Fail to release voice from {name}.')
 
     @classmethod
     def play_music(cls, keyword: str, para: Union[str, sfAudio.Music]):
@@ -398,20 +418,11 @@ class AudioMgr:
         - para: Name of voice or sound buffer.
         """
 
-        voice: AudioMgr._SoundExt = None
-
         sound_buffer = para
         if isinstance(para, str):
-            sound_buffer = cls.get_sound(para)
+            sound_buffer = cls.get_voice(para)
 
-        if sound_buffer in cls._sound_pool:
-            if len(cls._sound_pool[sound_buffer]) > 0:
-                voice = cls._sound_pool[sound_buffer].pop()
-
-        if voice is None:
-            voice = cls._SoundExt(sound_buffer)
-
-        cls._voice_list.append(voice)
+        cls._voice = (sound_buffer, cls._SoundExt(sound_buffer))
 
     @classmethod
     def update(cls):
@@ -429,13 +440,13 @@ class AudioMgr:
                 sound.started = False
                 cls._sound_pool[sound.get_buffer()].append(sound)
                 cls._sound_list.remove(sound)
-        for voice in cls._voice_list[:]:
-            if voice.get_status() == sfAudio.Sound.Status.Stopped:
-                if not voice.get_buffer() in cls._sound_pool:
-                    cls._sound_pool[voice.get_buffer()] = []
-                voice.started = False
-                cls._sound_pool[voice.get_buffer()].append(voice)
-                cls._voice_list.remove(voice)
+        if cls._voice is not None:
+            if not cls._voice.started:
+                cls._voice.play()
+                return
+            if cls._voice.get_status() == sfAudio.Sound.Status.Stopped:
+                cls._voice = None
+                return
 
     @classmethod
     def clear(cls):
@@ -447,10 +458,6 @@ class AudioMgr:
             value.stop()
         cls._sound_list.clear()
         cls._sounds_cache.clear()
-        for value in cls._voice_list:
-            value.stop()
-        cls._voice_list.clear()
-        cls._voices_cache.clear()
         for value in cls._music.values():
             value.stop()
         cls._music.clear()
