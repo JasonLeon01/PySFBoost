@@ -27,10 +27,11 @@ class Video:
         self._image: sfGraphics.Texture = None
         self._sprite: sfGraphics.Sprite = None
 
-        self._frames = []
+        self._frames: List[bytes] = []
         self.fps = self.cap.get(cv2.CAP_PROP_FPS)
         self.total_frames = self.cap.get(cv2.CAP_PROP_FRAME_COUNT)
 
+        self._image: sfGraphics.Texture = None
         self.sprite: sfGraphics.Sprite = None
         self.finished = False
 
@@ -40,7 +41,9 @@ class Video:
         if self.target_frame_index >= self.total_frames:
             return None
 
-        self._image = self._frames[self.target_frame_index]
+        bytes_data = self._frames[self.target_frame_index]
+        self._image = sfGraphics.Texture()
+        self._image.load_from_memory(bytes_data)
         size = self._image.get_size()
         self._sprite = sfGraphics.Sprite(self._image)
         self._sprite.set_scale(sfSystem.Vector2f(float(self.window_size.x) / size.x, float(self.window_size.y) / size.y))
@@ -56,9 +59,7 @@ class Video:
             encode_params = [cv2.IMWRITE_PNG_COMPRESSION, 1]
             _, buffer = cv2.imencode('.jpg', frame, encode_params)
             fbytes = buffer.tobytes()
-            image = sfGraphics.Texture()
-            image.load_from_memory(fbytes)
-            self._frames.append(image)
+            self._frames.append(fbytes)
 
     def update(self, delta_time: float):
         if self.finished:
