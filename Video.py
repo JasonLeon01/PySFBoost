@@ -1,13 +1,11 @@
+have_cv2 = True
 import os
+import sys
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 try:
     import cv2
 except ImportError:
-    try:
-        import os, sys
-        sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-        import cv2
-    except ImportError:
-        raise ImportError("Could not import cv2")
+    have_cv2 = False
 
 from typing import List
 from . import sfSystem
@@ -15,6 +13,10 @@ from . import sfGraphics
 
 class Video:
     def __init__(self, video_path: str, window_size: sfSystem.Vector2u):
+        if not have_cv2:
+            print("OpenCV not found. Video playback will not be available.")
+            return
+
         self.cap = cv2.VideoCapture(video_path)
         self.cap.set(cv2.CAP_PROP_HW_ACCELERATION, cv2.VIDEO_ACCELERATION_ANY)
         self.window_size = window_size
@@ -36,6 +38,9 @@ class Video:
         self.finished = False
 
     def _get_frame(self, delta_time: float) -> sfGraphics.Sprite:
+        if not have_cv2:
+            return None
+
         self.target_frame_index = int(self.time_elapsed * self.fps)
 
         if self.target_frame_index >= self.total_frames:
@@ -51,6 +56,9 @@ class Video:
         return self._sprite
 
     def precache_frames(self):
+        if not have_cv2:
+            return
+
         while True:
             ret, frame = self.cap.read()
             if not ret:
