@@ -4,12 +4,12 @@ PySFBoost is a Python binding interface for SFML **3.0** , providing `.pyi` type
 ## Overview
 SFML (Simple and Fast Multimedia Library) is a popular open-source library designed to provide a simple interface for multimedia applications, including graphics, audio, and input handling. With PySFBoost , Python developers can leverage the power of SFML **3.0** while benefiting from modern Python features like type hints and static type checking.
 
-This repository focuses on providing accurate and comprehensive `.pyi` stub files for the Python bindings of SFML **3.0**. These stub files are compatible with Python **3.9.0** and above, ensuring seamless integration with tools like IDEs and linters.
+This repository focuses on providing accurate and comprehensive `.pyi` stub files for the Python bindings of SFML **3.0**. These stub files are compatible with Python **3.10.0** and above, ensuring seamless integration with tools like IDEs and linters.
 
 ## Features
 Type Annotations : Comprehensive type hints for all PySFML classes and methods.
 - Type Hinting : Provides `.pyi` files for enhanced code completion, linting, and static type checking.
-- Compatibility : Designed for Python **3.9.0** and works seamlessly with the PySFML bindings.
+- Compatibility : Designed for Python **3.10.0** and works seamlessly with the PySFML bindings.
 - Developer-Friendly : Improves the development workflow by offering clear and precise type annotations for SFML's Python API.
 - **Resource Management**: Includes `TextureMgr`, `FontMgr`, and `AudioMgr` in `ResourceMgr.py` to manage textures, fonts, and audios efficiently.
 - **Particle System**: The `Particle.py` file provides a particle system with `Particle` and `ParticleMgr` classes to manage particle behavior.
