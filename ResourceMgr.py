@@ -200,9 +200,10 @@ class FontMgr:
     """
 
     _fonts: Dict[str, sfGraphics.Font] = {}
+    _font_filenames: Dict[str, str] = {}
 
     @classmethod
-    def get_font(cls, filename: str) -> sfGraphics.Font:
+    def get_font_from_file(cls, filename: str) -> sfGraphics.Font:
         """
         Get font from name.
 
@@ -213,40 +214,57 @@ class FontMgr:
         - The font from path.
         """
 
-        if filename not in cls._fonts:
-            cls._fonts[filename] = sfGraphics.Font()
-            if not cls._fonts[filename].open_from_file(f'assets/fonts/{filename}'):
+        if filename not in cls._font_filenames:
+            font = sfGraphics.Font()
+            if not font.open_from_file(f'assets/fonts/{filename}'):
                 raise ValueError(f'Failed to load font from {filename}.')
+            cls._fonts[font.get_info().family] = font
+            cls._font_filenames[filename] = font.get_info().family
 
-        return cls._fonts[filename]
+        return cls._fonts[cls._font_filenames[filename]]
 
     @classmethod
-    def has_font(cls, filename: str) -> bool:
+    def get_font(cls, name: str) -> sfGraphics.Font:
+        """
+        Get font from name.
+        Parameters:
+        - name: File name of font.
+        Returns:
+        - The font from path.
+        """
+
+        if name not in cls._fonts:
+            raise ValueError(f'Fail to get font from {name}.')
+
+        return cls._fonts[name]
+
+    @classmethod
+    def has_font(cls, name: str) -> bool:
         """
         Check if font is loaded.
 
         Parameters:
-        - filename: File name of font.
+        - name: File name of font.
 
         Returns:
         - True if font is loaded, False otherwise.
         """
 
-        return filename in cls._fonts
+        return name in cls._fonts
 
     @classmethod
-    def release_font(cls, filename: str):
+    def release_font(cls, name: str):
         """
         Release font from name.
 
         Parameters:
-        - filename: File name of font.
+        - name: File name of font.
         """
 
-        if filename in cls._fonts:
-            cls._fonts.pop(filename)
+        if name in cls._fonts:
+            cls._fonts.pop(name)
         else:
-            raise ValueError(f'Fail to release font from {filename}.')
+            raise ValueError(f'Fail to release font from {name}.')
 
     @classmethod
     def clear(cls):
