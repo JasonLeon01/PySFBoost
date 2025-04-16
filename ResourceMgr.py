@@ -1,5 +1,5 @@
 import os
-from typing import Dict, List, Union
+from typing import Dict, List, Union, Tuple
 
 from . import sfSystem
 from . import sfGraphics
@@ -47,7 +47,6 @@ class TextureMgr:
                     level += 1
                 else:
                     raise ValueError(f'Failed to load texture from {path}.')
-                    break
             if isinstance(ref, bytes):
                 texture = sfGraphics.Texture()
                 if not texture.load_from_memory(ref):
@@ -191,7 +190,6 @@ class TextureMgr:
 
         cls.release_texture(f'assets/tilesets/{filename}')
 
-
 class FontMgr:
     """
     Font manager class.
@@ -288,9 +286,8 @@ class AudioMgr:
             self.started = True
             super().play()
 
-
     _sounds_cache: Dict[str, sfAudio.SoundBuffer] = {}
-    _voice: Union[sfAudio.SoundBuffer, sfAudio.Sound] = None
+    _voice: Tuple[sfAudio.SoundBuffer, sfAudio.Sound] = None
 
     _music: Dict[str, sfAudio.Music] = {}
     _sound_list: List[_SoundExt] = []
@@ -366,7 +363,6 @@ class AudioMgr:
         else:
             raise ValueError(f'Fail to release music from {keyword}.')
 
-
     @classmethod
     def release_sound(cls, name: str):
         """
@@ -383,7 +379,7 @@ class AudioMgr:
             raise ValueError(f'Fail to release sound from {name}.')
 
     @classmethod
-    def play_music(cls, keyword: str, para: Union[str, sfAudio.Music]):
+    def play_music(cls, keyword: str, para: Union[str, sfAudio.Music], position: sfSystem.Vector3f = None):
         """
         Play music from name or music.
 
@@ -399,12 +395,18 @@ class AudioMgr:
         if keyword in cls._music:
             cls._music[keyword].stop()
 
+        if position is not None:
+            music.set_spatialization_enabled(True)
+            music.set_position(position)
+        else:
+            music.set_spatialization_enabled(False)
+
         cls._music[keyword] = music
 
         cls._music[keyword].play()
 
     @classmethod
-    def play_sound(cls, para: Union[str, sfAudio.SoundBuffer]):
+    def play_sound(cls, para: Union[str, sfAudio.SoundBuffer], position: sfSystem.Vector3f = None):
         """
         Play sound from name or sound buffer.
 
@@ -425,10 +427,14 @@ class AudioMgr:
         if sound is None:
             sound = cls._SoundExt(sound_buffer)
 
+        if position is not None:
+            sound.set_spatialization_enabled(True)
+            sound.set_position(position)
+
         cls._sound_list.append(sound)
 
     @classmethod
-    def play_voice(cls, para: Union[str, sfAudio.SoundBuffer]):
+    def play_voice(cls, para: Union[str, sfAudio.SoundBuffer], position: sfSystem.Vector3f = None):
         """
         Play voice from name or sound buffer.
 
@@ -441,6 +447,11 @@ class AudioMgr:
             sound_buffer = cls.get_voice(para)
 
         cls._voice = (sound_buffer, cls._SoundExt(sound_buffer))
+
+        if position is not None:
+            _, sound = cls._voice
+            sound.set_spatialization_enabled(True)
+            sound.set_position(position)
 
     @classmethod
     def update(cls):
@@ -456,6 +467,8 @@ class AudioMgr:
                 if not sound.get_buffer() in cls._sound_pool:
                     cls._sound_pool[sound.get_buffer()] = []
                 sound.started = False
+                sound.set_spatialization_enabled(False)
+                sound.set_position(sfSystem.Vector3f(0, 0, 0))
                 cls._sound_pool[sound.get_buffer()].append(sound)
                 cls._sound_list.remove(sound)
         if cls._voice is not None:
