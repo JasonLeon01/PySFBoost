@@ -1,5 +1,5 @@
 import os
-from typing import Dict, List, Union, Tuple
+from typing import Dict, List, Optional, Union, Tuple
 
 from . import sfSystem
 from . import sfGraphics
@@ -278,21 +278,27 @@ class AudioMgr:
 
     It could manage all audios.
     """
+
     class _SoundExt(sfAudio.Sound):
         def __init__(self, buffer):
             super().__init__(buffer)
             self.started = False
+
         def play(self):
             self.started = True
             super().play()
 
     _sounds_cache: Dict[str, sfAudio.SoundBuffer] = {}
-    _voice: Tuple[sfAudio.SoundBuffer, sfAudio.Sound] = None
+    _voice: Tuple[sfAudio.SoundBuffer, _SoundExt] = None
 
     _music: Dict[str, sfAudio.Music] = {}
     _sound_list: List[_SoundExt] = []
 
     _sound_pool: Dict[sfAudio.SoundBuffer, List[sfAudio.Sound]] = {}
+
+    sound_on: bool = True
+    music_on: bool = True
+    voice_on: bool = True
 
     @classmethod
     def get_music(cls, name: str) -> sfAudio.Music:
@@ -379,33 +385,6 @@ class AudioMgr:
             raise ValueError(f'Fail to release sound from {name}.')
 
     @classmethod
-    def play_music(cls, keyword: str, para: Union[str, sfAudio.Music], position: sfSystem.Vector3f = None):
-        """
-        Play music from name or music.
-
-        Parameters:
-        - keyword: Keyword of music, such as 'bgm' or 'bgs'.
-        - para: Name of music or music object.
-        """
-
-        music = para
-        if isinstance(para, str):
-            music = cls.get_music(para)
-
-        if keyword in cls._music:
-            cls._music[keyword].stop()
-
-        if position is not None:
-            music.set_spatialization_enabled(True)
-            music.set_position(position)
-        else:
-            music.set_spatialization_enabled(False)
-
-        cls._music[keyword] = music
-
-        cls._music[keyword].play()
-
-    @classmethod
     def play_sound(cls, para: Union[str, sfAudio.SoundBuffer], position: sfSystem.Vector3f = None):
         """
         Play sound from name or sound buffer.
@@ -414,7 +393,7 @@ class AudioMgr:
         - para: Name of sound or sound buffer.
         """
 
-        sound: AudioMgr._SoundExt = None
+        sound: Optional[AudioMgr._SoundExt] = None
 
         sound_buffer = para
         if isinstance(para, str):
@@ -454,11 +433,43 @@ class AudioMgr:
             sound.set_position(position)
 
     @classmethod
+    def play_music(cls, keyword: str, para: Union[str, sfAudio.Music], position: sfSystem.Vector3f = None):
+        """
+        Play music from name or music.
+
+        Parameters:
+        - keyword: Keyword of music, such as 'bgm' or 'bgs'.
+        - para: Name of music or music object.
+        """
+
+        if not cls.music_on:
+            return
+
+        music = para
+        if isinstance(para, str):
+            music = cls.get_music(para)
+
+        if keyword in cls._music:
+            cls._music[keyword].stop()
+
+        if position is not None:
+            music.set_spatialization_enabled(True)
+            music.set_position(position)
+        else:
+            music.set_spatialization_enabled(False)
+
+        cls._music[keyword] = music
+
+        cls._music[keyword].play()
+
+    @classmethod
     def update(cls):
         """
         Update all audios.
         """
 
+        if not cls.sound_on:
+            cls._sound_list.clear()
         for sound in cls._sound_list[:]:
             if not sound.started:
                 sound.play()
@@ -471,13 +482,22 @@ class AudioMgr:
                 sound.set_position(sfSystem.Vector3f(0, 0, 0))
                 cls._sound_pool[sound.get_buffer()].append(sound)
                 cls._sound_list.remove(sound)
+
+        if not cls.voice_on:
+            cls._voice = None
         if cls._voice is not None:
-            if not cls._voice.started:
-                cls._voice.play()
+            _, voice = cls._voice
+            if not voice.started:
+                voice.play()
                 return
-            if cls._voice.get_status() == sfAudio.Sound.Status.Stopped:
+            if voice.get_status() == sfAudio.Sound.Status.Stopped:
                 cls._voice = None
                 return
+
+        if not cls.music_on:
+            for music in cls._music.values():
+                music.stop()
+            cls._music.clear()
 
     @classmethod
     def clear(cls):

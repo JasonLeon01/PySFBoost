@@ -70,21 +70,40 @@ class EText(sfGraphics.Sprite):
 
         self._style = sfGraphics.Text.Style.Regular
 
-        self._position = sfSystem.Vector2f(0, 0)
-        self._origin = sfSystem.Vector2f(0, 0)
-        self._rotation = sfSystem.Angle.degrees(0)
-        self._scale = sfSystem.Vector2f(1, 1)
+        self._fragment: EText._TextFragment = None
+        self._render_fragments: List[List[sfGraphics.Text]] = []
+        self._fragments_list: List[sfGraphics.Text] = []
+
+        self._canvas = sfGraphics.RenderTexture(self._size)
+        self._parse()
+        super().__init__(self._canvas.get_texture())
+
+    def get_text(self):
+        """
+        Returns the text of this EText object.
+
+        Returns:
+        - The text of this EText object.
+        """
+        return self._text
+
+    def set_text(self, text: str):
+        """
+        Sets the text of this EText object.
+
+        Parameters:
+        - text    The new text to be set.
+        """
+        self._text = text
+
+        self._style = sfGraphics.Text.Style.Regular
 
         self._fragment: EText._TextFragment = None
         self._render_fragments: List[List[sfGraphics.Text]] = []
         self._fragments_list: List[sfGraphics.Text] = []
 
-        self._canvas: sfGraphics.RenderTexture = None
-        self._sprite: sfGraphics.Sprite = None
-        self._canvas = sfGraphics.RenderTexture(self._size)
-        self._canvas.set_smooth(True)
+        self._canvas.clear(sfGraphics.Color.transparent())
         self._parse()
-        super().__init__(self._canvas.get_texture())
 
     def render(self):
         """
