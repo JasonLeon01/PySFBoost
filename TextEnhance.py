@@ -50,23 +50,23 @@ class EText(sfGraphics.Sprite):
             config = EText.StyleConfig(self.color, self.base_size, self.letter_spacing, self.line_spacing)
             return config
 
-    def __init__(self, font: sfGraphics.Font, text: str, size: sfSystem.Vector2u, style_config: StyleConfig, middle: bool = False):
+    def __init__(self, font: sfGraphics.Font, text: str, size: sfSystem.Vector2u, style_config: StyleConfig, text_pos: int = 0):
         """
         Default constructor.
 
         Parameters:
-        - font    The font to use for rendering the text.
-        - text    The text to be rendered. It can be applied with different styles and configurations using certain formatting codes. Bold, italic, underlined and strikethrough styles are supported, just like Markdown. If you want to change the color, use \c[color_code], it will use the same name static function in sf::Graphcs::Color. If you want to change the character size, use \s[size]. For example, \c[red]\s[24]Hello World!\c[white]\s[12]
-        - size    The size of the text.
-        - style_config    The style configuration for the text.
-        - middle    Whether to center the text horizontally.
+        - font              The font to use for rendering the text.
+        - text              The text to be rendered. It can be applied with different styles and configurations using certain formatting codes. Bold, italic, underlined and strikethrough styles are supported, just like Markdown. If you want to change the color, use \c[color_code], it will use the same name static function in sf::Graphcs::Color. If you want to change the character size, use \s[size]. For example, \c[red]\s[24]Hello World!\c[white]\s[12]
+        - size              The size of the text.
+        - style_config      The style configuration for the text.
+        - text_pos          The position of the text in the rendered rectangle.
         """
 
         self._font = font
         self._text = text
         self._size = size
         self._style_config = style_config
-        self._middle = middle
+        self._text_pos = text_pos
 
         self._style = sfGraphics.Text.Style.Regular
 
@@ -82,6 +82,7 @@ class EText(sfGraphics.Sprite):
         self._canvas: sfGraphics.RenderTexture = None
         self._sprite: sfGraphics.Sprite = None
         self._canvas = sfGraphics.RenderTexture(self._size)
+        self._canvas.set_smooth(True)
         self._parse()
         super().__init__(self._canvas.get_texture())
 
@@ -106,7 +107,7 @@ class EText(sfGraphics.Sprite):
             self._canvas.display()
 
     @staticmethod
-    def from_str(text: str, font: sfGraphics.Font, size: sfSystem.Vector2u, style_config: StyleConfig, middle: bool = False):
+    def from_str(text: str, font: sfGraphics.Font, size: sfSystem.Vector2u, style_config: StyleConfig, text_pos: int = 0):
         """
         Creates an EText object from a string.
 
@@ -117,7 +118,7 @@ class EText(sfGraphics.Sprite):
         - style_config    The style configuration for the text.
         """
 
-        text_obj = EText(font, text, size, style_config, middle)
+        text_obj = EText(font, text, size, style_config, text_pos)
         text_obj.render()
         return text_obj
 
@@ -379,10 +380,11 @@ class EText(sfGraphics.Sprite):
                 line_width += width
             for text in texts:
                 text.set_position(position)
-                offset = max_h - self._get_line_spacing(text.get_string(), text.get_character_size())
                 x_offset = 0
-                if self._middle:
+                if self._text_pos == 1:
                     x_offset = (self._size.x - line_width) / 2
-                text.move(sfSystem.Vector2f(x_offset, offset))
+                elif self._text_pos == 2:
+                    x_offset = self._size.x - line_width
+                text.move(sfSystem.Vector2f(x_offset, 0))
                 position.x += self._get_advance(text.get_string(), text.get_character_size())
             position = sfSystem.Vector2f(0, position.y + max_h)
