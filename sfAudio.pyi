@@ -758,7 +758,7 @@ class SoundBuffer:
         """
 
     @overload
-    def __init__(self, samples: List[int], sampleRate: int, channelMap: List[SoundChannel]) -> None:
+    def __init__(self, samples: List[List[float]], sampleRate: int, channelMap: List[SoundChannel]) -> None:
         """
         Construct the sound buffer from an array of audio samples.
 
