@@ -1,47 +1,82 @@
 have_require = True
-import os
-import sys
+from .sfSystem import *
+from .sfGraphics import *
+from .Time import *
 
-sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 try:
-    from moviepy import VideoFileClip, AudioFileClip
+    import cv2
+    import ffmpeg
     import numpy as np
+    import sounddevice as sd
 except ImportError:
     have_require = False
 
-import time
-import threading
-from . import sfSystem
-from . import sfGraphics
-
 class Video:
-    def __init__(self, video_path: str, window: sfGraphics.RenderWindow):
+    def __init__(self, video_path: str, window: RenderWindow):
         if not have_require:
-            print("moviepy not found. Video playback will not be available.")
+            print("OpenCV not found. Video playback will not be available.")
             return
 
-        self._clip = VideoFileClip(video_path)
+        self.cap = cv2.VideoCapture(video_path)
+        self.cap.set(cv2.CAP_PROP_HW_ACCELERATION, cv2.VIDEO_ACCELERATION_ANY)
+
+        out, _ = (
+            ffmpeg.input(video_path)
+            .output("-", format="f32le", acodec="pcm_f32le", ac=2, ar=44100)
+            .run(capture_stdout=True, quiet=True)
+        )
+
+        self._audio_array = np.frombuffer(out, dtype=np.float32).reshape(-1, 2)
+
         self._window = window
 
-        self._texture: sfGraphics.Texture = None
-        self._sprite: sfGraphics.Sprite = None
-        self._frame_gen = self._clip.iter_frames(fps=30, dtype='uint8')
-        self._frame_duration = 1.0 / 24
+        if not self.cap.isOpened():
+            raise ValueError("Error opening video file")
 
-        self._audio = self._clip.audio
+        self.time_elapsed = 0
+        self.target_frame_index = 0
+        self._image: Texture = None
+        self._sprite: Sprite = None
 
-        self._clock = sfSystem.Clock()
+        self.fps = self.cap.get(cv2.CAP_PROP_FPS)
 
-    def _play_audio(self):
-        if self._audio is not None:
-            self._audio.audiopreview()
+        self._image: Texture = None
+        self._sprite: Sprite = None
+        self.finished = False
+
+    def _get_frame(self) -> None:
+        if not have_require:
+            return None
+
+        ret, frame = self.cap.read()
+        if not ret:
+            return None
+
+        frame_data = cv2.cvtColor(frame, cv2.COLOR_BGR2RGBA)
+        if self._image is None:
+            h, w, _ = frame_data.shape
+            self._image = Texture(Vector2u(w, h))
+            self._sprite = Sprite(self._image)
+            scale = min(float(self._window.get_size().x) / w, float(self._window.get_size().y) / h)
+            self._sprite.set_scale(Vector2f(scale, scale))
+            self._sprite.set_origin((self._image.get_size() / 2).to_float())
+            self._sprite.set_position((self._window.get_size() / 2).to_float())
+        self._image.update(frame_data)
+
+    def _update(self, delta_time: float):
+        self.time_elapsed += delta_time
+        expected_frame = int(self.time_elapsed * self.fps)
+        if expected_frame > self.target_frame_index or (expected_frame == 0 and self._sprite is None):
+            self.target_frame_index = expected_frame
+            self._get_frame()
+        if self.finished:
+            return
+        if self._sprite is None:
+            self.finished = True
 
     def play(self):
-        audio_thread = threading.Thread(target=self._play_audio)
-        audio_thread.start()
-        for frame in self._frame_gen:
-            if not self._window.is_open():
-                break
+        sd.play(self._audio_array)
+        while self._window.is_open():
             while True:
                 event = self._window.poll_event()
                 if event is None:
@@ -49,24 +84,17 @@ class Video:
                 if event.isClosed():
                     self._window.close()
                     break
-
-            h, w, _ = frame.shape
-            if self._texture is None:
-                self._texture = sfGraphics.Texture(sfSystem.Vector2u(w, h))
-                self._sprite = sfGraphics.Sprite(self._texture)
-            rgba = np.dstack((frame, np.full((h, w), 255, dtype='uint8')))
-            self._texture.update(rgba)
-            scale = min(self._window.get_size().x / self._texture.get_size().x, self._window.get_size().y / self._texture.get_size().y)
-            self._sprite.set_scale(sfSystem.Vector2f(scale, scale))
-            self._sprite.set_position(sfSystem.Vector2f((self._window.get_size().x - self._texture.get_size().x * scale) / 2, (self._window.get_size().y - self._texture.get_size().y * scale) / 2))
-            self._window.clear(sfGraphics.Color.transparent())
-            self._window.draw(self._sprite)
+            TimeMgr.update()
+            delta_time = TimeMgr.get_delta_time().as_seconds()
+            print(1/delta_time)
+            self._window.clear(Color.transparent())
+            self._update(delta_time)
+            if self._sprite is not None:
+                self._window.draw(self._sprite)
             self._window.display()
+            if self.finished:
+                break
 
-            elapsed = self._clock.get_elapsed_time().as_seconds()
-            to_sleep = self._frame_duration - elapsed
-            if to_sleep > 0:
-                time.sleep(to_sleep)
-            print(to_sleep)
-            self._clock.restart()
-        audio_thread.join()
+    def __del__(self):
+        self.cap.release()
+

@@ -1,28 +1,29 @@
 import bisect
 from typing import Dict, List, Optional
-from . import sfGraphics, sfSystem
+from .sfGraphics import *
+from .sfSystem import *
 
-class Particle(sfGraphics.Sprite):
+class Particle(Sprite):
     """
-    Particle class, inherits from sfGraphics.Sprite.
+    Particle class, inherits from Sprite.
 
     It's a basic particle class. You can inherit from it to create your own particle class.
     """
 
-    def __init__(self, texture: sfGraphics.Texture, velocity: sfSystem.Vector2f, duration: Optional[sfSystem.Time], rectangle: sfGraphics.IntRect = None):
+    def __init__(self, texture: Texture, velocity: Vector2f, duration: Optional[Time], rectangle: IntRect = None):
         """
         Particle constructor.
 
         Parameters:
         - texture: Source texture.
-        - velocity: Particle velocity, which is a vector of type sfSystem.Vector2f. Particle will corresponding pixels per second.
-        - duration: Particle duration, which is a time of type sfSystem.Time. If duration is None, particle will not expire.
+        - velocity: Particle velocity, which is a vector of type Vector2f. Particle will corresponding pixels per second.
+        - duration: Particle duration, which is a time of type Time. If duration is None, particle will not expire.
         - rectangle: Source rectangle.
         """
 
         self.velocity = velocity
         self.duration = duration
-        self.render_state = sfGraphics.RenderStates.default()
+        self.render_state = RenderStates.default()
         self.render_state.texture = texture
         self._is_expired = False
 
@@ -31,7 +32,7 @@ class Particle(sfGraphics.Sprite):
         else:
             super().__init__(texture)
 
-    def update(self, delta_time: sfSystem.Time):
+    def update(self, delta_time: Time):
         """
         Update particle.
 
@@ -44,13 +45,13 @@ class Particle(sfGraphics.Sprite):
         if self.is_expired():
             return
 
-        distance: sfSystem.Vector2f = self.velocity * delta_time.as_seconds()
+        distance: Vector2f = self.velocity * delta_time.as_seconds()
         self.move(distance)
         if self.duration is not None:
             if self.duration > delta_time:
                 self.duration -= delta_time
             else:
-                self.duration = sfSystem.Time.Zero()
+                self.duration = Time.Zero()
                 self._is_expired = True
 
     def is_expired(self) -> bool:
@@ -73,7 +74,7 @@ class Particle(sfGraphics.Sprite):
 
         self._is_expired = expired
 
-    def is_collide(self, other: sfGraphics.Sprite) -> bool:
+    def is_collide(self, other: Sprite) -> bool:
         """
         Check if particle is collide with other sprite.
 
@@ -105,7 +106,7 @@ class ParticleMgr:
         """
         Particle system constructor.
         """
-        self._particles: Dict[int, Dict[sfGraphics.Texture, List[Particle]]] = {}
+        self._particles: Dict[int, Dict[Texture, List[Particle]]] = {}
         self._z_list = []
         self._particles_to_z: Dict[Particle, int] = {}
 
@@ -175,7 +176,7 @@ class ParticleMgr:
 
         return self._z_list.copy()
 
-    def update(self, delta_time: sfSystem.Time):
+    def update(self, delta_time: Time):
         """
         Update all particles.
 
@@ -190,7 +191,7 @@ class ParticleMgr:
                     if particle.is_expired():
                         self.remove_particle(particle)
 
-    def display(self, target: sfGraphics.RenderTarget, z: int = None):
+    def display(self, target: RenderTarget, z: int = None):
         """
         Draw all particles.
 

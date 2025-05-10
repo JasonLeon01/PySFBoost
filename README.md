@@ -38,13 +38,15 @@ make
 Once installed, you can use PySFBoost to enhance your Python projects that rely on SFML. Here's an example of how to use SFML with type hints:
 
 ```python
-from PySFBoost import sfSystem, sfWindow, sfGraphics, sfAudio, sfNetwork
+from PySFBoost.sfGraphics import *
+from PySFBoost.sfWindow import *
+from PySFBoost.sfSystem import *
 
 # Create a window with type hints
-window: sfGraphics.RenderWindow = sfGraphics.RenderWindow(sfWindow.VideoMode(sfSystem.Vector2u(800, 600)), "pysf Test")
+window: RenderWindow = RenderWindow(VideoMode(Vector2u(800, 600)), "pysf Test")
 
 # Set the background color with type hints
-background_color: sfGraphics.Color = sfGraphics.Color(50, 50, 50)
+background_color: Color = Color(50, 50, 50)
 
 # Main loop
 while window.is_open():
@@ -62,7 +64,7 @@ while window.is_open():
 
 ## Using Resource Managers
 ```python
-from PySFBoost.ResourceMgr import TextureMgr, FontMgr, AudioMgr
+from PySFBoost.ResourceMgr import *
 
 # Get a texture
 texture = TextureMgr.block("grass.png")
@@ -138,38 +140,16 @@ To use this module, you need to install opencv-python.
 
 By the way, the video is silent. You can play its back sound with other ways.
 ```python
-from PySFBoost import Video, sfGraphics, sfSystem, sfWindow, Time
-
-# Create a video player
-video_player = Video.Video("video.mp4", sfSystem.Vector2u(800, 600))
-video_player.precache_frames()
-
-# Create a window with type hints
-window: sfGraphics.RenderWindow = sfGraphics.RenderWindow(sfWindow.VideoMode(sfSystem.Vector2u(640, 480)), "pysf Test")
-window.set_framerate_limit(120)
-Time.TimeMgr.init()
-
-# Set the background color with type hints
-background_color: sfGraphics.Color = sfGraphics.Color(50, 50, 50)
-
-# Main loop
-while window.is_open():
-    while True:
-        event = window.poll_event()
-        if event is None:
-            break
-        if event.isClosed():
-            window.close()
-            break
-    Time.TimeMgr.update()
-    delta_time = Time.TimeMgr.get_delta_time().as_seconds()
-    print(1/delta_time)
-    window.clear(background_color)
-    video_player.update(delta_time)
-    video_player.display(window)
-    window.display()
-    if video_player.finished:
-        break
+from PySFBoost.Time import *
+from PySFBoost.sfGraphics import *
+from PySFBoost.sfWindow import *
+from PySFBoost.sfSystem import *
+from PySFBoost.Video import *
+TimeMgr.init()
+window: RenderWindow = RenderWindow(VideoMode(Vector2u(800, 600)), "pysf video Test")
+window.set_framerate_limit(60)
+video_player = Video("test.mp4", window)
+video_player.play()
 ```
 
 With PySFBoost , your IDE will provide autocompletion and type checking for all SFML classes and methods.

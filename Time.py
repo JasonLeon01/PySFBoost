@@ -1,4 +1,4 @@
-from . import sfSystem
+from .sfSystem import *
 
 class TimeMgr:
     """
@@ -7,9 +7,9 @@ class TimeMgr:
     You can get the current time, delta time, ... from this class.
     """
 
-    _clock = sfSystem.Clock()
-    _last_elapsed_time = sfSystem.Time.Zero()
-    _delta_time = sfSystem.Time.Zero()
+    _clock = Clock()
+    _last_elapsed_time = Time.Zero()
+    _delta_time = Time.Zero()
 
     @staticmethod
     def init():
@@ -21,7 +21,7 @@ class TimeMgr:
         TimeMgr.update()
 
     @staticmethod
-    def get_current_time() -> sfSystem.Time:
+    def get_current_time() -> Time:
         """
         Get the current time.
 
@@ -32,7 +32,7 @@ class TimeMgr:
         return TimeMgr._last_elapsed_time
 
     @staticmethod
-    def get_delta_time() -> sfSystem.Time:
+    def get_delta_time() -> Time:
         """
         Get the delta time.
 
@@ -40,7 +40,7 @@ class TimeMgr:
         - Delta time.
         """
 
-        return sfSystem.Time.FromSeconds(TimeMgr._delta_time)
+        return Time.FromSeconds(TimeMgr._delta_time)
 
     @staticmethod
     def update():

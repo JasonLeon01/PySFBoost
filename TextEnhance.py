@@ -1,7 +1,7 @@
 """
 This module provides a class `EText` for rendering enhanced text with various styles and configurations.
 It supports features such as bold, italic, underlined, strike-through text, custom colors, and custom sizes.
-The text is rendered on a `sfGraphics.RenderTexture` and can be displayed using a `sfGraphics.Sprite`.
+The text is rendered on a `RenderTexture` and can be displayed using a `Sprite`.
 
 The main components of this module include:
 - `EText.StyleConfig`: A class to manage the style configuration of the text, such as color, base size, letter spacing, and line spacing.
@@ -12,9 +12,10 @@ The module uses the `sfSystem` and `sfGraphics` libraries from the `sf` framewor
 """
 
 from typing import List
-from . import sfSystem, sfGraphics
+from .sfSystem import Vector2u, Vector2f
+from .sfGraphics import Sprite, Color, Font, Text, RenderTexture
 
-class EText(sfGraphics.Sprite):
+class EText(Sprite):
     """
     A class for rendering enhanced text with various styles and configurations.
     """
@@ -24,7 +25,7 @@ class EText(sfGraphics.Sprite):
         A class to manage the style configuration of the text.
         """
 
-        def __init__(self, color: sfGraphics.Color, base_size: int, letter_spacing: float, line_spacing: float):
+        def __init__(self, color: Color, base_size: int, letter_spacing: float, line_spacing: float):
             """
             Default constructor.
 
@@ -50,7 +51,7 @@ class EText(sfGraphics.Sprite):
             config = EText.StyleConfig(self.color, self.base_size, self.letter_spacing, self.line_spacing)
             return config
 
-    def __init__(self, font: sfGraphics.Font, text: str, size: sfSystem.Vector2u, style_config: StyleConfig, text_pos: int = 0):
+    def __init__(self, font: Font, text: str, size: Vector2u, style_config: StyleConfig, text_pos: int = 0):
         """
         Default constructor.
 
@@ -68,13 +69,13 @@ class EText(sfGraphics.Sprite):
         self._style_config = style_config
         self._text_pos = text_pos
 
-        self._style = sfGraphics.Text.Style.Regular
+        self._style = Text.Style.Regular
 
         self._fragment: EText._TextFragment = None
-        self._render_fragments: List[List[sfGraphics.Text]] = []
-        self._fragments_list: List[sfGraphics.Text] = []
+        self._render_fragments: List[List[Text]] = []
+        self._fragments_list: List[Text] = []
 
-        self._canvas = sfGraphics.RenderTexture(self._size)
+        self._canvas = RenderTexture(self._size)
         self._parse()
         super().__init__(self._canvas.get_texture())
 
@@ -96,13 +97,13 @@ class EText(sfGraphics.Sprite):
         """
         self._text = text
 
-        self._style = sfGraphics.Text.Style.Regular
+        self._style = Text.Style.Regular
 
         self._fragment: EText._TextFragment = None
-        self._render_fragments: List[List[sfGraphics.Text]] = []
-        self._fragments_list: List[sfGraphics.Text] = []
+        self._render_fragments: List[List[Text]] = []
+        self._fragments_list: List[Text] = []
 
-        self._canvas.clear(sfGraphics.Color.transparent())
+        self._canvas.clear(Color.transparent())
         self._parse()
 
     def render(self):
@@ -126,7 +127,7 @@ class EText(sfGraphics.Sprite):
             self._canvas.display()
 
     @staticmethod
-    def from_str(text: str, font: sfGraphics.Font, size: sfSystem.Vector2u, style_config: StyleConfig, text_pos: int = 0):
+    def from_str(text: str, font: Font, size: Vector2u, style_config: StyleConfig, text_pos: int = 0):
         """
         Creates an EText object from a string.
 
@@ -153,7 +154,7 @@ class EText(sfGraphics.Sprite):
 
         if len(text) == 0:
             return 0
-        if self._style & sfGraphics.Text.Style.Bold:
+        if self._style & Text.Style.Bold:
             bold = True
         else:
             bold = False
@@ -176,7 +177,7 @@ class EText(sfGraphics.Sprite):
 
         if len(text) == 0:
             return 0
-        if self._style & sfGraphics.Text.Style.Bold:
+        if self._style & Text.Style.Bold:
             bold = True
         else:
             bold = False
@@ -191,7 +192,7 @@ class EText(sfGraphics.Sprite):
         Parses the input text and applies styles to the text fragments.
         """
 
-        self._canvas.clear(sfGraphics.Color.transparent())
+        self._canvas.clear(Color.transparent())
         self._fragment = EText._TextFragment(self._font, '')
         self._fragment.apply_style_config(self._style_config)
         self._render_fragments.clear()
@@ -228,41 +229,41 @@ class EText(sfGraphics.Sprite):
                 continue
 
             if c == '*' and len(self._text) > i + 1 and self._text[i + 1] == '*' and (i == 0 or (i > 0 and self._text[i - 1] != '\\')):
-                if self._style & sfGraphics.Text.Style.Bold:
-                    self._style = self._style & (~sfGraphics.Text.Style.Bold)
+                if self._style & Text.Style.Bold:
+                    self._style = self._style & (~Text.Style.Bold)
                     self._fragment.apply_style(self._style)
                 else:
-                    self._style = self._style | sfGraphics.Text.Style.Bold
+                    self._style = self._style | Text.Style.Bold
                     self._fragment.apply_style(self._style)
                 i += 2
                 continue
 
             if c == '*' and i > 0 and self._text[i - 1] != '\\':
-                if self._style & sfGraphics.Text.Style.Italic:
-                    self._style = self._style & (~sfGraphics.Text.Style.Italic)
+                if self._style & Text.Style.Italic:
+                    self._style = self._style & (~Text.Style.Italic)
                     self._fragment.apply_style(self._style)
                 else:
-                    self._style = self._style | sfGraphics.Text.Style.Italic
+                    self._style = self._style | Text.Style.Italic
                     self._fragment.apply_style(self._style)
                 i += 1
                 continue
 
             if c == '_' and len(self._text) > i + 1 and self._text[i + 1] == '_' and (i == 0 or i > 0 and self._text[i - 1]!= '\\'):
-                if self._style & sfGraphics.Text.Style.Underlined:
-                    self._style = self._style & (~sfGraphics.Text.Style.Underlined)
+                if self._style & Text.Style.Underlined:
+                    self._style = self._style & (~Text.Style.Underlined)
                     self._fragment.apply_style(self._style)
                 else:
-                    self._style = self._style | sfGraphics.Text.Style.Underlined
+                    self._style = self._style | Text.Style.Underlined
                     self._fragment.apply_style(self._style)
                 i += 2
                 continue
 
             if c == '_' and i > 0 and self._text[i - 1]!= '\\':
-                if self._style & sfGraphics.Text.Style.StrikeThrough:
-                    self._style = self._style & (~sfGraphics.Text.Style.StrikeThrough)
+                if self._style & Text.Style.StrikeThrough:
+                    self._style = self._style & (~Text.Style.StrikeThrough)
                     self._fragment.apply_style(self._style)
                 else:
-                    self._style = self._style | sfGraphics.Text.Style.StrikeThrough
+                    self._style = self._style | Text.Style.StrikeThrough
                     self._fragment.apply_style(self._style)
                 i += 1
                 continue
@@ -271,7 +272,7 @@ class EText(sfGraphics.Sprite):
                 if i + 2 < len(self._text) and self._text[i + 1] == 'c' and self._text[i + 2] == '[':
                     (found, color, j) = between_bracket(i)
                     if found:
-                        self._style_config.color = eval(f"sfGraphics.Color.{color}()")
+                        self._style_config.color = eval(f"Color.{color}()")
                         self._fragment.apply_style_config(self._style_config)
                         i = i + j + 3
                         continue
@@ -304,7 +305,7 @@ class EText(sfGraphics.Sprite):
         A helper class to represent a fragment of text with specific style and configuration.
         """
 
-        def __init__(self, font: sfGraphics.Font, text: str):
+        def __init__(self, font: Font, text: str):
             """
             Default constructor.
 
@@ -313,7 +314,7 @@ class EText(sfGraphics.Sprite):
             - text    The text to be rendered.
             """
 
-            self._text: sfGraphics.Text = sfGraphics.Text(font, text)
+            self._text: Text = Text(font, text)
             self._style_config: EText.StyleConfig = None
 
         def apply_text(self, text: str):
@@ -339,7 +340,7 @@ class EText(sfGraphics.Sprite):
             self._text.set_line_spacing(self._style_config.line_spacing)
             self._text.set_fill_color(self._style_config.color)
 
-        def apply_style(self, style: sfGraphics.Text.Style):
+        def apply_style(self, style: Text.Style):
             """
             Applies the given style to the text.
 
@@ -388,7 +389,7 @@ class EText(sfGraphics.Sprite):
         Sets the position of each letter in the text.
         """
 
-        position = sfSystem.Vector2f(0, 0)
+        position = Vector2f(0, 0)
         for texts in self._render_fragments:
             max_h = 0
             line_width = 0
@@ -404,6 +405,6 @@ class EText(sfGraphics.Sprite):
                     x_offset = (self._size.x - line_width) / 2
                 elif self._text_pos == 2:
                     x_offset = self._size.x - line_width
-                text.move(sfSystem.Vector2f(x_offset, 0))
+                text.move(Vector2f(x_offset, 0))
                 position.x += self._get_advance(text.get_string(), text.get_character_size())
-            position = sfSystem.Vector2f(0, position.y + max_h)
+            position = Vector2f(0, position.y + max_h)

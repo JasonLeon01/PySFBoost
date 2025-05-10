@@ -1,13 +1,15 @@
 import bisect
 from typing import Dict, List, Tuple, Union
-from . import sfSystem, sfGraphics, sfAudio
+from .sfSystem import *
+from .sfGraphics import *
+from .sfAudio import *
 
 class Event:
     """
     Animation events, including the appearance and duration of images and the playing of audio.
     """
 
-    def __init__(self, event: Union[sfAudio.Sound, sfGraphics.Sprite, str], duration: sfSystem.Time):
+    def __init__(self, event: Union[Sound, Sprite, str], duration: Time):
         """
         Constructor.
 
@@ -20,7 +22,7 @@ class Event:
         self.duration = duration
         self._is_expired = False
 
-    def update(self, delta_time: sfSystem.Time):
+    def update(self, delta_time: Time):
         """
         Update event.
 
@@ -31,18 +33,18 @@ class Event:
         if self.is_expired():
             return
 
-        if isinstance(self.event, sfAudio.Sound):
-            if self.event.get_status() == sfAudio.Sound.Status.Stopped:
+        if isinstance(self.event, Sound):
+            if self.event.get_status() == Sound.Status.Stopped:
                 self.set_expired(True)
             return
 
         if self.duration > delta_time:
             self.duration -= delta_time
         else:
-            self.duration = sfSystem.Time.Zero()
+            self.duration = Time.Zero()
             self.set_expired(True)
 
-    def display(self, target: sfGraphics.RenderTarget):
+    def display(self, target: RenderTarget):
         """
         Draw event.
 
@@ -50,7 +52,7 @@ class Event:
         - target: Render target.
         """
 
-        if isinstance(self.event, sfGraphics.Sprite):
+        if isinstance(self.event, Sprite):
             target.draw(self.event)
 
     def is_expired(self) -> bool:
@@ -73,18 +75,18 @@ class Event:
 
         self._is_expired = expired
 
-    def start(self, position: sfSystem.Vector3f):
+    def start(self, position: Vector3f):
         """
         Start event.
         """
 
-        if isinstance(self.event, sfAudio.Sound):
+        if isinstance(self.event, Sound):
             self.event.play()
             self.event.set_position(position)
-        elif isinstance(self.event, sfGraphics.Sprite):
+        elif isinstance(self.event, Sprite):
             texture_rect = self.event.get_texture_rect()
-            self.event.set_origin(sfSystem.Vector2f(texture_rect.size.x / 2, texture_rect.size.y / 2))
-            self.event.move(sfSystem.Vector2f(position.x, position.y))
+            self.event.set_origin(Vector2f(texture_rect.size.x / 2, texture_rect.size.y / 2))
+            self.event.move(Vector2f(position.x, position.y))
 
 class Animation:
     """
@@ -93,7 +95,7 @@ class Animation:
     Animation has a timeline, and each event is executed on the timeline.
     """
 
-    def __init__(self, animation_len: sfSystem.Time, animation_events: List[Tuple[Event, sfSystem.Time]]):
+    def __init__(self, animation_len: Time, animation_events: List[Tuple[Event, Time]]):
         """
         Constructor for the Animation class.
 
@@ -104,13 +106,13 @@ class Animation:
 
         self.animation_len = animation_len
         self.animation_events = animation_events
-        self.position = sfSystem.Vector3f(0, 0, 0)
+        self.position = Vector3f(0, 0, 0)
 
-        self._animation_time = sfSystem.Time.Zero()
+        self._animation_time = Time.Zero()
         self._is_expired = False
         self._executing_events: List[Event] = []
 
-    def update(self, delta_time: sfSystem.Time):
+    def update(self, delta_time: Time):
         """
         Update the animation based on the elapsed time.
 
@@ -136,7 +138,7 @@ class Animation:
             self.set_expired(True)
             return
 
-    def display(self, target: sfGraphics.RenderTarget):
+    def display(self, target: RenderTarget):
         """
         Draw all non-expired events in the current animation on the specified render target.
 
@@ -251,7 +253,7 @@ class AnimationMgr:
 
         return self._z_list.copy()
 
-    def update(self, delta_time: sfSystem.Time):
+    def update(self, delta_time: Time):
         """
         Update all animations managed by the AnimationMgr and remove expired animations.
 
@@ -265,7 +267,7 @@ class AnimationMgr:
                 if animation.is_expired():
                     self.remove_animation(animation)
 
-    def display(self, target: sfGraphics.RenderTarget, z: int = None):
+    def display(self, target: RenderTarget, z: int = None):
         """
         Draw all animations managed by the AnimationMgr on the specified render target.
         If a z - index is provided, only animations at that z - index will be drawn;

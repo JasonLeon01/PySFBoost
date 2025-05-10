@@ -1,9 +1,9 @@
 import os
 from typing import Dict, List, Optional, Union, Tuple
 
-from . import sfSystem
-from . import sfGraphics
-from . import sfAudio
+from .sfSystem import *
+from .sfGraphics import *
+from .sfAudio import *
 
 class TextureMgr:
     """
@@ -12,11 +12,11 @@ class TextureMgr:
     It could manage all textures.
     """
 
-    _textures: Dict[str, sfGraphics.Texture] = {}
+    _textures: Dict[str, Texture] = {}
     _ref_pak: Dict[str, Dict[str, bytes]] = {}
 
     @classmethod
-    def get_texture(cls, path: str) -> sfGraphics.Texture:
+    def get_texture(cls, path: str) -> Texture:
         """
         Get texture from path.
 
@@ -29,7 +29,7 @@ class TextureMgr:
 
         if os.path.exists(path):
             if path not in cls._textures:
-                cls._textures[path] = sfGraphics.Texture()
+                cls._textures[path] = Texture()
                 if not cls._textures[path].load_from_file(path):
                     raise ValueError(f'Failed to load texture from {path}.')
         else:
@@ -48,7 +48,7 @@ class TextureMgr:
                 else:
                     raise ValueError(f'Failed to load texture from {path}.')
             if isinstance(ref, bytes):
-                texture = sfGraphics.Texture()
+                texture = Texture()
                 if not texture.load_from_memory(ref):
                     raise ValueError(f'Failed to load texture from {path}.')
                 cls._textures[path] = texture
@@ -103,7 +103,7 @@ class TextureMgr:
         cls._textures.clear()
 
     @classmethod
-    def block(cls, filename: str) -> sfGraphics.Texture:
+    def block(cls, filename: str) -> Texture:
         """
         It will return a texture from assets/blocks folder.
 
@@ -114,7 +114,7 @@ class TextureMgr:
         return cls.get_texture(f'assets/blocks/{filename}')
 
     @classmethod
-    def character(cls, filename: str) -> sfGraphics.Texture:
+    def character(cls, filename: str) -> Texture:
         """
         It will return a texture from assets/characters folder.
 
@@ -125,7 +125,7 @@ class TextureMgr:
         return cls.get_texture(f'assets/characters/{filename}')
 
     @classmethod
-    def system(cls, filename: str) -> sfGraphics.Texture:
+    def system(cls, filename: str) -> Texture:
         """
         It will return a texture from assets/system folder.
 
@@ -136,7 +136,7 @@ class TextureMgr:
         return cls.get_texture(f'assets/system/{filename}')
 
     @classmethod
-    def tilesets(cls, filename: str) -> sfGraphics.Texture:
+    def tilesets(cls, filename: str) -> Texture:
         """
         It will return a texture from assets/tilesets folder.
 
@@ -197,11 +197,11 @@ class FontMgr:
     It could manage all fonts.
     """
 
-    _fonts: Dict[str, sfGraphics.Font] = {}
+    _fonts: Dict[str, Font] = {}
     _font_filenames: Dict[str, str] = {}
 
     @classmethod
-    def get_font_from_file(cls, filename: str) -> sfGraphics.Font:
+    def get_font_from_file(cls, filename: str) -> Font:
         """
         Get font from name.
 
@@ -213,7 +213,7 @@ class FontMgr:
         """
 
         if filename not in cls._font_filenames:
-            font = sfGraphics.Font()
+            font = Font()
             if not font.open_from_file(f'assets/fonts/{filename}'):
                 raise ValueError(f'Failed to load font from {filename}.')
             cls._fonts[font.get_info().family] = font
@@ -222,7 +222,7 @@ class FontMgr:
         return cls._fonts[cls._font_filenames[filename]]
 
     @classmethod
-    def get_font(cls, name: str) -> sfGraphics.Font:
+    def get_font(cls, name: str) -> Font:
         """
         Get font from name.
         Parameters:
@@ -279,7 +279,7 @@ class AudioMgr:
     It could manage all audios.
     """
 
-    class _SoundExt(sfAudio.Sound):
+    class _SoundExt(Sound):
         def __init__(self, buffer):
             super().__init__(buffer)
             self.started = False
@@ -288,20 +288,20 @@ class AudioMgr:
             self.started = True
             super().play()
 
-    _sounds_cache: Dict[str, sfAudio.SoundBuffer] = {}
-    _voice: Tuple[sfAudio.SoundBuffer, _SoundExt] = None
+    _sounds_cache: Dict[str, SoundBuffer] = {}
+    _voice: Tuple[SoundBuffer, _SoundExt] = None
 
-    _music: Dict[str, sfAudio.Music] = {}
+    _music: Dict[str, Music] = {}
     _sound_list: List[_SoundExt] = []
 
-    _sound_pool: Dict[sfAudio.SoundBuffer, List[sfAudio.Sound]] = {}
+    _sound_pool: Dict[SoundBuffer, List[Sound]] = {}
 
     sound_on: bool = True
     music_on: bool = True
     voice_on: bool = True
 
     @classmethod
-    def get_music(cls, name: str) -> sfAudio.Music:
+    def get_music(cls, name: str) -> Music:
         """
         Get music from name.
 
@@ -312,14 +312,14 @@ class AudioMgr:
         - The music from path.
         """
 
-        music = sfAudio.Music()
+        music = Music()
         if not music.open_from_file(f'assets/musics/{name}'):
             raise ValueError(f'Fail to load music from {name}.')
 
         return music
 
     @classmethod
-    def get_sound(cls, name: str) -> sfAudio.SoundBuffer:
+    def get_sound(cls, name: str) -> SoundBuffer:
         """
         Get sound from name.
 
@@ -331,14 +331,14 @@ class AudioMgr:
         """
 
         if name not in cls._sounds_cache:
-            cls._sounds_cache[name] = sfAudio.SoundBuffer()
+            cls._sounds_cache[name] = SoundBuffer()
             if not cls._sounds_cache[name].load_from_file(f'assets/sounds/{name}'):
                 raise ValueError(f'Fail to load sound from {name}.')
 
         return cls._sounds_cache[name]
 
     @classmethod
-    def get_voice(cls, name: str) -> sfAudio.SoundBuffer:
+    def get_voice(cls, name: str) -> SoundBuffer:
         """
         Get voice from name.
 
@@ -349,9 +349,9 @@ class AudioMgr:
         - The voice from path.
         """
 
-        sb: sfAudio.SoundBuffer = None
+        sb: SoundBuffer = None
         if name not in cls._voices_cache:
-            sb = sfAudio.SoundBuffer()
+            sb = SoundBuffer()
             if not sb.load_from_file(f'assets/voices/{name}'):
                 raise ValueError(f'Fail to load voice from {name}.')
 
@@ -385,7 +385,7 @@ class AudioMgr:
             raise ValueError(f'Fail to release sound from {name}.')
 
     @classmethod
-    def play_sound(cls, para: Union[str, sfAudio.SoundBuffer], position: sfSystem.Vector3f = None):
+    def play_sound(cls, para: Union[str, SoundBuffer], position: Vector3f = None):
         """
         Play sound from name or sound buffer.
 
@@ -413,7 +413,7 @@ class AudioMgr:
         cls._sound_list.append(sound)
 
     @classmethod
-    def play_voice(cls, para: Union[str, sfAudio.SoundBuffer], position: sfSystem.Vector3f = None):
+    def play_voice(cls, para: Union[str, SoundBuffer], position: Vector3f = None):
         """
         Play voice from name or sound buffer.
 
@@ -433,7 +433,7 @@ class AudioMgr:
             sound.set_position(position)
 
     @classmethod
-    def play_music(cls, keyword: str, para: Union[str, sfAudio.Music], position: sfSystem.Vector3f = None):
+    def play_music(cls, keyword: str, para: Union[str, Music], position: Vector3f = None):
         """
         Play music from name or music.
 
@@ -474,12 +474,12 @@ class AudioMgr:
             if not sound.started:
                 sound.play()
                 continue
-            if sound.get_status() == sfAudio.Sound.Status.Stopped:
+            if sound.get_status() == Sound.Status.Stopped:
                 if not sound.get_buffer() in cls._sound_pool:
                     cls._sound_pool[sound.get_buffer()] = []
                 sound.started = False
                 sound.set_spatialization_enabled(False)
-                sound.set_position(sfSystem.Vector3f(0, 0, 0))
+                sound.set_position(Vector3f(0, 0, 0))
                 cls._sound_pool[sound.get_buffer()].append(sound)
                 cls._sound_list.remove(sound)
 
@@ -490,7 +490,7 @@ class AudioMgr:
             if not voice.started:
                 voice.play()
                 return
-            if voice.get_status() == sfAudio.Sound.Status.Stopped:
+            if voice.get_status() == Sound.Status.Stopped:
                 cls._voice = None
                 return
 
