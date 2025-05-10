@@ -1722,7 +1722,7 @@ class Font:
         """
 
     @overload
-    def __init__(self, data: bytes, sizeInBytes: bytes) -> None:
+    def __init__(self, data: bytes) -> None:
         """
         Construct the font from a file in memory.
 
@@ -1733,7 +1733,6 @@ class Font:
 
         Parameters
         - data	Pointer to the file data in memory
-        - sizeInBytes	Size of the data to load, in bytes
 
         Exceptions
         - sf::Exception	if loading was unsuccessful
@@ -1789,7 +1788,7 @@ class Font:
         - true if opening succeeded, false if it failed
         """
 
-    def open_from_memory(self, data: bytes, sizeInBytes: bytes) -> bool:
+    def open_from_memory(self, data: bytes) -> bool:
         """
         Open the font from a file in memory.
 
@@ -1800,7 +1799,6 @@ class Font:
 
         Parameters
         - data	Pointer to the file data in memory
-        = sizeInBytes	Size of the data to load, in bytes
 
         Returns
         - true if opening succeeded, false if it failed
@@ -1991,7 +1989,7 @@ class Image:
         """
 
     @overload
-    def __init__(self, size: sfSystem.Vector2u, pixels: bytes) -> None:
+    def __init__(self, size: sfSystem.Vector2u, pixels: List[List[List[int]]]) -> None:
         """
         Construct the image from an array of pixels.
 
@@ -2037,7 +2035,7 @@ class Image:
         """
 
     @overload
-    def resize(self, size: sfSystem.Vector2u, pixels: bytes) -> None:
+    def resize(self, size: sfSystem.Vector2u, pixels: List[List[List[int]]]) -> None:
         """
         Resize the image from an array of pixels.
 
@@ -3083,7 +3081,7 @@ class RenderWindow(sfWindow.Window, RenderTarget):
         """
 
     @overload
-    def set_icon(self, size: sfSystem.Vector2u, pixels: bytes) -> None:
+    def set_icon(self, size: sfSystem.Vector2u, pixels: List[List[List[int]]]) -> None:
         """
         Change the window's icon.
 
@@ -3961,7 +3959,7 @@ class Texture:
         """
 
     @overload
-    def update(self, pixels: bytes) -> None:
+    def update(self, pixels: List[List[List[int]]]) -> None:
         """
         Update the whole texture from an array of pixels.
 
@@ -3976,7 +3974,7 @@ class Texture:
         """
 
     @overload
-    def update(self, pixels: bytes, size: sfSystem.Vector2u, dest: sfSystem.Vector2u) -> None:
+    def update(self, pixels: List[List[List[int]]], size: sfSystem.Vector2u, dest: sfSystem.Vector2u) -> None:
         """
         Update a part of the texture from an array of pixels.
 

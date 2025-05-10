@@ -730,6 +730,20 @@ class SoundBuffer:
         """
 
     @overload
+    def __init__(self, data: bytes) -> None:
+        """
+        Construct the sound buffer from a file in memory.
+
+        See the documentation of sf::InputSoundFile for the list of supported formats.
+
+        Parameters
+        - data	Pointer to the file data in memory
+
+        Exceptions
+        - sf::Exception	if loading was unsuccessful
+        """
+
+    @overload
     def __init__(self, stream: sfSystem.InputStream) -> None:
         """
         Construct the sound buffer from a custom stream.
@@ -744,7 +758,7 @@ class SoundBuffer:
         """
 
     @overload
-    def __init__(self, samples: List[int], sampleCount: int, channelCount: int, sampleRate: int, channelMap: List[SoundChannel]) -> None:
+    def __init__(self, samples: List[int], sampleRate: int, channelMap: List[SoundChannel]) -> None:
         """
         Construct the sound buffer from an array of audio samples.
 
@@ -752,8 +766,6 @@ class SoundBuffer:
 
         Parameters
         - samples	Pointer to the array of samples in memory
-        - sampleCount	Number of samples in the array
-        - channelCount	Number of channels (1 = mono, 2 = stereo, ...)
         - sampleRate	Sample rate (number of samples to play per second)
         - channelMap	Map of position in sample frame to sound channel
 
@@ -991,7 +1003,7 @@ class Music(SoundStream):
         """
 
     @overload
-    def __init__(self, data: bytes, sizeInBytes: int) -> None:
+    def __init__(self, data: bytes) -> None:
         """
         Construct a music from an audio file in memory.
 
@@ -1002,14 +1014,13 @@ class Music(SoundStream):
 
         Parameters
         - data	Pointer to the file data in memory
-        - sizeInBytes	Size of the data to load, in bytes
 
         Exceptions
         - sf::Exception	if loading was unsuccessful
         """
 
     @overload
-    def __init__(self, data: bytes, stream: sfSystem.InputStream) -> None:
+    def __init__(self, stream: sfSystem.InputStream) -> None:
         """
         Construct a music from an audio file in a custom stream.
 

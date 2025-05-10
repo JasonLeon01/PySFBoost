@@ -830,13 +830,12 @@ class Packet:
     It is recommended to use only fixed-size types (like std::int32_t, etc.), to avoid possible differences between the sender and the receiver. Indeed, the native C++ types may have different sizes on two platforms and your data may be corrupted if that happens.
     """
 
-    def append(self, data: bytes, sizeInBytes: int) -> None:
+    def append(self, data: bytes) -> None:
         """
         Append data to the end of the packet.
 
         Parameters
         - data	Pointer to the sequence of bytes to append
-        - sizeInBytes	Number of bytes to append
         """
 
     def get_read_position(self) -> int:

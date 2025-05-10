@@ -259,7 +259,7 @@ class Cursor:
         """
 
     @overload
-    def __init__(self, pixels: bytes, size: sfSystem.Vector2u, hotspot: sfSystem.Vector2u) -> None:
+    def __init__(self, pixels: List[List[List[int]]], size: sfSystem.Vector2u, hotspot: sfSystem.Vector2u) -> None:
         """
         Construct a cursor with the provided image.
 
@@ -282,7 +282,7 @@ class Cursor:
         - sf::Exception: if the cursor could not be constructed
         """
 
-    def createFromPixels(self, pixels: bytes, size: sfSystem.Vector2u) -> bool:
+    def createFromPixels(self, pixels: List[List[List[int]]], size: sfSystem.Vector2u) -> bool:
         """
         Creates a cursor from an array of pixel data.
 
