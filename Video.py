@@ -10,7 +10,6 @@ try:
     import av
 except ImportError as e:
     have_require = False
-    raise ImportError(f"Require not found. Video playback will not be available. {e}")
 
 class Video:
     def __init__(self, video_path: str, window: RenderWindow):
