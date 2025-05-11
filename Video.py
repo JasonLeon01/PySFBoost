@@ -14,7 +14,7 @@ except ImportError:
 class Video:
     def __init__(self, video_path: str, window: RenderWindow):
         if not have_require:
-            print("OpenCV not found. Video playback will not be available.")
+            print("Require not found. Video playback will not be available.")
             return
 
         self.cap = cv2.VideoCapture(video_path)
@@ -46,11 +46,13 @@ class Video:
 
     def _get_frame(self) -> None:
         if not have_require:
-            return None
+            self._sprite = None
+            return
 
         ret, frame = self.cap.read()
         if not ret:
-            return None
+            self._sprite = None
+            return
 
         frame_data = cv2.cvtColor(frame, cv2.COLOR_BGR2RGBA)
         if self._image is None:
@@ -69,8 +71,6 @@ class Video:
         if expected_frame > self.target_frame_index or (expected_frame == 0 and self._sprite is None):
             self.target_frame_index = expected_frame
             self._get_frame()
-        if self.finished:
-            return
         if self._sprite is None:
             self.finished = True
 
