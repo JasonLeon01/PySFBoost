@@ -1,13 +1,13 @@
 have_require = True
 from .sfSystem import *
 from .sfGraphics import *
+from .sfAudio import *
 from .Time import *
 
 try:
     import cv2
     import ffmpeg
     import numpy as np
-    import sounddevice as sd
 except ImportError:
     have_require = False
 
@@ -20,13 +20,19 @@ class Video:
         self.cap = cv2.VideoCapture(video_path)
         self.cap.set(cv2.CAP_PROP_HW_ACCELERATION, cv2.VIDEO_ACCELERATION_ANY)
 
+        sr, ch = self._get_audio_info(video_path)
+
         out, _ = (
-            ffmpeg.input(video_path)
-            .output("-", format="f32le", acodec="pcm_f32le", ac=2, ar=44100)
-            .run(capture_stdout=True, quiet=True)
+            ffmpeg
+            .input(video_path)
+            .output('pipe:', format='wav', acodec='pcm_s16le', ac=ch, ar=sr)
+            .run(capture_stdout=True, capture_stderr=True)
         )
 
-        self._audio_array = np.frombuffer(out, dtype=np.float32).reshape(-1, 2)
+        audio = np.frombuffer(out, np.int16).tobytes()
+        self._sb = SoundBuffer()
+        self._sb.load_from_memory(audio)
+        self._sound = Sound(self._sb)
 
         self._window = window
 
@@ -43,6 +49,17 @@ class Video:
         self._image: Texture = None
         self._sprite: Sprite = None
         self.finished = False
+
+    def _get_audio_info(self, path):
+        probe = ffmpeg.probe(path)
+        audio_streams = [s for s in probe['streams'] if s['codec_type'] == 'audio']
+        if not audio_streams:
+            raise ValueError("No audio stream found")
+
+        audio_stream = audio_streams[0]
+        sample_rate = int(audio_stream['sample_rate'])
+        channels = int(audio_stream['channels'])
+        return sample_rate, channels
 
     def _get_frame(self) -> None:
         if not have_require:
@@ -75,7 +92,7 @@ class Video:
             self.finished = True
 
     def play(self):
-        sd.play(self._audio_array)
+        self._sound.play()
         while self._window.is_open():
             while True:
                 event = self._window.poll_event()
@@ -94,6 +111,7 @@ class Video:
             self._window.display()
             if self.finished:
                 break
+        self._sound.stop()
 
     def __del__(self):
         self.cap.release()
