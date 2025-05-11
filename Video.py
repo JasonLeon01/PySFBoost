@@ -12,9 +12,23 @@ except ImportError as e:
     have_require = False
 
 class Video:
+    """
+    Video class for playing videos in a loop.
+
+    This class allows you to play a video in a loop using OpenCV, av and SFML.
+    """
+
     def __init__(self, video_path: str, window: RenderWindow):
+        """
+        Initialize a Video object.
+
+        Parameters:
+        - video_path: Path to the video file.
+        - window: RenderWindow object.
+        """
+
         if not have_require:
-            print("Require not found. Video playback will not be available.")
+            print('Require not found. Video playback will not be available.')
             return
 
         self.cap = cv2.VideoCapture(video_path)
@@ -26,13 +40,13 @@ class Video:
             self._sb.load_from_memory(audio_data)
             self._sound = Sound(self._sb)
         except Exception as e:
-            print(f"Failed to extract audio: {e}")
+            print(f'Failed to extract audio: {e}')
             self._sound = None
 
         self._window = window
 
         if not self.cap.isOpened():
-            raise ValueError("Error opening video file")
+            raise ValueError('Error opening video file')
 
         self.target_frame_index = 0
         self._image: Texture = None
@@ -44,12 +58,40 @@ class Video:
         self._sprite: Sprite = None
         self.finished = False
 
+    def play(self):
+        """
+        Play the video.
+
+        This method plays the video in a loop until the video is finished.
+        """
+
+        if not have_require:
+            return
+        self._sound.play()
+        while self._window.is_open():
+            while True:
+                event = self._window.poll_event()
+                if event is None:
+                    break
+                if event.isClosed():
+                    self._window.close()
+                    break
+            TimeMgr.update()
+            self._window.clear(Color.transparent())
+            self._update()
+            if self._sprite is not None:
+                self._window.draw(self._sprite)
+            self._window.display()
+            if self.finished:
+                break
+        self._sound.stop()
+
     def _extract_audio_with_av(self, video_path):
         container = av.open(video_path)
 
         audio_stream = next((s for s in container.streams if s.type == 'audio'), None)
         if not audio_stream:
-            raise ValueError("No audio stream found in the video")
+            raise ValueError('No audio stream found in the video')
 
         sample_rate = audio_stream.codec_context.sample_rate
         channels = audio_stream.codec_context.channels
@@ -117,28 +159,6 @@ class Video:
             self.target_frame_index = self._get_frame()
         if self._sprite is None:
             self.finished = True
-
-    def play(self):
-        if not have_require:
-            return
-        self._sound.play()
-        while self._window.is_open():
-            while True:
-                event = self._window.poll_event()
-                if event is None:
-                    break
-                if event.isClosed():
-                    self._window.close()
-                    break
-            TimeMgr.update()
-            self._window.clear(Color.transparent())
-            self._update()
-            if self._sprite is not None:
-                self._window.draw(self._sprite)
-            self._window.display()
-            if self.finished:
-                break
-        self._sound.stop()
 
     def __del__(self):
         self.cap.release()
