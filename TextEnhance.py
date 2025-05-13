@@ -13,7 +13,7 @@ The module uses the `sfSystem` and `sfGraphics` libraries from the `sf` framewor
 
 from typing import List
 from .sfSystem import Vector2u, Vector2f
-from .sfGraphics import Sprite, Color, Font, Text, RenderTexture
+from .sfGraphics import BlendMode, RenderStates, Sprite, Color, Font, Text, RenderTexture
 
 class EText(Sprite):
     """
@@ -113,7 +113,7 @@ class EText(Sprite):
 
         for texts in self._render_fragments:
             for text in texts:
-                self._canvas.draw(text)
+                self._canvas.draw(text, self.text_render_state())
         self._canvas.display()
 
     def render_one(self):
@@ -122,12 +122,12 @@ class EText(Sprite):
         """
 
         if len(self._fragments_list) != 0:
-            self._canvas.draw(self._fragments_list[0])
+            self._canvas.draw(self._fragments_list[0], self.text_render_state())
             self._fragments_list.pop(0)
             self._canvas.display()
 
     @staticmethod
-    def from_str(text: str, font: Font, size: Vector2u, style_config: StyleConfig, text_pos: int = 0):
+    def from_str(text: str, font: Font, size: Vector2u, style_config: StyleConfig, text_pos: int = 0, pre_render: bool = True):
         """
         Creates an EText object from a string.
 
@@ -136,11 +136,28 @@ class EText(Sprite):
         - font    The font to use for rendering the text.
         - size    The size of the text.
         - style_config    The style configuration for the text.
+        - text_pos    The position of the text in the rendered rectangle.
+        - pre_render    Whether to pre-render the text. If True, the text will be rendered immediately. If False, the text will be rendered when the render() method is called.
         """
 
         text_obj = EText(font, text, size, style_config, text_pos)
-        text_obj.render()
+        if pre_render:
+            text_obj.render()
         return text_obj
+
+    @staticmethod
+    def text_render_state():
+        """
+        Returns the default render state for the text.
+
+        Returns:
+        - The default render state for the text.
+        """
+
+        state = RenderStates.default()
+        state.blend_mode = BlendMode(BlendMode.Factor.One, BlendMode.Factor.OneMinusSrcAlpha, BlendMode.Equation.Add,
+                                     BlendMode.Factor.One, BlendMode.Factor.OneMinusSrcAlpha, BlendMode.Equation.Add)
+        return state
 
 
     def _get_line_spacing(self, text: str, size = None):
@@ -284,6 +301,12 @@ class EText(Sprite):
                         self._fragment.apply_style_config(self._style_config)
                         i = i + j + 3
                         continue
+                if i + 1 < len(self._text) and self._text[i + 1] == '\\':
+                    self._fragment.apply_text('\\')
+                    i += 2
+                    continue
+                i += 1
+                continue
 
             advance = self._get_advance(c)
             if pos + advance >= self._size.x:
@@ -390,6 +413,7 @@ class EText(Sprite):
         """
 
         position = Vector2f(0, 0)
+        total_h = 0
         for texts in self._render_fragments:
             max_h = 0
             line_width = 0
@@ -398,13 +422,19 @@ class EText(Sprite):
                 max_h = max(max_h, h)
                 width = self._get_advance(text.get_string(), text.get_character_size())
                 line_width += width
+            x_offset = 0
+            if self._text_pos == 1:
+                x_offset = (self._size.x - line_width) / 2
+            elif self._text_pos == 2:
+                x_offset = self._size.x - line_width
+            x_offset_vector = Vector2f(x_offset, 0)
             for text in texts:
                 text.set_position(position)
-                x_offset = 0
-                if self._text_pos == 1:
-                    x_offset = (self._size.x - line_width) / 2
-                elif self._text_pos == 2:
-                    x_offset = self._size.x - line_width
-                text.move(Vector2f(x_offset, 0))
+                text.move(x_offset_vector)
                 position.x += self._get_advance(text.get_string(), text.get_character_size())
             position = Vector2f(0, position.y + max_h)
+            total_h += max_h
+        delta = Vector2f(0, (self._size.y - total_h) / 2)
+        for texts in self._render_fragments:
+            for text in texts:
+                text.move(delta)

@@ -26,12 +26,28 @@ git clone https://github.com/JasonLeon01/PySFBoost.git
 
 If you want to compile the pyd files yourself, you can use [PySFML](https://github.com/JasonLeon01/PySFML) and run the cmake commands:
 
+### **If you are using Windows**
 ```bash
 git clone https://github.com/JasonLeon01/PySFML.git
 cd PySFML
 mkdir build && cd build
-cmake ..
-make
+cmake -G "Visual Studio 17 2022" -A x64 ..
+cmake --build . --config Release -- /m
+```
+
+### **If you are using macOS**
+```bash
+git clone https://github.com/JasonLeon01/PySFML.git
+cd PySFML
+mkdir build && cd build
+cmake -DCMAKE_POLICY_VERSION_MINIMUM=3.5 -DCMAKE_BUILD_TYPE=Release .. --trace-expand
+cmake --build . -- -j$(sysctl -n hw.ncpu)
+```
+
+For video-related functionality, make sure the following dependencies are installed(Optional):
+
+```bash
+pip install opencv-python av
 ```
 
 ## Usage
@@ -166,30 +182,50 @@ Contributions to PySFBoost are welcome! If you encounter any issues or have sugg
 This project is a pybind11 binding for SFML (Simple and Fast Multimedia Library) and includes the following third-party libraries:
 
 1. **SFML (Simple and Fast Multimedia Library)**
-   - License: zlib/png License
-   - Website: [https://www.sfml-dev.org](https://www.sfml-dev.org)
-   - License Text: [SFML License](https://www.sfml-dev.org/license.php)
+  - License: zlib/png License
+  - Website: https://www.sfml-dev.org
+  - License Text: [SFML License](https://www.sfml-dev.org/license.php)
 
-2. **SFML Dependencies**
+2. OpenCV (Open Source Computer Vision Library)
+  - License: Apache 2.0
+  - Website: https://opencv.org/
+  - License Text: Apache 2.0 License
+
+3. PyAV(A Pythonic binding for the FFmpeg libraries.)
+  - License: BSD-3-Clause license
+  - Website: https://pyav.basswood-io.com/docs/stable/
+  - License Text: BSD-3-Clause License
+
+Website: https://ffmpeg.org/
+
+License Text: FFmpeg Licensing
+
+
+4. **SFML Dependencies**
    - stb_image and stb_image_write (Public Domain)
-     - Website: [https://github.com/nothings/stb](https://github.com/nothings/stb)
+     - Website: https://github.com/nothings/stb
    - FreeType (FreeType License)
-     - Website: [https://www.freetype.org](https://www.freetype.org)
+     - Website: https://www.freetype.org
      - License Text: [FreeType License](https://www.freetype.org/license.html)
    - libogg (BSD License)
-     - Website: [https://xiph.org/ogg/](https://xiph.org/ogg/)
+     - Website: https://xiph.org/ogg/
      - License Text: [libogg License](https://xiph.org/licenses/bsd/)
    - libvorbis (BSD License)
-     - Website: [https://xiph.org/vorbis/](https://xiph.org/vorbis/)
+     - Website: https://xiph.org/vorbis/
      - License Text: [libvorbis License](https://xiph.org/licenses/bsd/)
    - libflac (BSD License)
-     - Website: [https://xiph.org/flac/](https://xiph.org/flac/)
+     - Website: https://xiph.org/flac/
      - License Text: [libflac License](https://xiph.org/licenses/bsd/)
    - minimp3 (CC0)
-     - Website: [https://github.com/lieff/minimp3](https://github.com/lieff/minimp3)
+     - Website: https://github.com/lieff/minimp3
    - miniaudio (Public Domain or MIT No Attribution)
-     - Website: [https://miniaud.io](https://miniaud.io)
+     - Website: https://miniaud.io
      - License Text: [miniaudio License](https://github.com/mackron/miniaudio/blob/master/LICENSE)
+
+5. **PyAV Dependencies**
+   - FFmpeg (FFmpeg Licensing)
+     - Website: https://ffmpeg.org/
+     - License Text: [FFmpeg Licensing](https://ffmpeg.org/legal.html)
 
 ## License
 PySFBoost is licensed under the Zlib license. See the [LICENSE](license.md) file for more details.
@@ -197,3 +233,4 @@ PySFBoost is licensed under the Zlib license. See the [LICENSE](license.md) file
 ## Acknowledgements
 - [SFML](https://www.sfml-dev.org/): The core library that makes multimedia development simple and efficient.
 - [PySFML](https://github.com/JasonLeon01/PySFML): The CMake-based Python bindings for SFML 3.0.
+- [PyAV](https://pyav.basswood-io.com/docs/stable/): A Pythonic binding for the FFmpeg libraries.

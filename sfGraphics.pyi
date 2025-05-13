@@ -605,19 +605,90 @@ class BlendMode:
         - alphaBlendEquation	Specifies how to combine the source and destination alphas.
         """
 
+    @staticmethod
+    def BlendAlpha():
+        """
+        The default blending mode.
+
+        Uses source alpha to blend pixels.
+
+        Formula:
+            color: src * src.a + dst * (1 - src.a)
+            alpha: src.a + dst.a * (1 - src.a)
+
+        Recommended for regular UI, sprites with transparency, anti-aliased text.
+
+        May cause blurring when used in multiple RenderTexture layers.
+        """
+
+    @staticmethod
+    def BlendNone():
+        """
+        No blending — source completely overwrites destination.
+
+        Formula:
+            color: src
+            alpha: src.a
+
+        Best used for sharp, pixel-perfect rendering (e.g. text rendering to intermediate targets).
+
+        Not suitable when transparent layering is required.
+        """
+
+    @staticmethod
+    def BlendAdd():
+        """
+        Additive blending — brightens the target by adding source and destination.
+
+        Formula:
+            color: src + dst
+
+        Ideal for light effects, particles, glows, and energy visuals.
+
+        Can cause over-brightness when overused.
+        """
+
+    @staticmethod
+    def BlendMultiply():
+        """
+        Multiplicative blending — darkens the target by multiplying colors.
+
+        Formula:
+            color: src * dst
+
+        Commonly used for shadows, dark masks, ambient effects.
+
+        Not suitable for standard UI content or text.
+        """
+
+    @staticmethod
+    def BlendMin():
+        """
+        Pixel-wise minimum blending.
+
+        Formula:
+            color: min(src, dst)
+
+        Useful for masking, certain pixel effects, or heightmap-based visuals.
+        """
+
+    @staticmethod
+    def BlendMax():
+        """
+        Pixel-wise maximum blending.
+
+        Formula:
+            color: max(src, dst)
+
+        Useful for combining highlights or preserving the most visible color.
+        """
+
     color_src_factor: Factor
     color_dst_factor: Factor
     color_equation: Equation
     alpha_src_factor: Factor
     alpha_dst_factor: Factor
     alpha_equation: Equation
-
-blend_alpha: BlendMode
-blend_add: BlendMode
-blend_multiply: BlendMode
-blend_min: BlendMode
-blend_max: BlendMode
-blend_none: BlendMode
 
 class Transform:
     """
@@ -4609,17 +4680,12 @@ class Text(Transformable, Drawable):
         - Size of the characters, in pixels
         """
 
-    def get_letter_spacing(self) -> float:
-        """
-        Get the size of the letter spacing factor.
-
-        Returns
-        - Size of the letter spacing factor
-        """
-
-    def get_line_spacing(self) -> float:
+    def get_line_spacing(self, characterSize) -> float:
         """
         Get the size of the line spacing factor.
+
+        Parameters
+        - characterSize	Reference character size
 
         Returns
         - Size of the line spacing factor

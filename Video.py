@@ -18,13 +18,14 @@ class Video:
     This class allows you to play a video in a loop using OpenCV, av and SFML.
     """
 
-    def __init__(self, video_path: str, window: RenderWindow):
+    def __init__(self, video_path: str, window: RenderWindow, mute: bool = False):
         """
         Initialize a Video object.
 
         Parameters:
         - video_path: Path to the video file.
         - window: RenderWindow object.
+        - mute:  Judge whether to mute the video.
         """
 
         if not have_require:
@@ -44,6 +45,7 @@ class Video:
             self._sound = None
 
         self._window = window
+        self.mute = mute
 
         if not self.cap.isOpened():
             raise ValueError('Error opening video file')
@@ -53,9 +55,6 @@ class Video:
         self._sprite: Sprite = None
 
         self.fps = self.cap.get(cv2.CAP_PROP_FPS)
-
-        self._image: Texture = None
-        self._sprite: Sprite = None
         self.finished = False
 
     def play(self):
@@ -67,6 +66,8 @@ class Video:
 
         if not have_require:
             return
+
+        self._sound.set_volume(0 if self.mute else 100)
         self._sound.play()
         while self._window.is_open():
             while True:
