@@ -22,7 +22,7 @@ class Event:
         self.duration = duration
         self._is_expired = False
 
-    def update(self, delta_time: Time):
+    def update(self, delta_time: float):
         """
         Update event.
 
@@ -112,7 +112,7 @@ class Animation:
         self._is_expired = False
         self._executing_events: List[Event] = []
 
-    def update(self, delta_time: Time):
+    def update(self, delta_time: float):
         """
         Update the animation based on the elapsed time.
 
@@ -253,7 +253,7 @@ class AnimationMgr:
 
         return self._z_list.copy()
 
-    def update(self, delta_time: Time):
+    def update(self, delta_time: float):
         """
         Update all animations managed by the AnimationMgr and remove expired animations.
 
