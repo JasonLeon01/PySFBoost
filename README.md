@@ -1,6 +1,9 @@
 # PySFBoost
 PySFBoost is a Python binding interface for SFML **3.0** , providing `.pyi` type hinting files to enhance the development experience when working with SFML in Python. This project is built on top of the PySFML CMake repository, which provides the core bindings for SFML.
 
+## Hint!!!
+Now we have a brand new framework here! [PySF-AutoGenerator](https://github.com/JasonLeon01/PySF-AutoGenerator)
+
 ## Overview
 SFML (Simple and Fast Multimedia Library) is a popular open-source library designed to provide a simple interface for multimedia applications, including graphics, audio, and input handling. With PySFBoost , Python developers can leverage the power of SFML **3.0** while benefiting from modern Python features like type hints and static type checking.
 
